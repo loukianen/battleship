@@ -1,4 +1,4 @@
-import { Field, FieldType } from "./game/types";
+import { Field, FieldType } from "./types";
 
 export const generateField = (size: FieldType) :Field => {
   const fieldSize = Number(size);

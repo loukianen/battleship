@@ -1,4 +1,4 @@
-import { Field, Player } from "../../types";
+import { Field, Player } from "../../../types";
 
 export default class JackSparrow implements Player {
   id;

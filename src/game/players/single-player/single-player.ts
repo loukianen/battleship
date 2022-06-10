@@ -1,4 +1,4 @@
-import { Player } from "../../types";
+import { Player } from "../../../types";
 
 export default class SinglePlayer implements Player {
   id;

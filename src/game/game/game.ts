@@ -1,6 +1,6 @@
 import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
-import { Field, FieldType, Player } from '../types';
+import { Field, FieldType, Player } from '../../types';
 
 export const availablePlayers = [SinglePlayer, JackSparrow];
 

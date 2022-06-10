@@ -1,5 +1,5 @@
 import { availablePlayers } from "./game";
-import { Player } from '../types';
+import { Player } from '../../types';
 
 it('lala', () => {
   const t = availablePlayers.map((el) => new el()).reduce((acc, el) => {

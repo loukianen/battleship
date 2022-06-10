@@ -4,6 +4,8 @@ export type Field = Array<Array<null | number>> | null;
 
 export type FieldType = '3' | '5' | '7' | '10';
 
+
+
 export interface Player {
   id: string,
   name: string,
@@ -14,6 +16,12 @@ export interface Player {
   handleShoot?: (coords: Coords) => void,
   makeField?: (fieldType: FieldType, ships: [], shipsShapeType: string) => Field | void,
 }
+
+export type ShipClassType = 'fourDeck' | 'threeDeck' | 'doubleDeck' | 'oneDeck';
+
+export type ShipOrientation = 'east' | 'north' | 'west' | 'south';
+
+export type ShipShape = 'line' | 'any';
 
 export type Shoot = {
   playerId: number,
