@@ -19,6 +19,8 @@ export interface Player {
 
 export type ShipClassType = 'fourDeck' | 'threeDeck' | 'doubleDeck' | 'oneDeck';
 
+export type ShipsList = { [index: string]: number };
+
 export type ShipOrientation = 'east' | 'north' | 'west' | 'south';
 
 export type ShipShape = 'line' | 'any';

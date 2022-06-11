@@ -1,38 +1,64 @@
 import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
-import { Field, FieldType, Player } from '../../types';
+import { generateField, generateShipsList } from '../../utils';
+import { Field, FieldType, Player, ShipShape } from '../../types';
 
-export const availablePlayers = [SinglePlayer, JackSparrow];
+const createPlayer = (id: string) => {
+  const players : { [index: string]: () => Player } = {
+    1: () => new SinglePlayer(),
+    jack: () => new JackSparrow(),
+  };
+  if (!players[id]) {
+    throw new Error('Unknown player id');
+  }
+  return players[id]();
+};
 
 class Game {
-  player1: Player;
-  player2: Player;
-  field1: Field;
-  field2: Field;
-  activePlayer: string | undefined;
+  players: Player[];
+  fields: Field[];
+  activePlayer: number | undefined;
   fieldType: FieldType;
+  shipShape: ShipShape;
 
   constructor() {
-    this.player1 = new SinglePlayer();
-    this.player2 = new JackSparrow();
-    this.field1 = null;
-    this.field2 = null;
+    this.players = [];
+    this.fields = [];
     this.activePlayer = undefined;
     this.fieldType = '10';
+    this.shipShape = 'line';
   }
 
-  setDefaultOptions() {
-    this.player1 = new SinglePlayer();
-    this.player2 = new JackSparrow();
-    this.field1 = null;
-    this.field2 = null;
-    this.activePlayer = undefined;
-    this.fieldType = '10';
-  }
+  checkFields() {}
 
-  // startNewGame(player1Id, player2Id, field1, field2, fieldType, shipsShapeType) {
-  //   // this.player1 = player1;
+  // setDefaultOptions() {
+  //   this.player1 = new SinglePlayer();
+  //   this.player2 = new JackSparrow();
+  //   this.field1 = null;
+  //   this.field2 = null;
+  //   this.activePlayer = undefined;
+  //   this.fieldType = '10';
+  //   this.shipShape = 'line';
   // }
+
+  startBattle(field?: Field) {
+    if (field) {
+      this.fields[0] = field;
+    }
+    this.checkFields();
+  }
+
+  startNewGame(players: string[], fieldType: FieldType, shipShapeType: ShipShape) {
+    this.players = players.map((playerId) => createPlayer(playerId));
+    this.fieldType = fieldType;
+    this.shipShape = shipShapeType;
+
+    if (this.players[0].type === 'human') {
+      return { field: generateField(this.fieldType), fleet: generateShipsList(this.fieldType) };
+    }
+
+    this.startBattle();
+  }
 };
 
 const game = new Game();

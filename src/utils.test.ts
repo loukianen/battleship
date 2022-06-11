@@ -1,5 +1,5 @@
 import { generateField } from './utils';
-import { Field, FieldType } from './game/types';
+import { Field, FieldType } from './types';
 
 describe('function generateField', () => {
   type testDataType = Array<[FieldType, Field]>;
