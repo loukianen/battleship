@@ -24,22 +24,19 @@ class Game {
   constructor() {
     this.players = [];
     this.fields = [];
-    this.activePlayer = undefined;
     this.fieldType = '10';
     this.shipShape = 'line';
   }
 
   checkFields() {}
 
-  // setDefaultOptions() {
-  //   this.player1 = new SinglePlayer();
-  //   this.player2 = new JackSparrow();
-  //   this.field1 = null;
-  //   this.field2 = null;
-  //   this.activePlayer = undefined;
-  //   this.fieldType = '10';
-  //   this.shipShape = 'line';
-  // }
+  setDefaultOptions() {
+    this.players = [];
+    this.fields = [];
+    this.activePlayer = undefined;
+    this.fieldType = '10';
+    this.shipShape = 'line';
+  }
 
   startBattle(field?: Field) {
     if (field) {

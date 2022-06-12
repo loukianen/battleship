@@ -1,10 +1,8 @@
 export type Coords = { x: number, y: number };
 
-export type Field = Array<Array<null | number>> | null;
+export type Field = Array<Array<number>>; // empty cell - 0, ship - any number > 0 as ship id;
 
 export type FieldType = '3' | '5' | '7' | '10';
-
-
 
 export interface Player {
   id: string,

@@ -4,4 +4,4 @@ export const ShipOrientations: ShipOrientation[] = ['east', 'north', 'west', 'so
 
 export const LineShipOrientations: ShipOrientation[] =  ['east', 'north'];
 
-export 
+export const fieldTypes = ['3', '5', '7', '10'];
