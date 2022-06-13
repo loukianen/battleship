@@ -1,6 +1,6 @@
 import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
-import { generateField, generateShipsList } from '../../utils';
+import { generateField, generateShipsList } from '../../services/utils';
 import { Field, FieldType, Player, ShipShape } from '../../types';
 
 const createPlayer = (id: string) => {
