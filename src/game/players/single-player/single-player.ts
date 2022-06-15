@@ -1,12 +1,12 @@
-import { Player } from "../../../types";
+import { Human } from "../../../types";
 
-export default class SinglePlayer implements Player {
+export default class SinglePlayer implements Human {
   id;
   name;
-  type: 'human' | 'robot';
+  type: 'human';
 
   constructor() {
-    this.id = 'player';
+    this.id = 'user';
     this.name = 'user';
     this.type = 'human';
   }

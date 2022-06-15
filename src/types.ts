@@ -8,11 +8,20 @@ export interface Player {
   id: string,
   name: string,
   type: 'human' | 'robot',
-  field?: Field;
-  enemyField?: Field;
-  getShoot?: () => Coords | void,
-  handleShoot?: (coords: Coords) => void,
-  makeField?: (fieldType: FieldType, ships: [], shipsShapeType: string) => Field | void,
+}
+
+export interface Human extends Player {
+  type: 'human',
+}
+
+export interface Robot extends Player {
+  type: 'robot',
+  field: Field;
+  fleet: [],
+  enemyField: Field;
+  shoot: () => Coords,
+  handleShoot: (record: Record) => void,
+  makeField: (fieldType: FieldType, shipsShapeType: ShipShape) => Field,
 }
 
 export type ShipClassType = 'fourDeck' | 'threeDeck' | 'doubleDeck' | 'oneDeck';
@@ -28,6 +37,6 @@ export type Shoot = {
   coords: Coords,
 };
 
-export type Record = [Player['id'], Coords | null, RecordText];
+export type Record = [number, Coords | null, RecordText];
 
 export type RecordText = 'offTarget' | 'wounded' | 'killed' | 'started' | 'won';

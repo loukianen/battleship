@@ -1,23 +1,32 @@
-import { Field, Player } from "../../../types";
+import { generateField } from "../../../services/utils";
+import { Field, FieldType, Record, Robot, ShipShape } from "../../../types";
 
-export default class JackSparrow implements Player {
+export default class JackSparrow implements Robot {
   id;
   name;
-  type: 'human' | 'robot';
+  type: 'robot';
   field: Field;
+  fleet: [];
   enemyField: Field;
 
   constructor() {
     this.id = 'jack';
     this.name = 'Jack Sparrow';
     this.type = 'robot';
-    this.field = null;
-    this.enemyField = null;
+    this.field = [];
+    this.fleet = [];
+    this.enemyField = [];
   }
 
-  getShoot() {}
+  shoot() {
+    return { x: 0, y: 0 };
+  }
 
-  handleShoot() {}
+  handleShoot(record: Record) {}
 
-  makeField() {}
+  makeField(fieldType: FieldType, shipsShapeType: ShipShape) {
+    this.field = generateField(fieldType);
+    this.enemyField = generateField(fieldType);
+    return [];
+  }
 };

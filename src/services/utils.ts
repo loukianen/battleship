@@ -5,6 +5,16 @@ export const generateField = (size: FieldType) : Field => {
   return Array(fieldSize).fill(Array(fieldSize).fill(0));
 };
 
+export const generateEnemyField = (size: FieldType) : Field => {
+  const field = generateField(size);
+  return field;
+}
+
+export const getRandomElFromColl = (arr: Array<number>) => {
+  const index = Math.round(Math.random() * (arr.length - 1));
+  return arr[index];
+};
+
 const shipListMapping : { [index: string]: ShipsList} = {
   3: { oneDeck: 1 },
   5: { oneDeck: 2, doubleDeck: 1 },
