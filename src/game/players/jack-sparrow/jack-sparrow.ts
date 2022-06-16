@@ -1,10 +1,11 @@
-import { generateField } from "../../../services/utils";
-import { Field, FieldType, Record, Robot, ShipShape } from "../../../types";
+import { generateField } from '../../../services/utils';
+import { Field, FieldType, Record, Robot, ShipShape } from '../../../types';
+import { PlayerTypes } from '../../../const';
 
 export default class JackSparrow implements Robot {
   id;
   name;
-  type: 'robot';
+  type: PlayerTypes.Robot;
   field: Field;
   fleet: [];
   enemyField: Field;
@@ -12,7 +13,7 @@ export default class JackSparrow implements Robot {
   constructor() {
     this.id = 'jack';
     this.name = 'Jack Sparrow';
-    this.type = 'robot';
+    this.type = PlayerTypes.Robot;
     this.field = [];
     this.fleet = [];
     this.enemyField = [];

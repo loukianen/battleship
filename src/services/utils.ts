@@ -5,10 +5,7 @@ export const generateField = (size: FieldType) : Field => {
   return Array(fieldSize).fill(Array(fieldSize).fill(0));
 };
 
-export const generateEnemyField = (size: FieldType) : Field => {
-  const field = generateField(size);
-  return field;
-}
+export const getEnemy = (index: number) : number => index === 0 ? 1 : 0;
 
 export const getRandomElFromColl = (arr: Array<number>) => {
   const index = Math.round(Math.random() * (arr.length - 1));

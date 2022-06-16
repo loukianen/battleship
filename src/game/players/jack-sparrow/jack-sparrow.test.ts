@@ -6,7 +6,8 @@ describe('JackSparrow', () => {
     expect(player.id).toBe('jack');
     expect(player.name).toBe('Jack Sparrow');
     expect(player.type).toBe('robot');
-    expect(player.field).toBeNull();
-    expect(player.enemyField).toBeNull();
+    expect(player.field).toEqual([]);
+    expect(player.enemyField).toEqual([]);
+    expect(player.fleet).toEqual([]);
   });
 });

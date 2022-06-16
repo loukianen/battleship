@@ -107,7 +107,7 @@ export const checkField = (field: Field, shipShape: ShipShape = 'line') => {
     if (shipShape !== 'line') {
       throw new Error(GameErrorMessages.ShapeAny);
     }
-
+    
     checkFieldSize(field);
     checkShips(field);
     checkShipsPosition(field);

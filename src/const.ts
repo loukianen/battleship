@@ -7,7 +7,24 @@ export enum GameErrorMessages {
   ShipsCollection = 'Ships collection is not correct',
   ShipUniqueId = 'Ships has not unique id',
   ShipsPosition ='Ships position is not correct',
-};
+  ShouldGiveField = 'First player should give his field for beginning the battle',
+  WrongCoords = 'Wrong coords recieved',
+  WrongPlayer = 'Unknown player id',
+  WrongSecondPlayer = 'Second player should be robot',
+}
+
+export enum PlayerTypes {
+  Human = 'human',
+  Robot = 'robot',
+}
+
+export enum ShootResults {
+  OffTarget = 'offTarget',
+  Wounded = 'wounded',
+  Killed = 'killed',
+  Started = 'started',
+  Won = 'won',
+}
 
 export const ShipOrientations: ShipOrientation[] = ['east', 'north', 'west', 'south'];
 
