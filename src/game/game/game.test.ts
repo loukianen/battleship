@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash-ts/cloneDeep';
 import game from './game';
 import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
@@ -179,11 +180,6 @@ describe('Game', () => {
       game.setDefaultOptions();
     });
 
-    const fakeRobot = new FakeRobot();
-    fakeRobot.handleShoot = jest.fn();
-    const createFakePlayer = (id: string) : Human | Robot => (
-      id === 'user' ? new SinglePlayer() : fakeRobot
-    );
     const field = [
       [0, 0, 1, 0, 0],
       [0, 0, 0, 0, 0],
@@ -191,15 +187,22 @@ describe('Game', () => {
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
     ];
-    fakeRobot.makeField = () => field;
     const fieldType : FieldType = '5';
+
+    const fakeRobot = new FakeRobot();
+    fakeRobot.handleShoot = jest.fn();
+    fakeRobot.makeField = () => cloneDeep(field);
+
+    const createFakePlayer = (id: string) : Human | Robot => (
+      id === 'user' ? new SinglePlayer() : fakeRobot
+    );
     const  mockCreatePlayer = createFakePlayer;
 
     it('should return report with error if coords incorrect', () => {
       const gameOptions = { players: ['user', 'fakeRobot'], fieldType, mockCreatePlayer };
       const incorrectCoords = { x: 5, y: 4};
       game.startNewGame(gameOptions);
-      game.startBattle(field);
+      game.startBattle(cloneDeep(field));
       game.activePlayer = 0;
 
       expect(game.nextHumanTurn(incorrectCoords)).toEqual([-1, null, GameErrorMessages.WrongCoords]);
@@ -209,7 +212,7 @@ describe('Game', () => {
       const gameOptions = { players: ['user', 'fakeRobot'], fieldType, mockCreatePlayer };
       const errorMessage = 'Wrong action nextHumanTurn for this robot type of player';
       game.startNewGame(gameOptions);
-      game.startBattle(field);
+      game.startBattle(cloneDeep(field));
       game.activePlayer = 1;
 
       expect(game.nextHumanTurn({ x: 1, y:1 })).toEqual([-1, null, errorMessage]);
@@ -218,7 +221,7 @@ describe('Game', () => {
     it('should return right reports and these reports should be porocessed by robot', () => {
       const gameOptions = { players: ['user', 'fakeRobot'], fieldType, mockCreatePlayer };
       game.startNewGame(gameOptions);
-      game.startBattle(field);
+      game.startBattle(cloneDeep(field));
       game.activePlayer = 0;
 
       const firstShoot = { x: 1, y: 1 };
@@ -240,6 +243,27 @@ describe('Game', () => {
 
       const robot = game.players[1] as Robot;
       expect(robot.handleShoot).toBeCalledTimes(4);
+    });
+
+    it('should change value of cell on enemy field after hitting ship', () => {
+      const gameOptions = { players: ['user', 'fakeRobot'], fieldType, mockCreatePlayer };
+      game.startNewGame(gameOptions);
+      game.startBattle(cloneDeep(field));
+      game.activePlayer = 0;
+      
+      const getTarget = (shoot: Coords, currentPlayer: number) => {
+        const { x, y } = shoot;
+        return game.fields[currentPlayer][x][y];
+      };
+      const shoot = { x: 0, y: 2 };
+      const enemy = getEnemy(game.activePlayer);
+
+      expect(getTarget(shoot, enemy)).toBe(1);
+      game.nextHumanTurn(shoot);
+      expect(getTarget(shoot, enemy)).toBe(0);
+
+      const robot = game.players[1] as Robot;
+      expect(robot.handleShoot).toBeCalledTimes(1);
     });
   });
 
