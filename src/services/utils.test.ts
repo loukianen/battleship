@@ -1,4 +1,4 @@
-import { generateField } from './utils';
+import { generateField, uniqueId } from './utils';
 import { Field, FieldType } from '../types';
 
 describe('function generateField', () => {
@@ -17,4 +17,10 @@ describe('function generateField', () => {
   it.each(testData)('should create rigth array size %s', (size: FieldType, result: Field) => {
     expect(generateField(size)).toEqual(result);
   });
+});
+
+it('UniqueId should return a new id after each calling', () => {
+  expect(uniqueId()).toBe(1);
+  expect(uniqueId()).toBe(2);
+  expect(uniqueId()).toBe(3);
 });

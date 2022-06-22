@@ -7,7 +7,7 @@ export const generateField = (size: FieldType) : Field => {
 
 export const getEnemy = (index: number) : number => index === 0 ? 1 : 0;
 
-export const getRandomElFromColl = (arr: Array<number>) => {
+export const getRandomElFromColl = <Type>(arr: Array<Type>) : Type => {
   const index = Math.round(Math.random() * (arr.length - 1));
   return arr[index];
 };
@@ -21,4 +21,10 @@ const shipListMapping : { [index: string]: ShipsList} = {
 
 export const generateShipsList = (size: FieldType) : ShipsList => shipListMapping[size];
 
-
+export const uniqueId = Object.assign(
+  () => {
+    uniqueId.count += 1;
+    return uniqueId.count;
+  },
+  { count: 0 },
+);

@@ -14,6 +14,10 @@ export interface Human extends Player {
   type: 'human',
 }
 
+type OrientationMappingType = {
+  [index: string]: Function,
+};
+
 export interface Robot extends Player {
   type: 'robot',
   field: Field;
@@ -22,6 +26,23 @@ export interface Robot extends Player {
   shoot: () => Coords,
   handleShoot: (record: Record) => void,
   makeField: (fieldType: FieldType, shipsShapeType: ShipShape) => Field,
+}
+
+export interface ShipInterface {
+  id: number;
+  coords: Coords[];
+  mainPoint: Coords | null;
+  class: ShipClassType | null;
+  shape: ShipShape;
+  orientation: ShipOrientation;
+  orientationMapping: OrientationMappingType;
+  getCoords: () => Coords[];
+  getId: () => number;
+  getClass: () => ShipClassType | null;
+  calcCoords: (mainPoint: Coords) => Coords[];
+  setCoords: (mainPoint: Coords) => void;
+  setOrientation: (orientation: ShipOrientation) => void;
+  changeOrientation: () => void;
 }
 
 export type ShipClassType = 'fourDeck' | 'threeDeck' | 'doubleDeck' | 'oneDeck';

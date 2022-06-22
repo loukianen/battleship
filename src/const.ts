@@ -1,4 +1,4 @@
-import { ShipOrientation } from "./types";
+import { ShipClassType, ShipOrientation } from "./types";
 
 export enum GameErrorMessages {
   ShapeAny = 'An algorithm for checking the field with not line ships is not created yet',
@@ -25,6 +25,8 @@ export enum ShootResults {
   Started = 'started',
   Won = 'won',
 }
+
+export const ShipMainClasses : ShipClassType[] = ['fourDeck', 'threeDeck', 'doubleDeck', 'oneDeck'];
 
 export const ShipOrientations: ShipOrientation[] = ['east', 'north', 'west', 'south'];
 
