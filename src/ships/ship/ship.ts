@@ -11,7 +11,7 @@ type OrientationMappingType = {
 };
 
 export default class Ship {
-  id: string;
+  id: number;
   coords: Coords[];
   mainPoint: Coords | null;
   class: ShipClassType | null;
@@ -19,7 +19,7 @@ export default class Ship {
   orientation: ShipOrientation;
   orientationMapping: OrientationMappingType;
 
-  constructor(id: string) {
+  constructor(id: number) {
     this.id = id;
     this.coords = [];
     this.mainPoint = null;

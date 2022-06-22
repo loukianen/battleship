@@ -2,7 +2,7 @@ import Ship from '../ship/ship';
 import { Coords } from '../../types';
 
 export default class ThreeDeckLineShip extends Ship {
-  constructor(id: string) {
+  constructor(id: number) {
     super(id);
     this.class = 'threeDeck';
     this.orientationMapping = {
