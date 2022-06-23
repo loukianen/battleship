@@ -3,6 +3,7 @@ import isArray from 'lodash-ts/isArray';
 import isEmpty from 'lodash-ts/isEmpty';
 import isEqual from 'lodash-ts/isEqual';
 import { BattleFieldCell, Coords, Field, FieldType, ShipsList } from "../types";
+import { BattlefieldCellTypes } from '../const';
 
 const isArrayNotIncludesObject = <Type>(arr: Type[], object: Type) : boolean => arr.every((item) => !isEqual(item, object));
 
@@ -30,17 +31,16 @@ const getDifference = <Type>(arr1: Type[], arr2: Type[]) : Type[] => {
     }
   });
   const diff = uniq([...diff1, ...diff2]);
-
   return diff;
 };
 
-type GetPointAreaMappingProperty = 'with' | 'without' | 'corners';
 const pointAreaMapping = {
   with: (coords: Coords) : Coords[] => [...pointAreaMapping.without(coords), ...pointAreaMapping.corners(coords)],
   without: ({ x, y }: Coords) : Coords[] => {
     const res = [];
     res.push({ x, y: y - 1 });
     res.push({ x: x - 1, y });
+    res.push({ x, y });
     res.push({ x: x + 1, y });
     res.push({ x, y: y + 1 });
     return res;
@@ -49,11 +49,14 @@ const pointAreaMapping = {
     const res = [];
     res.push({ x: x - 1, y: y -1 });
     res.push({ x: x - 1, y: y + 1 });
+    res.push({ x, y });
     res.push({ x: x + 1, y: y - 1 });
     res.push({ x: x + 1, y: y + 1 });
     return res;
   },
 };
+
+type GetPointAreaMappingProperty = 'with' | 'without' | 'corners';
 
 const getPointsArea = (coords: Coords[], corners: GetPointAreaMappingProperty) : Coords[] => {
   const pointsAreas = coords.map((point) => pointAreaMapping[corners](point));
@@ -74,7 +77,6 @@ export const calcArea = (data: Coords[] | Coords, corners: GetPointAreaMappingPr
   }
   return area; 
 };
-
 
 export const generateField = (size: FieldType) : Field => {
   const fieldSize = Number(size);
@@ -106,15 +108,15 @@ export const isValidCoords = (coords: Coords | Coords[], minValue: number, maxVa
     .every(({ x, y }) => (x >= minValue && x <= maxValue && y >= minValue && y <= maxValue));
 };
 
-export const isValidShipCoords = (field: BattleFieldCell[][], shipCoords: Coords) => {
+export const isValidShipCoords = (field: BattleFieldCell[][], shipCoords: Coords | Coords[]) => {
   const coords = isArray(shipCoords) ? shipCoords : [shipCoords];
   const maxValue = field.length - 1;
   if (!isValidCoords(coords, 0, maxValue)) {
     return false;
   }
   return coords.every(({ x, y }) => {
-    const cellType = field[y][x].type;
-    return (cellType !== 'ship' && cellType !== 'area');
+    const cellType = field[x][y].type;
+    return cellType === BattlefieldCellTypes.Clear;
   });
 };
 

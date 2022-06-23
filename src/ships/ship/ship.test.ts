@@ -48,21 +48,11 @@ describe('Ship', () => {
     expect(ship.getClass()).toBeNull();
     expect(ship.getId()).toBe(id);
     expect(ship.getCoords()).toEqual([coords]);
+    expect(ship.getOrientationVariants().length).toBeGreaterThan(0);
   });
 
   describe('Function changeOrientation should set next or first value from posible values', () => {
-    it('with line ship', () => {
-      const lineShip = new Ship('3');
-      lineShip.setOrientation(LineShipOrientations[0]);
-
-      lineShip.changeOrientation();
-      expect(lineShip.orientation).toBe(LineShipOrientations[1]);
-
-      lineShip.changeOrientation();
-      expect(lineShip.orientation).toBe(LineShipOrientations[0]);
-    });
-
-    it('with other ships', () => {
+    it('with any ships', () => {
       const ship = new Ship(4);
       ship.shape = 'any';
       ship.setOrientation(ShipOrientations[1]);

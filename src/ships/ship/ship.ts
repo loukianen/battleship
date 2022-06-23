@@ -1,4 +1,4 @@
-import { LineShipOrientations, ShipOrientations } from '../../const';
+import { ShipOrientations } from '../../const';
 import { Coords, ShipClassType, ShipOrientation, ShipShape } from '../../types';
 
 const isValidMainPoint = (point: Coords) => {
@@ -46,6 +46,11 @@ export default class Ship {
     return this.class;
   }
 
+  getOrientationVariants() {
+    return  ShipOrientations
+      .filter((item) => Object.keys(this.orientationMapping).includes(item));
+  }
+
   calcCoords(mainPoint: Coords) : Coords[] {
     return this.orientationMapping[this.orientation](mainPoint);
   }
@@ -66,7 +71,7 @@ export default class Ship {
   }
 
   changeOrientation() {
-    const posibleOrientations = this.shape === 'line' ? LineShipOrientations : ShipOrientations;
+    const posibleOrientations : ShipOrientation[] = this.getOrientationVariants();
     const currentOrientationIndex = posibleOrientations.findIndex((el) => el === this.orientation);
     const nextOrientationIndex = currentOrientationIndex < posibleOrientations.length - 1
       ? currentOrientationIndex + 1 : 0;

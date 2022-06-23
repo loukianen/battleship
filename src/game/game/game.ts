@@ -1,7 +1,7 @@
 import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
 import { generateField, generateShipsList, getRandomElFromColl, getEnemy } from '../../services/utils';
-import { checkField } from '../../services/check-field';
+import checkField from '../../services/check-field';
 import { Coords, Field, FieldType, Human, Record, RecordText, Robot, ShipShape } from '../../types';
 import { GameErrorMessages, PlayerTypes, ShootResults } from '../../const';
 

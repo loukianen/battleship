@@ -45,6 +45,7 @@ export interface ShipInterface {
   setCoords: (mainPoint: Coords) => void;
   setOrientation: (orientation: ShipOrientation) => void;
   changeOrientation: () => void;
+  getOrientationVariants: () => ShipOrientation[];
 }
 
 export type ShipClassType = 'fourDeck' | 'threeDeck' | 'doubleDeck' | 'oneDeck';

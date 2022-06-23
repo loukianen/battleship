@@ -13,7 +13,7 @@ describe('OneDeckShip', () => {
     ship.setOrientation('east');
     expect(ship.calcCoords(mainPoint)).toEqual(expectedCoords);
 
-    ship.setOrientation('north');
+    ship.changeOrientation();
     expect(ship.calcCoords(mainPoint)).toEqual(expectedCoords);
   });
 });

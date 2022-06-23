@@ -1,5 +1,13 @@
 import { ShipClassType, ShipOrientation } from "./types";
 
+export enum BattlefieldCellTypes {
+  Clear = 'clear',
+  Ship = 'ship',
+  Area = 'area',
+  Killed = 'killed ship',
+  Shooted = 'shooted',
+}
+
 export enum GameErrorMessages {
   ShapeAny = 'An algorithm for checking the field with not line ships is not created yet',
   FieldType = 'Unknown field type',

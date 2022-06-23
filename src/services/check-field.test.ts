@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash-ts/cloneDeep';
-import { checkField } from './check-field';
+import checkField from './check-field';
 import { GameErrorMessages } from '../const';
 import { Field } from '../types';
 import { generateField } from './utils';
