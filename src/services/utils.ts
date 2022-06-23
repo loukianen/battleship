@@ -1,4 +1,80 @@
-import { Field, FieldType, ShipsList } from "../types";
+import flatten from 'lodash-ts/flatten';
+import isArray from 'lodash-ts/isArray';
+import isEmpty from 'lodash-ts/isEmpty';
+import isEqual from 'lodash-ts/isEqual';
+import { BattleFieldCell, Coords, Field, FieldType, ShipsList } from "../types";
+
+const isArrayNotIncludesObject = <Type>(arr: Type[], object: Type) : boolean => arr.every((item) => !isEqual(item, object));
+
+export const uniq = <Type>(arr: Type[]) : Type[] => {
+  const uniqItems : Type[] = [];
+  arr.forEach((item) => {
+    if (isArrayNotIncludesObject(uniqItems, item)) {
+      uniqItems.push(item);
+    }
+  });
+  return uniqItems;
+};
+
+const getDifference = <Type>(arr1: Type[], arr2: Type[]) : Type[] => {
+  const diff1 : Type[] = [];
+  arr1.forEach((item1: Type) => {
+    if (isArrayNotIncludesObject(arr2, item1)) {
+      diff1.push(item1);
+    }
+  });
+  const diff2 : Type[] = [];
+  arr2.forEach((item2: Type) => {
+    if (isArrayNotIncludesObject(arr1, item2)) {
+      diff2.push(item2);
+    }
+  });
+  const diff = uniq([...diff1, ...diff2]);
+
+  return diff;
+};
+
+type GetPointAreaMappingProperty = 'with' | 'without' | 'corners';
+const pointAreaMapping = {
+  with: (coords: Coords) : Coords[] => [...pointAreaMapping.without(coords), ...pointAreaMapping.corners(coords)],
+  without: ({ x, y }: Coords) : Coords[] => {
+    const res = [];
+    res.push({ x, y: y - 1 });
+    res.push({ x: x - 1, y });
+    res.push({ x: x + 1, y });
+    res.push({ x, y: y + 1 });
+    return res;
+  },
+  corners: ({ x, y }: Coords) : Coords[] => {
+    const res = [];
+    res.push({ x: x - 1, y: y -1 });
+    res.push({ x: x - 1, y: y + 1 });
+    res.push({ x: x + 1, y: y - 1 });
+    res.push({ x: x + 1, y: y + 1 });
+    return res;
+  },
+};
+
+const getPointsArea = (coords: Coords[], corners: GetPointAreaMappingProperty) : Coords[] => {
+  const pointsAreas = coords.map((point) => pointAreaMapping[corners](point));
+  const areaWithShipCoords = uniq(flatten(pointsAreas));
+  const area = getDifference(areaWithShipCoords, coords);
+  return area;
+}
+
+export const calcArea = (data: Coords[] | Coords, corners: GetPointAreaMappingProperty = 'with') => {
+  const coords = isArray(data) ? data : [data];
+  let area: Coords[];
+  if (corners === 'corners') {
+    const areaWithCorners = getPointsArea(coords, 'with');
+    const calculatedAreaWithoutCorners = getPointsArea(coords, 'without');
+    area = getDifference(areaWithCorners, calculatedAreaWithoutCorners);
+  } else {
+    area =  getPointsArea(coords, corners);
+  }
+  return area; 
+};
+
 
 export const generateField = (size: FieldType) : Field => {
   const fieldSize = Number(size);
@@ -20,6 +96,27 @@ const shipListMapping : { [index: string]: ShipsList} = {
 };
 
 export const generateShipsList = (size: FieldType) : ShipsList => shipListMapping[size];
+
+export const isValidCoords = (coords: Coords | Coords[], minValue: number, maxValue: number) => { // coords [{}, {}] or {}
+  if (isEmpty(coords)) {
+    return false;
+  }
+  const coordsList = isArray(coords) ? coords : [coords];
+  return coordsList
+    .every(({ x, y }) => (x >= minValue && x <= maxValue && y >= minValue && y <= maxValue));
+};
+
+export const isValidShipCoords = (field: BattleFieldCell[][], shipCoords: Coords) => {
+  const coords = isArray(shipCoords) ? shipCoords : [shipCoords];
+  const maxValue = field.length - 1;
+  if (!isValidCoords(coords, 0, maxValue)) {
+    return false;
+  }
+  return coords.every(({ x, y }) => {
+    const cellType = field[y][x].type;
+    return (cellType !== 'ship' && cellType !== 'area');
+  });
+};
 
 export const uniqueId = Object.assign(
   () => {

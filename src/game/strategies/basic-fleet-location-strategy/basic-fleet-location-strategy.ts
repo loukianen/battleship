@@ -1,7 +1,7 @@
 import flatten from 'lodash-ts/flatten';
 import getAvailableShips from '../../../ships/get-available-ships';
-import { getRandomElFromColl, uniqueId } from '../../../services/utils';
-import { Coords, Field, ShipInterface, ShipShape, ShipsList } from '../../../types';
+import { isValidShipCoords, getRandomElFromColl, uniqueId } from '../../../services/utils';
+import { BattleFieldCell, Coords, Field, ShipInterface, ShipShape, ShipsList } from '../../../types';
 import { ShipMainClasses } from '../../../const';
 import Ship from '../../../ships/ship/ship';
 
@@ -26,8 +26,6 @@ const getClearCells = (battlefield: BattleFieldCell[][]) => {
   });
   return clearCells;
 };
-
-type BattleFieldCell = { id: number, type: string, shipId: number | null, coords: Coords };
 
 class BasicFleetLocationStrategy {
   battlefield: BattleFieldCell[][];

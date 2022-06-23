@@ -1,3 +1,5 @@
+export type BattleFieldCell = { id: number, type: string, shipId: number | null, coords: Coords };
+
 export type Coords = { x: number, y: number };
 
 export type Field = Array<Array<number>>; // empty cell - 0, ship - any number > 0 as ship id;
