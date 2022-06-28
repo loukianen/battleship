@@ -97,7 +97,29 @@ const shipListMapping : { [index: string]: ShipsList} = {
   10: { oneDeck: 4, doubleDeck: 3, threeDeck: 2, fourDeck:1 },
 };
 
+export const createBattlefield = (field: Field) => field.map((row, x) => row.map((val, y) => {
+  const id = uniqueId();
+  const type = BattlefieldCellTypes.Clear;
+  const shipId = null;
+  const coords: Coords = { x, y };
+  return { id, coords, type, shipId };
+}));
+
 export const generateShipsList = (size: FieldType) : ShipsList => shipListMapping[size];
+
+export const getClearCells = (battlefield: BattleFieldCell[][]) => {
+  const clearCells : { ids: Array<number>, cells: { [i: string | number]: BattleFieldCell } } = { ids: [], cells: {} };
+  battlefield.forEach((row) => {
+    row.forEach((cell) => {
+      if (cell.type === BattlefieldCellTypes.Clear) {
+        const cellId = cell.id;
+        clearCells.ids.push(cellId);
+        clearCells.cells[cellId] = cell;
+      }
+    });
+  });
+  return clearCells;
+};
 
 export const isValidCoords = (coords: Coords | Coords[], minValue: number, maxValue: number) => { // coords [{}, {}] or {}
   if (isEmpty(coords)) {

@@ -1,31 +1,9 @@
 import flatten from 'lodash-ts/flatten';
 import getAvailableShips from '../../../ships/get-available-ships';
-import { isValidShipCoords, getRandomElFromColl, uniqueId, calcArea, isValidCoords } from '../../../services/utils';
+import {calcArea, createBattlefield, getClearCells, getRandomElFromColl, isValidCoords, isValidShipCoords, uniqueId } from '../../../services/utils';
 import { BattleFieldCell, Coords, Field, ShipInterface, ShipShape, ShipsList } from '../../../types';
 import { BattlefieldCellTypes, ShipMainClasses } from '../../../const';
 import Ship from '../../../ships/ship/ship';
-
-const createBattlefield = (field: Field) => field.map((row, x) => row.map((val, y) => {
-  const id = uniqueId();
-  const type = BattlefieldCellTypes.Clear;
-  const shipId = null;
-  const coords: Coords = { x, y };
-  return { id, coords, type, shipId };
-}));
-
-const getClearCells = (battlefield: BattleFieldCell[][]) => {
-  const clearCells : { ids: Array<number>, cells: { [i: string | number]: BattleFieldCell } } = { ids: [], cells: {} };
-  battlefield.forEach((row) => {
-    row.forEach((cell) => {
-      if (cell.type === BattlefieldCellTypes.Clear) {
-        const cellId = cell.id;
-        clearCells.ids.push(cellId);
-        clearCells.cells[cellId] = cell;
-      }
-    });
-  });
-  return clearCells;
-};
 
 const normalizeBattlefieldForGame = (battlefield: BattleFieldCell[][]) : Field => battlefield
   .map((row) => row.map((cell) => cell.shipId ?? 0));

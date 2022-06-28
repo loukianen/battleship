@@ -1,21 +1,23 @@
 import { PlayerTypes } from '../../const';
-import { Field, Robot } from '../../types';
+import { BattleFieldCell, Coords, Robot, ShipShape, ShipsList } from '../../types';
 
 export default class FakeRobot implements Robot {
   id;
   name;
   type: PlayerTypes.Robot;
-  field: Field;
-  fleet: [];
-  enemyField: Field;
+  enemyShipsList: ShipsList;
+  enemyField: BattleFieldCell[][];
+  woundedEnemyShip: Coords[];
+  shipShape: ShipShape;
 
   constructor() {
     this.id = 'fakeRobot';
     this.name = 'fake robot';
     this.type = PlayerTypes.Robot;
-    this.field = [];
-    this.fleet = [];
+    this.enemyShipsList = {};
     this.enemyField = [];
+    this.woundedEnemyShip = [];
+    this.shipShape = 'line';
   }
 
   shoot() {
@@ -24,7 +26,7 @@ export default class FakeRobot implements Robot {
 
   handleShoot() {}
 
-  makeField() : Array<Array<number>> {
+  generateBattlefield() : Array<Array<number>> {
     return [];
   }
 }

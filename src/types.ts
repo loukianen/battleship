@@ -22,12 +22,13 @@ type OrientationMappingType = {
 
 export interface Robot extends Player {
   type: 'robot',
-  field: Field;
-  fleet: [],
-  enemyField: Field;
+  enemyShipsList: ShipsList,
+  enemyField: BattleFieldCell[][];
+  woundedEnemyShip: Coords[];
+  shipShape: ShipShape;
   shoot: () => Coords,
   handleShoot: (record: Record) => void,
-  makeField: (fieldType: FieldType, shipsShapeType: ShipShape) => Field,
+  generateBattlefield: (field: Field, shipList: ShipsList, shipsShapeType: ShipShape) => Field,
 }
 
 export interface ShipInterface {

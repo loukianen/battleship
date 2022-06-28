@@ -13,6 +13,7 @@ describe('Game', () => {
    expect(game.fields).toEqual([]);
    expect(game.fieldType).toBe('10');
    expect(game.shipShape).toBe('line');
+   expect(game.shipList).toEqual({});
    expect(game.activePlayer).toBe(0);
   });
 
@@ -114,7 +115,7 @@ describe('Game', () => {
     const robotField = [[0, 0, 1], [0, 0, 0], [0, 0, 0]];
     const userField = [[1, 0, 0], [0, 0, 0], [0, 0, 0]];
     const wrongField = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-    fakeRobot.makeField = () => robotField;
+    fakeRobot.generateBattlefield = () => robotField;
     const fieldType : FieldType = '3';
     const  mockCreatePlayer = createFakePlayer;
 
@@ -191,7 +192,7 @@ describe('Game', () => {
 
     const fakeRobot = new FakeRobot();
     fakeRobot.handleShoot = jest.fn();
-    fakeRobot.makeField = () => cloneDeep(field);
+    fakeRobot.generateBattlefield = () => cloneDeep(field);
 
     const createFakePlayer = (id: string) : Human | Robot => (
       id === 'user' ? new SinglePlayer() : fakeRobot
@@ -288,7 +289,7 @@ describe('Game', () => {
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
     ];
-    fakeRobot.makeField = () => field;
+    fakeRobot.generateBattlefield = () => field;
     const fieldType : FieldType = '5';
     const  mockCreatePlayer = createFakePlayer;
     const gameOptions = { players: ['fakeRobot', 'fakeRobot'], fieldType, mockCreatePlayer };

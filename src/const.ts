@@ -1,4 +1,4 @@
-import { ShipClassType, ShipOrientation } from "./types";
+import { FieldType, ShipClassType, ShipOrientation } from "./types";
 
 export enum BattlefieldCellTypes {
   Clear = 'clear',
@@ -40,4 +40,4 @@ export const ShipOrientations: ShipOrientation[] = ['east', 'north', 'west', 'so
 
 export const LineShipOrientations: ShipOrientation[] =  ['east', 'north'];
 
-export const fieldTypes = ['3', '5', '7', '10'];
+export const fieldTypes: FieldType[] = ['3', '5', '7', '10'];

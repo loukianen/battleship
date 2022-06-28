@@ -1,8 +1,9 @@
+import cloneDeep from 'lodash-ts/cloneDeep';
 import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
 import { generateField, generateShipsList, getRandomElFromColl, getEnemy } from '../../services/utils';
 import checkField from '../../services/check-field';
-import { Coords, Field, FieldType, Human, Record, RecordText, Robot, ShipShape } from '../../types';
+import { Coords, Field, FieldType, Human, Record, RecordText, Robot, ShipsList, ShipShape } from '../../types';
 import { GameErrorMessages, PlayerTypes, ShootResults } from '../../const';
 
 const getHittingResult = (field: Field, target: number) : RecordText => {
@@ -42,6 +43,7 @@ class Game {
   activePlayer: number;
   fieldType: FieldType;
   shipShape: ShipShape;
+  shipList: ShipsList;
 
   constructor() {
     this.players = [];
@@ -49,6 +51,7 @@ class Game {
     this.activePlayer = 0;
     this.fieldType = '10';
     this.shipShape = 'line';
+    this.shipList = {};
   }
 
   getActivePlayer() {
@@ -147,7 +150,7 @@ class Game {
       }
       this.players.forEach((player, index) => {
         if (player.type === PlayerTypes.Robot) {
-          this.fields[index] = player.makeField(this.fieldType, this.shipShape);
+          this.fields[index] = player.generateBattlefield(generateField(this.fieldType), cloneDeep(this.shipList), this.shipShape);
         }
       });
       this.checkFields();
@@ -177,8 +180,10 @@ class Game {
       this.shipShape = shipShapeType;
     }
 
+    this.shipList = generateShipsList(this.fieldType);
+
     return this.players[0].type === PlayerTypes.Human
-      ? { field: generateField(this.fieldType), fleet: generateShipsList(this.fieldType) }
+      ? { field: generateField(this.fieldType), fleet: cloneDeep(this.shipList) }
       : mockStartBattle ? mockStartBattle() : this.startBattle();
   }
 };

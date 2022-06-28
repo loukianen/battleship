@@ -1,22 +1,25 @@
-import { generateField } from '../../../services/utils';
-import { Field, FieldType, Record, Robot, ShipShape } from '../../../types';
+import BasicFleetLocationStrategy from '../../strategies/basic-fleet-location-strategy/basic-fleet-location-strategy';
+import { createBattlefield } from '../../../services/utils';
+import { BattleFieldCell, Coords, Field, Record, Robot, ShipShape, ShipsList } from '../../../types';
 import { PlayerTypes } from '../../../const';
 
 export default class JackSparrow implements Robot {
   id;
   name;
   type: PlayerTypes.Robot;
-  field: Field;
-  fleet: [];
-  enemyField: Field;
+  enemyShipsList: ShipsList;
+  enemyField: BattleFieldCell[][];
+  shipShape: ShipShape;
+  woundedEnemyShip: Coords[];
 
   constructor() {
     this.id = 'jack';
     this.name = 'Jack Sparrow';
     this.type = PlayerTypes.Robot;
-    this.field = [];
-    this.fleet = [];
+    this.enemyShipsList = {};
     this.enemyField = [];
+    this.shipShape = 'line';
+    this.woundedEnemyShip = [];
   }
 
   shoot() {
@@ -25,9 +28,18 @@ export default class JackSparrow implements Robot {
 
   handleShoot(record: Record) {}
 
-  makeField(fieldType: FieldType, shipsShapeType: ShipShape) {
-    this.field = generateField(fieldType);
-    this.enemyField = generateField(fieldType);
-    return [];
+  generateBattlefield(field: Field, shipList: ShipsList, shipsShapeType?: ShipShape) {
+    if (shipsShapeType) {
+      this.shipShape = shipsShapeType;
+    }
+    this.enemyShipsList = shipList;
+    this.enemyField = createBattlefield(field);
+
+    const fleetLocationStrategy = this.getFleetLocationStrategy();
+    return fleetLocationStrategy.getBattleField(field, shipList, this.shipShape);
+  }
+
+  getFleetLocationStrategy() {
+    return new BasicFleetLocationStrategy();
   }
 };
