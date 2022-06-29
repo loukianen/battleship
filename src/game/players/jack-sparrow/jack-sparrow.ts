@@ -1,8 +1,8 @@
 import BasicFleetLocationStrategy from '../../strategies/basic-fleet-location-strategy/basic-fleet-location-strategy';
 import ShootingOnClearCellsStrategy from '../../strategies/shooting-on-clear-cells-strategy/shooting-on-clear-cells-strategy';
-import { createBattlefield } from '../../../services/utils';
+import { calcArea, createBattlefield, isValidCoords } from '../../../services/utils';
 import { BattleFieldCell, Coords, Field, Record, Robot, ShipShape, ShipsList } from '../../../types';
-import { GameErrorMessages, PlayerTypes } from '../../../const';
+import { BattlefieldCellTypes, GameErrorMessages, PlayerTypes, ShootResults } from '../../../const';
 
 export default class JackSparrow implements Robot {
   id;
@@ -23,7 +23,35 @@ export default class JackSparrow implements Robot {
     this.woundedEnemyShip = [];
   }
 
-  handleShoot(record: Record) {}
+  processHit(coords: Coords) {
+    const { x, y } = coords;
+    this.enemyField[x][y].type = BattlefieldCellTypes.Killed;
+    this.woundedEnemyShip.push(coords);
+  }
+
+  makrCellAsShooted(coords: Coords) {
+    const { x, y } = coords;
+    this.enemyField[x][y].type = BattlefieldCellTypes.Shooted;
+  }
+
+  handleShoot(record: Record) {
+    const [, coords, message] = record;
+    if (!coords) return;
+    if (message === ShootResults.OffTarget) {
+      this.makrCellAsShooted(coords);
+    }
+    if (message === ShootResults.Wounded) {
+      this.processHit(coords);
+    }
+    if (message === ShootResults.Killed) {
+      this.processHit(coords);
+      const killedShipArea = calcArea(this.woundedEnemyShip)
+        .filter((item) => isValidCoords(item, 0, this.enemyField.length - 1));
+      killedShipArea.forEach((item) => {
+        this.makrCellAsShooted(item);
+      });
+    }
+  }
 
   generateBattlefield(field: Field, shipList: ShipsList, shipsShapeType?: ShipShape) {
     if (shipsShapeType) {
