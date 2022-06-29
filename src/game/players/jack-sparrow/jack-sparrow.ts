@@ -1,7 +1,8 @@
 import BasicFleetLocationStrategy from '../../strategies/basic-fleet-location-strategy/basic-fleet-location-strategy';
+import ShootingOnClearCellsStrategy from '../../strategies/shooting-on-clear-cells-strategy/shooting-on-clear-cells-strategy';
 import { createBattlefield } from '../../../services/utils';
 import { BattleFieldCell, Coords, Field, Record, Robot, ShipShape, ShipsList } from '../../../types';
-import { PlayerTypes } from '../../../const';
+import { GameErrorMessages, PlayerTypes } from '../../../const';
 
 export default class JackSparrow implements Robot {
   id;
@@ -22,10 +23,6 @@ export default class JackSparrow implements Robot {
     this.woundedEnemyShip = [];
   }
 
-  shoot() {
-    return { x: 0, y: 0 };
-  }
-
   handleShoot(record: Record) {}
 
   generateBattlefield(field: Field, shipList: ShipsList, shipsShapeType?: ShipShape) {
@@ -41,5 +38,19 @@ export default class JackSparrow implements Robot {
 
   getFleetLocationStrategy() {
     return new BasicFleetLocationStrategy();
+  }
+
+  getStrategy() {
+    const currentStrategy = new ShootingOnClearCellsStrategy(this.enemyField, this.woundedEnemyShip, this.shipShape);
+    return currentStrategy;
+  }
+
+  shoot() : Coords {
+    const strategy = this.getStrategy();
+    const shoot = strategy.getShoot();
+    if (!shoot) {
+      throw new Error(GameErrorMessages.WrongShoot);
+    }
+    return shoot;
   }
 };

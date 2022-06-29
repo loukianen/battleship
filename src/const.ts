@@ -19,11 +19,17 @@ export enum GameErrorMessages {
   WrongCoords = 'Wrong coords recieved',
   WrongPlayer = 'Unknown player id',
   WrongSecondPlayer = 'Second player should be robot',
+  WrongShoot = 'Did not menage to recieve a correct shoot',
 }
 
 export enum PlayerTypes {
   Human = 'human',
   Robot = 'robot',
+}
+
+export enum ShipShapes {
+  Any = 'any',
+  Line = 'line',
 }
 
 export enum ShootResults {
