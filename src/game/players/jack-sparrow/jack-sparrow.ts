@@ -50,6 +50,7 @@ export default class JackSparrow implements Robot {
       killedShipArea.forEach((item) => {
         this.makrCellAsShooted(item);
       });
+      this.woundedEnemyShip = [];
     }
   }
 
