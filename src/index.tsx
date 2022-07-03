@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import App from './components/app/app';
 import store from './store/store';
+import './locales/i18n';
 // import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
