@@ -6,7 +6,7 @@ import { GameErrorMessages, fieldTypes } from '../const';
 import { Field, FieldType, ShipsList, ShipShape, Coords, ShipClassType } from "../types";
 
 const checkFieldSize = (field: Field) => {
-  const fieldType = String(field.length);
+  const fieldType = String(field.length) as FieldType;
 
   if (!fieldTypes.includes(fieldType)) {
     throw new Error(GameErrorMessages.FieldType);
