@@ -1,3 +1,7 @@
+import store from './store/store';
+
+export type AppDispatch = typeof store.dispatch;
+
 export type BattleFieldCell = { id: number, type: string, shipId: number | null, coords: Coords };
 
 export type Coords = { x: number, y: number };
@@ -64,6 +68,8 @@ export type Shoot = {
   playerId: number,
   coords: Coords,
 };
+
+export type State = ReturnType<typeof store.getState>;
 
 export type Record = [number, Coords | null, RecordText];
 

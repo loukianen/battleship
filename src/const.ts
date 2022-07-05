@@ -24,6 +24,7 @@ export enum GameErrorMessages {
 
 export enum NameSpace {
   ActivePlayer = 'ACTIVE_PLAYER',
+  AvailablePlayers = 'AVAILABLE_PLAYERS',
   Billboard = 'BILLBOARD',
   Fields = 'FIELDS',
   Fleet = 'FLEET',

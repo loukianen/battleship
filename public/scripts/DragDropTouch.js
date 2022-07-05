@@ -135,7 +135,7 @@ var DragDropTouch;
             this._lastClick = 0;
             // enforce singleton pattern
             if (DragDropTouch._instance) {
-                throw 'DragDropTouch instance already created.';
+                throw new Error('DragDropTouch instance already created.');
             }
             // listen to touch events
             if ('ontouchstart' in document) {
@@ -276,7 +276,7 @@ var DragDropTouch;
         // get the element at a given touch event
         DragDropTouch.prototype._getTarget = function (e) {
             var pt = this._getPoint(e), el = document.elementFromPoint(pt.x, pt.y);
-            while (el && getComputedStyle(el).pointerEvents == 'none') {
+            while (el && getComputedStyle(el).pointerEvents === 'none') {
                 el = el.parentElement;
             }
             return el;

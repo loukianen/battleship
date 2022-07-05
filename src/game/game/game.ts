@@ -5,7 +5,6 @@ import { generateField, generateShipsList, getRandomElFromColl, getEnemy } from 
 import checkField from '../../services/check-field';
 import { Coords, Field, FieldType, Human, Record, RecordText, Robot, ShipsList, ShipShape, PlayersDataType } from '../../types';
 import { GameErrorMessages, PlayerTypes, ShootResults } from '../../const';
-import { stringify } from 'querystring';
 
 const getHittingResult = (field: Field, target: number) : RecordText => {
   let isResultWin = true;
