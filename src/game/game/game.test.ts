@@ -352,4 +352,18 @@ describe('Game', () => {
       expect(robot2.handleShoot).toBeCalledTimes(8);
     });
   });
+
+  it('getAvailablePlayers() should return correct data', () => {
+    game.setDefaultOptions();
+    const correctPlayerData = { id: expect.any(String), name: expect.any(String) };
+    const players = game.getAvailablePlayers();
+
+    expect(players).toMatchObject({
+      user: correctPlayerData,
+      robots: expect.any(Array),
+    });
+    expect(players.robots).toContainEqual(correctPlayerData);
+
+    game.setDefaultOptions();
+  });
 });

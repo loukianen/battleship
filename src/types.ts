@@ -12,6 +12,9 @@ export interface Player {
   type: 'human' | 'robot',
 }
 
+export type PlayerDataType = Pick<Player, 'id' | 'name'> | {};
+export type PlayersDataType = { user: PlayerDataType, robots: PlayerDataType[] };
+
 export interface Human extends Player {
   type: 'human',
 }

@@ -3,8 +3,9 @@ import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
 import { generateField, generateShipsList, getRandomElFromColl, getEnemy } from '../../services/utils';
 import checkField from '../../services/check-field';
-import { Coords, Field, FieldType, Human, Record, RecordText, Robot, ShipsList, ShipShape } from '../../types';
+import { Coords, Field, FieldType, Human, Record, RecordText, Robot, ShipsList, ShipShape, PlayersDataType } from '../../types';
 import { GameErrorMessages, PlayerTypes, ShootResults } from '../../const';
+import { stringify } from 'querystring';
 
 const getHittingResult = (field: Field, target: number) : RecordText => {
   let isResultWin = true;
@@ -37,6 +38,21 @@ const createPlayer = (id: string) => {
   return players[id]();
 };
 
+const getPlayersData = () => {
+  const allPlayers : Array<Human | Robot> = Object.keys(players).map((nickname) => players[nickname]());
+  const playersData = allPlayers.reduce((acc, player) => {
+    const { id, name, type } = player;
+    if (id === 'user') {
+      acc.user = { id, name };
+    }
+    if (type === PlayerTypes.Robot) {
+      acc.robots = [...acc.robots, { id, name }];
+    }
+    return acc;
+  }, { user: {}, robots: [] } as PlayersDataType);
+  return playersData;
+};
+
 class Game {
   players: Array<Human | Robot>; // first player can be Human or Robot, second only Robot
   fields: Field[];
@@ -56,6 +72,10 @@ class Game {
 
   getActivePlayer() {
     return this.activePlayer;
+  }
+
+  getAvailablePlayers() {
+    return getPlayersData();
   }
 
   handleRecord(record : Record) {

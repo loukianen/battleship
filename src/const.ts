@@ -22,6 +22,20 @@ export enum GameErrorMessages {
   WrongShoot = 'Did not menage to recieve a correct shoot',
 }
 
+export enum NameSpace {
+  ActivePlayer = 'ACTIVE_PLAYER',
+  Billboard = 'BILLBOARD',
+  Fields = 'FIELDS',
+  Fleet = 'FLEET',
+  GameOptions = 'GAME_OPTIONS',
+  GameState = 'GAME_STATE',
+  Language = 'LANGUAGE',
+  Log = 'LOG',
+  Players = 'PLAYERS',
+  Score = 'SCORE',
+  ShipInMove = 'SHIP_IN_MOVE',
+}
+
 export enum PlayerTypes {
   Human = 'human',
   Robot = 'robot',
