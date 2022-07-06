@@ -16,6 +16,8 @@ export interface Player {
   type: 'human' | 'robot',
 }
 
+export type Language = 'ru' | 'en';
+
 export type PlayerDataType = Pick<Player, 'id' | 'name'> | {};
 export type PlayersDataType = { user: PlayerDataType, robots: PlayerDataType[] };
 

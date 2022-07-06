@@ -5,7 +5,7 @@ import './nav.sass';
 
 const Nav = () => {
   return(
-    <div className="btn-group nav flex-column-reverse flex-md-row justify-content-end p-2" role="toolbar" aria-label="Main menu">
+    <div className="d-flex flex-column-reverse flex-md-row p-2 justify-content-end" role="toolbar" aria-label="Main menu">
       <Start />
       <Options />
       <Language />

@@ -1,4 +1,11 @@
-@media (min-width: 992px)
+button:active, button:focus
+  outline: none !important
+
+button::-moz-focus-inner
+  border: 0 !important
+
+
+  @media (min-width: 992px)
   .container
     max-width: 960px
 
@@ -10,3 +17,5 @@
   .container
     max-width: 960px
 
+:root
+  --bs-position: end

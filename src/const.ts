@@ -30,7 +30,6 @@ export enum NameSpace {
   Fleet = 'FLEET',
   GameOptions = 'GAME_OPTIONS',
   GameState = 'GAME_STATE',
-  Language = 'LANGUAGE',
   Log = 'LOG',
   Players = 'PLAYERS',
   Score = 'SCORE',

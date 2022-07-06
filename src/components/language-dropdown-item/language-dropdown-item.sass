@@ -1,0 +1,22 @@
+@use '../nav/nav'
+
+.dropdown-item__lang
+  padding-left: 0
+  padding-right: 0
+
+.flag
+  width: 25px
+  height: 20px
+  margin: 0 5px
+
+.lang-menu-button
+  @include nav.nav-button
+  border: none
+  margin: 0
+  padding: 5px 0
+  display: block
+  width: 100%
+  text-align: start
+
+  &:active
+    outline: none !important

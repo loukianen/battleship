@@ -1,6 +1,6 @@
 @use '../variables' as *
 
-.nav-btn
+@mixin nav-button
   color: $ship-border
 
   &:hover
@@ -10,3 +10,6 @@
 
   &:focus
     border: 0.1vw solid $ship-border
+
+.nav-btn
+  @include nav-button
