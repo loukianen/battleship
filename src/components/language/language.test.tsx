@@ -1,51 +1,32 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import '../../locales/i18n';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { configureStore } from '@reduxjs/toolkit';
-import reducer from '../../store/root-reducer';
-import { Provider } from 'react-redux';
-import App from '../app/app';
+import Language from '../language/language';
 
-xdescribe('Language', () => {
-  const store = configureStore({reducer});
+describe('Language', () => {
+  it('the "language" button should toggle  "show" class in the dropdown menu element', () => {
+    render(<Language />);
 
-  it('sould render the menu with two language buttons after click and hide the menu after another click', () => {
-    render(
-      <Provider store={store}>
-        <App />
-      </Provider>,
-    );
+    const languageMenuButton = screen.getByTestId('languageButton');
+    const languageMenu = screen.getByTestId('languageMenu');
+    expect(languageMenuButton).toBeInTheDocument();
+    expect(languageMenu.className).not.toContain('show');
 
-    // const languageMenuButton = screen.getByTestId('languageButton');
-    // expect(languageMenuButton).toBeInTheDocument();
+    userEvent.click(languageMenuButton);
+    expect(languageMenu.className).toContain('show');
 
-    // userEvent.click(languageMenuButton);
-
-    expect(screen.getByTestId('ruButton')).toBeInTheDocument();
-    expect(screen.getByTestId('enButton')).toBeInTheDocument();
-    
-    // userEvent.click(languageMenuButton);
-    
-    // expect(screen.queryByTestId('ruButton')).not.toBeInTheDocument();
-    // expect(screen.queryByTestId('enButton')).not.toBeInTheDocument();
+    userEvent.click(languageMenuButton);
+    expect(languageMenu.className).not.toContain('show');
   });
 
-  it('should change current language after click on language buttons', async () => {
-    render(
-      <Provider store={store}>
-        <App />
-      </Provider>,
-    );
+  it('a click on a current language button should set this language at the app', () => {
+    render(<Language />);
 
     userEvent.click(screen.getByTestId('languageButton'));
+    userEvent.click(screen.getByTestId('ruButton'));
+    expect(screen.getByText('Язык')).toBeInTheDocument();
+    
     userEvent.click(screen.getByTestId('enButton'));
-
-    const englishHeader = await waitFor(() => screen.findByText('Battleship'));
-    expect(englishHeader).toBeInTheDocument();
-
-    // userEvent.click(screen.getByTestId('languageButton'));
-    // userEvent.click(screen.getByTestId('ruButton'));
-
-    // const russianHeader = await screen.findByText('Морской бой');
-    // expect(russianHeader).toBeInTheDocument();
+    expect(screen.getByText('Language')).toBeInTheDocument();
   });
 });

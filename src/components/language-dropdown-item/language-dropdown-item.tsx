@@ -1,13 +1,14 @@
 import './language-dropdown-item.sass';
 import { Language } from "../../types";
 import { MouseEvent } from 'react';
+import { uniqueId } from '../../services/utils';
 
 const getLanguage = (lang: Language) => {
   const mapping = {
     en: 'english',
     ru: 'russian',
   };
-  return mapping[lang];
+  return mapping[lang] ?? `${uniqueId()}wrong`;
 };
 
 type LangDropdownItemProps = {

@@ -42,9 +42,9 @@ const Language = () => {
   }, [menuGorizontalGap, menuVerticalGap]);
 
   return (
-    <div className="dropdown text-center" id={langDropdownId} role="menu">
+    <div className="dropdown text-center" id={langDropdownId} data-testid={langDropdownId} role="menu">
       <button type="button" className="btn btn-light nav-btn dropdown-toggle" id={ddLangMenuButtonId} data-toggle="dropdown" data-testid="languageButton" aria-expanded="false" onClick={handleDropButtonClick}>{t('ui.navLanguage')}</button>
-      <ul className={menuClass} style={{top: `${menuVerticalGap}px`, left: `${menuGorizontalGap}px`}} aria-labelledby={ddLangMenuButtonId}>
+      <ul className={menuClass} style={{top: `${menuVerticalGap}px`, left: `${menuGorizontalGap}px`}} aria-labelledby={ddLangMenuButtonId} data-testid="languageMenu">
         <LanguageDropdownItem lang="en" title={t('ui.englishLanguage')} onClick={handleLangButtonClick} />
         <LanguageDropdownItem lang="ru" title={t('ui.russianLanguage')} onClick={handleLangButtonClick} />
       </ul>

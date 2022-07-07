@@ -11,7 +11,6 @@ const Header = () => {
         <div className="header-main text-center display-2" id="mainHeader">{t('ui.mainHeader')}</div>
         <Nav />
       </div>
-     
     </header>
   );
 };

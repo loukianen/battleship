@@ -1,3 +1,4 @@
+import '../../locales/i18n';
 import {render, screen} from '@testing-library/react';
 import { configureStore } from '@reduxjs/toolkit';
 import reducer from '../../store/root-reducer';
