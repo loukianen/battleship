@@ -1,6 +1,7 @@
 @use '../nav/nav'
+@use '../variables' as *
 
-.dropdown-item__lang
+.dropdown-item_lang
   padding-left: 0
   padding-right: 0
 
@@ -11,12 +12,16 @@
 
 .lang-menu-button
   @include nav.nav-button
-  border: none
   margin: 0
   padding: 5px 0
   display: block
   width: 100%
   text-align: start
 
+  &__active
+    background-color: $ship-border
+    color: white
+
   &:active
-    outline: none !important
+    outline: 4px solid $main-color !important
+  

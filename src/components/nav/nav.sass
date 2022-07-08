@@ -2,14 +2,16 @@
 
 @mixin nav-button
   color: $ship-border
+  border: $button-border solid transparent
 
-  &:hover
+  &:hover, &:focus
+    color: $ship-border
     background-color: #e3f2fd
-    border: 0.1vw solid $main-color
+    border: $button-border solid $main-color
     border-radius: 2px
 
   &:focus
-    border: 0.1vw solid $ship-border
+    border: $button-border solid $ship-border
 
 .nav-btn
   @include nav-button

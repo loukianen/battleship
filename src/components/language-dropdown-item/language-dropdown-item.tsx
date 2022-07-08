@@ -14,15 +14,21 @@ const getLanguage = (lang: Language) => {
 type LangDropdownItemProps = {
   lang: Language,
   title: string,
+  isActive: boolean,
   onClick: (evt: MouseEvent) => void,
 };
 
 const LanguageDropdownItem = (props: LangDropdownItemProps) => {
-  const { lang, title, onClick } = props;
+  const { lang, title, onClick, isActive } = props;
   const language = getLanguage(lang);
+
+  const constPartClassName = 'lang-menu-button';
+  const activePartClassName = isActive ? ' lang-menu-button__active' : '';
+  const buttonClassName = `${constPartClassName}${activePartClassName}`;
+
   return (
-    <li className="dropdown-item dropdown-menu-end dropdown-item__lang align-items-stretch d-flex flex-row ">
-      <button className="lang-menu-button" id={`${language}Language`} data-testid={`${lang}Button`} lang={lang} onClick={onClick}>
+    <li className="dropdown-item dropdown-menu-end dropdown-item_lang align-items-stretch d-flex flex-row">
+      <button className={buttonClassName} id={`${language}Language`} data-testid={`${lang}Button`} lang={lang} onClick={onClick}>
       <img className="flag rounded" src={`img/${language}_fl.png`} alt={`${language} flag`} />
         {title}
       </button>
