@@ -1,5 +1,5 @@
 import Start from '../start/start'
-import Options from '../options/option';
+import Options from '../options/options';
 import Language from '../language/language';
 import './nav.sass';
 

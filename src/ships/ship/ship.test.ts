@@ -1,10 +1,10 @@
 import Ship from './ship';
-import { LineShipOrientations, ShipOrientations } from '../../const';
+import { ShipOrientations } from '../../const';
 
 describe('Ship', () => {
   it('Should have right default proprerties', () => {
     const ship = new Ship(1);
-    const defaultValues = { id: 1, coords: [], mainPoint: null, class: null, shape: 'line', orientation: 'east' };
+    const defaultValues = {id: 1, coords: [], mainPoint: null, class: null, shape: 'line', orientation: 'east' };
 
     expect(ship).toMatchObject(defaultValues);
   });
