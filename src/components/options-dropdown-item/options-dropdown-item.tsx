@@ -15,7 +15,7 @@ const OptionsDropdownItem = (props: OptionsDropdownItemProps) => {
     <li className="dropdown-item">
       <label htmlFor={selectId}>{label}</label>
       <select className="form-select dropdown-item" id={selectId} name={itemName} aria-label={ariaLabel} defaultValue={defaultValue} disabled={isOnlyOneValue}>
-        {values.map(({value, text}) => (<option key={value} className="lang-menu-button" value={value}>{text}</option>))}
+        {values.map(({value, text}) => (<option key={value} value={value}>{text}</option>))}
       </select>
     </li>
   );

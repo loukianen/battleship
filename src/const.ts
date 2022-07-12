@@ -22,6 +22,13 @@ export enum GameErrorMessages {
   WrongShoot = 'Did not menage to recieve a correct shoot',
 }
 
+export enum GameStates {
+  NotStarted = 'not started',
+  SettingFleet = 'setting fleet',
+  Started = 'started',
+  Finished = 'finished',
+}
+
 export enum NameSpace {
   ActivePlayer = 'ACTIVE_PLAYER',
   AvailablePlayers = 'AVAILABLE_PLAYERS',
