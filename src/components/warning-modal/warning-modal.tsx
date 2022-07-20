@@ -1,47 +1,33 @@
-import { useEffect } from "react";
+import './warning-modal.sass';
+import { uniqueId } from "../../services/utils";
 import { useTranslation } from "react-i18next";
-import { AlertKey } from '../../locales/types';
 
-type WarningModalType = { dispatch?: () => void };
+type WarningModalType = { dispatch: () => void , text: string | string[] };
 
 const WarningModal = (props: WarningModalType) => {
-  const { dispatch } = props;
+  const { dispatch, text } = props;
   const { t } = useTranslation();
 
+  const textRenderData = typeof text === 'string' ? [text] : text;
+
   const handleClick = () => {
-    if (dispatch) {
-      dispatch();
-    }
+    dispatch();
   };
-
-  const modalListener = (event: Event) => {
-    const mainTextElement = document.querySelector('.main-warning-text') as HTMLElement;
-    const button = event.target as HTMLElement;
-    const buttonData = button.getAttribute('data-bs-whatever') as AlertKey;
-    mainTextElement.textContent = t(`alert.${buttonData}`);
-  }
-
-  useEffect(() => {
-    const modal = document.getElementById('warningModal') as HTMLElement;
-    modal.addEventListener('show.bs.modal', modalListener);
-    return () => modal.removeEventListener('show.bs.modal', modalListener);
-  });
 
   return (
     <div className="modal" id="warningModal" tabIndex={-1}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Modal title</h5>
+            <h5 className="modal-title">{t('alert.warning')}</h5>
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div className="modal-body">
-            <p className="main-warning-text"></p>
-            <p>{t('alert.areYouSureToContinue')}</p>
+          <div className="modal-body text-center">
+            {textRenderData.map((item) => <p key={uniqueId()} className="main-warning-text">{item}</p>)}
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">{t('alert.cancel')}</button>
-            <button type="button" className="btn btn-primary" onClick={handleClick}>{t('alert.continue')}</button>
+            <button type="button" className="btn btn-main-color" data-bs-dismiss="modal" onClick={handleClick}>{t('alert.continue')}</button>
           </div>
         </div>
       </div>
