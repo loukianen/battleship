@@ -20,6 +20,8 @@ export type Language = 'ru' | 'en';
 
 export type PlayerDataType = Pick<Player, 'id' | 'name'> | {};
 export type PlayersDataType = { user: PlayerDataType, robots: PlayerDataType[] };
+export type OptionsDataType = { players: PlayerDataType[], fieldType: FieldType, shipType: ShipShape };
+export type OptionsPayloadDataType = { players?: PlayerDataType[], fieldType?: FieldType, shipType?: ShipShape };
 
 export interface Human extends Player {
   type: 'human',
