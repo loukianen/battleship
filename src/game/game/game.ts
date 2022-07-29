@@ -1,9 +1,10 @@
 import cloneDeep from 'lodash-ts/cloneDeep';
 import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
+import { initialAvailablePlayersState } from '../../store/available-players-process/available-players-process';
 import { generateField, generateShipsList, getRandomElFromColl, getEnemy } from '../../services/utils';
 import checkField from '../../services/check-field';
-import { Coords, Field, FieldType, Human, Record, RecordText, Robot, ShipsList, ShipShape, PlayersDataType } from '../../types';
+import { Coords, Field, FieldType, Human, Record, RecordText, Robot, ShipsList, ShipShape } from '../../types';
 import { GameErrorMessages, PlayerTypes, ShootResults } from '../../const';
 
 const getHittingResult = (field: Field, target: number) : RecordText => {
@@ -48,7 +49,7 @@ const getPlayersData = () => {
       acc.robots = [...acc.robots, { id, name }];
     }
     return acc;
-  }, { user: {}, robots: [] } as PlayersDataType);
+  }, cloneDeep(initialAvailablePlayersState));
   return playersData;
 };
 

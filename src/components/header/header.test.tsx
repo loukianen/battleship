@@ -1,16 +1,11 @@
 import '../../locales/i18n';
-import { Action } from 'redux';
 import {Provider} from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import { configureMockStore, MockStore } from '@jedmao/redux-mock-store';
 import Header from './header';
-import { PlayersDataType } from '../../types';
 import { NameSpace } from '../../const';
 
-const mockStore = configureMockStore<
-  {[NameSpace.ActivePlayer]: PlayersDataType},
-  Action
->();
+const mockStore = configureMockStore();
 
 const renderHeader = (store: MockStore) => {
   render (
@@ -21,7 +16,9 @@ const renderHeader = (store: MockStore) => {
 };
 
 describe('Header', () => {
-  const store = mockStore();
+  const store = mockStore({
+    [NameSpace.AvailablePlayers]: {user: {id: 'user', name: 'user'}, robots: [{id: 'jack', name: 'jack'}]},
+  });
   it('should render an image and a navbar', () => {
     renderHeader(store);
 

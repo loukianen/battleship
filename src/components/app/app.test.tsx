@@ -5,6 +5,7 @@ import reducer from '../../store/root-reducer';
 import { Provider } from 'react-redux';
 import App from './app';
 import connector from '../../services/connector-UI-game';
+import { initialAvailablePlayersState } from '../../store/available-players-process/available-players-process';
 import { NameSpace } from '../../const';
 
 describe('App', () => {
@@ -28,11 +29,10 @@ describe('App', () => {
   });
 
   it('should upgrade store', () => {
-    const initState = { user:{}, robots:[] };
     const players = connector.getPlayers();
 
     const stateBeforeAppRendering = store.getState();
-    expect(stateBeforeAppRendering[NameSpace.AvailablePlayers]).toEqual(initState);
+    expect(stateBeforeAppRendering[NameSpace.AvailablePlayers]).toEqual(initialAvailablePlayersState);
 
     render(
       <Provider store={store}>
