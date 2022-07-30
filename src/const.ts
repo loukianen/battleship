@@ -68,3 +68,5 @@ export const ShipOrientations: ShipOrientation[] = ['east', 'north', 'west', 'so
 export const LineShipOrientations: ShipOrientation[] =  ['east', 'north'];
 
 export const fieldTypes: FieldType[] = ['3', '5', '7', '10'];
+
+export const shipTypes: ShipShapes[] = [ShipShapes.Line];

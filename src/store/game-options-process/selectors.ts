@@ -1,8 +1,7 @@
 import { NameSpace } from '../../const';
 import { State } from '../../types';
 
-export const getFirstPlayer = (state: State) => (state[NameSpace.GameOptions].players[0]);
-export const getSecondPlayer = (state: State) => (state[NameSpace.GameOptions].players[1]);
+export const getPlayers = (state: State) => (state[NameSpace.GameOptions].players);
 
 export const getFieldType = (state: State) => (state[NameSpace.GameOptions].fieldType);
 

@@ -78,6 +78,7 @@ const en = {
     nahimov: 'Nahimov',
     shipType: 'Ship type',
     line: 'Only line',
+    any: 'Any forms',
     player1: 'An admiral of first fleet',
     player2: 'An admiral of second fleet',
   },

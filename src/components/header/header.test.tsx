@@ -3,6 +3,8 @@ import {Provider} from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import { configureMockStore, MockStore } from '@jedmao/redux-mock-store';
 import Header from './header';
+import { initialAvailablePlayersState } from '../../store/available-players-process/available-players-process';
+import { initialGameOptionsState } from '../../store/game-options-process/game-options-process';
 import { NameSpace } from '../../const';
 
 const mockStore = configureMockStore();
@@ -17,7 +19,8 @@ const renderHeader = (store: MockStore) => {
 
 describe('Header', () => {
   const store = mockStore({
-    [NameSpace.AvailablePlayers]: {user: {id: 'user', name: 'user'}, robots: [{id: 'jack', name: 'jack'}]},
+    [NameSpace.AvailablePlayers]: initialAvailablePlayersState,
+    [NameSpace.GameOptions]: initialGameOptionsState,
   });
   it('should render an image and a navbar', () => {
     renderHeader(store);

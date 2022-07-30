@@ -7,7 +7,7 @@ describe('OptionsDropdownItem', () => {
 
   it('should render correct element', () => {
     render(
-      <OptionsDropdownItem itemName={itemName} values={player1Values} defaultValue={player1Values[0].value}
+      <OptionsDropdownItem itemName={itemName} options={player1Values} curValue={player1Values[0].value}
       />);
   
     expect(screen.getByRole('combobox')).toBeInTheDocument();
