@@ -1,10 +1,9 @@
 import { MouseEvent } from 'react';
 import { useCallback } from 'react';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
 import { useTranslation } from 'react-i18next';
 import LanguageDropdownItem from '../language-dropdown-item/language-dropdown-item';
-
-const langDropdownId = 'langDropdown';
-const ddLangMenuButtonId = 'ddLangMenuButton';
 
 const Language = () => {
   const { t, i18n } = useTranslation();
@@ -17,13 +16,13 @@ const Language = () => {
   }, [i18n]);
 
   return (
-    <div className="dropdown text-center" id={langDropdownId} data-testid={langDropdownId} role="menu">
-      <button type="button" className="btn btn-light nav-btn dropdown-toggle" id={ddLangMenuButtonId} data-bs-toggle="dropdown" data-testid="languageButton" aria-expanded="false">{t('ui.navLanguage')}</button>
-      <ul className="dropdown-menu" aria-labelledby={ddLangMenuButtonId} data-testid="languageMenu">
-        <LanguageDropdownItem lang="en" title={t('ui.englishLanguage')} isActive={isLanguageActive('en')} onClick={handleLangButtonClick} />
-        <LanguageDropdownItem lang="ru" title={t('ui.russianLanguage')} isActive={isLanguageActive('ru')} onClick={handleLangButtonClick} />
-      </ul>
-    </div>
+    <Dropdown as={ButtonGroup} className="text-center" data-testid="langDropdown">
+      <Dropdown.Toggle className="btn-light nav-btn" data-testid="languageButton">{t('ui.navLanguage')}</Dropdown.Toggle>
+      <Dropdown.Menu data-testid="languageMenu">
+        <Dropdown.Item as={LanguageDropdownItem} lang="en" title={t('ui.englishLanguage')} isActive={isLanguageActive('en')} onClick={handleLangButtonClick} />
+        <Dropdown.Item as={LanguageDropdownItem} lang="ru" title={t('ui.russianLanguage')} isActive={isLanguageActive('ru')} onClick={handleLangButtonClick} />
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };
 
