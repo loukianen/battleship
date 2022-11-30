@@ -1,0 +1,24 @@
+@use '../variables' as *
+
+.dropdown-item
+  color: $ship-border
+
+  &:focus
+    color: $ship-border
+  
+  &:active
+    color: $ship-border
+    background-color: $bg-field
+
+  &_label
+    color: $ship-border
+
+  &_option
+    color: $ship-border
+
+  &_select, &_select:focus
+    font-weight: bold
+    color: $main-color
+
+  &_select:active, &_select:focus
+    outline: 4px solid $main-color !important
