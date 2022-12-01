@@ -18,6 +18,7 @@ const en = {
     areYouSureToContinue: 'Are you sure that you want to continue?',
     restart: 'The restart game will lose current data.',
     changeSetting: 'Changing setting will restart game and current data will lost',
+    haveYouFinishedPlacing: 'Have you finished placing your ships?',
     continue: 'Continue',
     cancel: 'Cancel',
   },

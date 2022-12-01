@@ -1,22 +1,17 @@
-import { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Button from 'react-bootstrap/Button';
+import WarningModal, { defaultWarningModalProps, WarningModalType } from '../warning-modal/warning-modal';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { getGameState } from '../../store/game-state-process/selectors';
 import { setGameState } from '../../store/game-state-process/game-state-process';
 import { GameStates } from '../../const';
 
-type StartPropsType = {
-  onSetWarningText: Dispatch<SetStateAction<string | string[]>>,
-  onSetApprovedAction: Dispatch<SetStateAction<() => void>>,
-};
-
-const Start = (props: StartPropsType) => {
+const Start = () => {
   const { t } = useTranslation();
-  const { onSetWarningText, onSetApprovedAction } = props;
   const dispatch = useAppDispatch();
   const gameState = useAppSelector(getGameState);
-
-  const isShouldShowWarning = gameState === GameStates.SettingFleet || gameState === GameStates.Started;
+  const [warningModalState, setWarningModalState] = useState(defaultWarningModalProps as WarningModalType);
 
   const getButtonLabel = () => {
     switch (gameState) {
@@ -28,17 +23,18 @@ const Start = (props: StartPropsType) => {
         return t('ui.newGame');
     };
   };
-
-  const showWarning = (text: string | string[], approvedAction: Dispatch<SetStateAction<() => void>>) => {
-    onSetWarningText(text);
-    onSetApprovedAction(() => approvedAction);
-  };
   
   const handleClick = () => {
     if (gameState === GameStates.SettingFleet) {
-      showWarning('Are you sure that the fleet arranged?', () => dispatch(setGameState(GameStates.Started)));
+      setWarningModalState({
+        text: t('alert.haveYouFinishedPlacing'),
+        dispatch: () => dispatch(setGameState(GameStates.Started)),
+        show: true });
     } else if(gameState === GameStates.Started) {
-      showWarning([t('alert.restart'), t('alert.areYouSureToContinue')], () => dispatch(setGameState(GameStates.SettingFleet)));
+      setWarningModalState({
+        text: [t('alert.restart'), t('alert.areYouSureToContinue')],
+        dispatch: () => dispatch(setGameState(GameStates.SettingFleet)),
+        show: true });
     } else {
       dispatch(setGameState(GameStates.SettingFleet));
     }
@@ -47,16 +43,10 @@ const Start = (props: StartPropsType) => {
   const buttonLabel = getButtonLabel();
 
   return (
-    <button
-      type="button"
-      className="btn btn-light nav-btn"
-      data-bs-toggle={isShouldShowWarning ? 'modal' : ''}
-      data-bs-target="#warningModal"
-      data-testid="startComponent"
-      onClick={handleClick}
-    >
-      {buttonLabel}
-    </button>
+    <>
+      <WarningModal { ...warningModalState } />
+      <Button className="btn btn-light nav-btn" data-testid="startComponent" onClick={handleClick}>{buttonLabel}</Button>
+    </>
   );
 };
 

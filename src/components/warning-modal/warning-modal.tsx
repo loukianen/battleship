@@ -1,38 +1,50 @@
 import './warning-modal.sass';
+import { useState, useEffect } from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { uniqueId } from "../../services/utils";
 import { useTranslation } from "react-i18next";
 
-type WarningModalType = { dispatch: () => void , text: string | string[] };
+export type WarningModalType = { dispatch: () => void, text: string | string[], show: boolean };
 
 const WarningModal = (props: WarningModalType) => {
   const { dispatch, text } = props;
   const { t } = useTranslation();
+  const [show, setShow] = useState(false);
 
+  useEffect(() => {
+    setShow(props.show);
+  }, [dispatch, text]);
+  
   const textRenderData = typeof text === 'string' ? [text] : text;
 
-  const handleClick = () => {
+  const handleClose = () => setShow(false);
+
+  const handleContinue= () => {
+    setShow(false);
     dispatch();
   };
 
   return (
-    <div className="modal" id="warningModal" tabIndex={-1}>
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">{t('alert.warning')}</h5>
-            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div className="modal-body text-center">
-            {textRenderData.map((item) => <p key={uniqueId()} className="main-warning-text">{item}</p>)}
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">{t('alert.cancel')}</button>
-            <button type="button" className="btn btn-main-color" data-bs-dismiss="modal" onClick={handleClick}>{t('alert.continue')}</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Modal className="modal" show={show} onHide={handleClose}>
+      <Modal.Dialog >
+        <Modal.Header closeButton>
+          <Modal.Title>{t('alert.warning')}</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {textRenderData.map((item) => <p key={uniqueId()} className="main-warning-text">{item}</p>)}
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button className="btn btn-secondary" onClick={handleClose}>{t('alert.cancel')}</Button>
+          <Button className="btn btn-main-color" onClick={handleContinue}>{t('alert.continue')}</Button>
+        </Modal.Footer>
+      </Modal.Dialog>
+    </Modal>
   )
 };
+
+export const defaultWarningModalProps = { dispatch: () => {}, text: '', show: false };
 
 export default WarningModal;
