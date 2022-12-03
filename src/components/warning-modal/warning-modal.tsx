@@ -14,7 +14,7 @@ const WarningModal = (props: WarningModalType) => {
 
   useEffect(() => {
     setShow(props.show);
-  }, [dispatch, text]);
+  }, [dispatch, text, props.show]);
   
   const textRenderData = typeof text === 'string' ? [text] : text;
 
