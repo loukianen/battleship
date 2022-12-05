@@ -26,7 +26,7 @@ describe('Nav', () => {
     renderComponent(store);
 
     expect(screen.getByTestId('startComponent')).toBeInTheDocument();
-    expect(screen.getByTestId('optionsComponent')).toBeInTheDocument();
+    expect(screen.getByTestId('optionsButton')).toBeInTheDocument();
     expect(screen.getByTestId('langDropdown')).toBeInTheDocument();
   });
 });

@@ -31,7 +31,6 @@ const Options = () => {
   const handleChooseOption = (evt: SyntheticEvent) => {
     const target = evt.target as HTMLSelectElement;
     const { name, value } = target;
-    console.log(evt.type, target.name, target.value);
     if (name === GameOptions.Player1 || name === GameOptions.Player2) {
       const newPlayer = [user, ...robots].filter(({id}) => id === value)[0];
       const players = name === GameOptions.Player1 ? [newPlayer, player2] : [player1, newPlayer];
@@ -50,7 +49,7 @@ const Options = () => {
 
   return (
     <Dropdown as={ButtonGroup} className="text-center" data-testid="optDropdown">
-      <Dropdown.Toggle className="btn-light nav-btn" data-testid="optionsComponent">{t('ui.navOptions')}</Dropdown.Toggle>
+      <Dropdown.Toggle className="btn-light nav-btn" data-testid="optionsButton">{t('ui.navOptions')}</Dropdown.Toggle>
       <Dropdown.Menu className="dropdown-menu" data-testid="optionsMenu" onChange={handleChooseOption}>
         <Dropdown.Item as={OptionsDropdownItem} itemName={GameOptions.Player1} options={player1Options} curValue={player1.id} />
         <Dropdown.Item as={OptionsDropdownItem} itemName={GameOptions.Player2} options={player2Options} curValue={player2.id} />

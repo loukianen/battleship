@@ -1,8 +1,16 @@
-const Battlefield = (props: {[i: string]: string}) => {
-  const { owner } = props;
+import { useTranslation } from 'react-i18next';
+import { getLocalizedUsername } from '../../services/utils';
+import { PlayerDataType } from '../../types';
+
+const Battlefield = (props: {owner: PlayerDataType, mark?: string}) => {
+  const { t, i18n } = useTranslation();
+  const { owner, mark } = props;
+  const markText = mark ? ` ${mark}` : '';
+  const ownerName = `${t('ui.admiral')} ${getLocalizedUsername(owner, i18n)}${markText}`;
+
   return(
-    <div className="field-container">
-      {owner}
+    <div className="text-center color-ship-border h3" id={`${owner.id}-fleet`}>
+      {ownerName}
     </div>
   );
 };

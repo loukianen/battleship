@@ -18,9 +18,9 @@ const OptionsDropdownItem = (props: OptionsDropdownItemProps) => {
 
   return (
     <Form.Group className="dropdown-item">
-      <Form.Label className="dropdown-item_label">{t(`optionsMenu.${menuKey}`)}</Form.Label>
+      <Form.Label className="dropdown-item_label" data-testid={`options-menu-label-${itemName}`}>{t(`optionsMenu.${menuKey}`)}</Form.Label>
       <Form.Select className="form-select dropdown-item dropdown-item_select" name={itemName} defaultValue={curValue} disabled={isOnlyOneValue}>
-      {options.map(({value, text}) =>  (<option className="dropdown-item_option" key={value} value={value}>{text}</option>))}
+      {options.map(({value, text}) =>  (<option className="dropdown-item_option" data-testid={`options-menu-${value}`} key={value} value={value}>{text}</option>))}
       </Form.Select>
     </Form.Group>
   );

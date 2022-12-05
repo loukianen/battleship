@@ -2,8 +2,7 @@ const ru = {
   ui: {
     altLogo: 'Военный корабль',
     mainHeader: 'Морской бой',
-    enemyFlot: 'Вражеский флот',
-    userFlot: 'Ваш флот',
+    admiral: "Адмирал",
     navStart: 'Начать игру',
     startBattle: 'Начать сражение',
     newGame: 'Новая игра',

@@ -2,8 +2,7 @@ const en = {
   ui: {
     altLogo: 'Warship',
     mainHeader: 'Battleship',
-    enemyFlot: "Enemy's fleet",
-    userFlot: 'Your fleet',
+    admiral: "Admiral",
     navStart: 'Start game',
     startBattle: 'Start battle',
     newGame: 'New game',
