@@ -1,8 +1,10 @@
+import i18n from '../locales/i18n';
 import flatten from 'lodash-ts/flatten';
 import isArray from 'lodash-ts/isArray';
 import isEmpty from 'lodash-ts/isEmpty';
 import isEqual from 'lodash-ts/isEqual';
-import { BattleFieldCell, Coords, Field, FieldType, ShipsList } from "../types";
+import { BattleFieldCell, Coords, Field, FieldType, PlayerDataType, ShipsList } from "../types";
+import { OptionsMenuKeys } from '../locales/types';
 import { BattlefieldCellTypes } from '../const';
 
 const isArrayNotIncludesObject = <Type>(arr: Type[], object: Type) : boolean => arr.every((item) => !isEqual(item, object));
@@ -54,6 +56,17 @@ const pointAreaMapping = {
     res.push({ x: x + 1, y: y + 1 });
     return res;
   },
+};
+
+type LocalisationFunc = typeof i18n;
+export const getLocalizedUsername = (user: PlayerDataType, lf: LocalisationFunc) => {
+  const { id, name } = user;
+  let text: string = name;
+  if (lf.exists(`optionsMenu.${id}`)) {
+    const menuKey = id as OptionsMenuKeys;
+    text = lf.t(`optionsMenu.${menuKey}`);
+  }
+  return text;
 };
 
 type GetPointAreaMappingProperty = 'with' | 'without' | 'corners';

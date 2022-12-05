@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LanguageDropdownItem from './language-dropdown-item';
 import { Language } from '../../types';
-import { act } from 'react-dom/test-utils';
 
 describe('LanguageDropdownItem', () => {
   const onClick = jest.fn();
@@ -24,9 +23,7 @@ describe('LanguageDropdownItem', () => {
     expect(button).toBeInTheDocument();
     expect(button.getAttribute('id')).toBe(buttonId);
 
-    act(() => {
       userEvent.click(button);
-    });
     expect(onClick).toBeCalledTimes(1);
   });
 });

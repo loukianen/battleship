@@ -22,6 +22,13 @@ export enum GameErrorMessages {
   WrongShoot = 'Did not menage to recieve a correct shoot',
 }
 
+export enum GameOptions {
+  Player1 = 'player1',
+  Player2 = 'player2',
+  FieldSize = 'fieldSize',
+  ShipType = 'shipType',
+}
+
 export enum GameStates {
   NotStarted = 'not started',
   SettingFleet = 'setting fleet',

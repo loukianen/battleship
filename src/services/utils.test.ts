@@ -1,6 +1,9 @@
 import isEqual from 'lodash-ts/isEqual';
-import { calcArea, generateField, uniqueId } from './utils';
-import { Field, FieldType } from '../types';
+import { calcArea, generateField, uniqueId, getLocalizedUsername } from './utils';
+import { Field, FieldType, PlayerDataType } from '../types';
+import i18n from 'i18next';
+import en from '../locales/en';
+import ru from '../locales/ru';
 
 describe('Function CalcArea', () => {
   const shipCoords = [{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }, { x: 2, y: 3 }];
@@ -62,4 +65,75 @@ it('UniqueId should return a new id after each calling', () => {
   expect(uniqueId()).toBe(1);
   expect(uniqueId()).toBe(2);
   expect(uniqueId()).toBe(3);
+});
+
+describe('getLocalizedUserName', () => {
+  describe('english', () => {
+    beforeAll(() => i18n.init({
+      debug: false,
+      fallbackLng: 'en',
+      interpolation: {
+        escapeValue: false, // not needed for react as it escapes by default
+      },
+      resources: {
+        en: {
+          translation: en,
+        },
+        ru: {
+          translation: ru,
+        },
+      },
+    }));
+
+    const testData: [PlayerDataType, string][] = [
+      [{ id: 'user', name: 'user' }, 'You'],
+      [{ id: 'ushakov', name: 'some name' }, 'Ushakov'],
+      [{ id: 'jack', name: 'some name' }, 'Jack Sparrow'],
+      [{ id: 'nahimov', name: 'some name' }, 'Nahimov'],
+    ];
+    it.each(testData)('should return english username %s', (player: PlayerDataType, originalName: string) => {
+      expect(getLocalizedUsername(player, i18n)).toBe(originalName);
+    });
+
+    it('should return original name if user id is unknown', () => {
+      const userName = 'Unknown Username'
+      const user = { id: 'unknown', name: userName };
+      expect(getLocalizedUsername(user, i18n)).toBe(userName);
+    });
+  });
+
+  describe('russian', () => {
+    beforeAll(() => i18n.init({
+      debug: false,
+      lng: 'ru',
+      interpolation: {
+        escapeValue: false, // not needed for react as it escapes by default
+      },
+      resources: {
+        en: {
+          translation: en,
+        },
+        ru: {
+          translation: ru,
+        },
+      },
+    }));
+
+    const testData: [PlayerDataType, string][] = [
+      [{ id: 'user', name: 'user' }, 'Вы'],
+      [{ id: 'ushakov', name: 'some name' }, 'Ушаков'],
+      [{ id: 'jack', name: 'some name' }, 'Джек Воробей'],
+      [{ id: 'nahimov', name: 'some name' }, 'Нахимов'],
+    ];
+
+    it.each(testData)('should return russian username %s', (player: PlayerDataType, originalName: string) => {
+      expect(getLocalizedUsername(player, i18n)).toBe(originalName);
+    });
+
+    it('should return original name if user id is unknown', () => {
+      const userName = 'Unknown Username'
+      const user = { id: 'unknown', name: userName };
+      expect(getLocalizedUsername(user, i18n)).toBe(userName);
+    });
+  });
 });

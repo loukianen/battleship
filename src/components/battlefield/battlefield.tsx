@@ -1,7 +1,8 @@
 const Battlefield = (props: {[i: string]: string}) => {
+  const { owner } = props;
   return(
     <div className="field-container">
-      
+      {owner}
     </div>
   );
 };
