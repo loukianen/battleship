@@ -2,31 +2,31 @@ import isEmpty from 'lodash-ts/isEmpty';
 import isEqual from 'lodash-ts/isEqual';
 import sum from 'lodash-ts/sum';
 import { generateShipsList } from './utils';
-import { GameErrorMessages, fieldTypes } from '../const';
-import { Field, FieldType, ShipsList, ShipShape, Coords, ShipClassType } from "../types";
+import { GameErrorMessage, fieldTypes, ShipClass, ShipShape } from '../const';
+import { Field, FieldType, ShipsList, Coords } from "../types";
 
 const checkFieldSize = (field: Field) => {
   const fieldType = String(field.length) as FieldType;
 
   if (!fieldTypes.includes(fieldType)) {
-    throw new Error(GameErrorMessages.FieldType);
+    throw new Error(GameErrorMessage.FieldType);
   }
 
   field.forEach((row) => {
     if (row.length !== field.length) {
-      throw new Error(GameErrorMessages.FieldType);
+      throw new Error(GameErrorMessage.FieldType);
     }
   });
 };
 
-const shipsClassMapping : { [index: number | string]: ShipClassType } = {
-  1: 'oneDeck', 2: 'doubleDeck', 3: 'threeDeck', 4: 'fourDeck',
+const shipsClassMapping : { [index: number | string]: ShipClass } = {
+  1: ShipClass.One, 2: ShipClass.Double, 3: ShipClass.Three, 4: ShipClass.Four,
 };
 
-const getShipOptions = (field: Field, point: Coords) : { shipClass: ShipClassType, ids: number[] } => {
+const getShipOptions = (field: Field, point: Coords) : { shipClass: ShipClass, ids: number[] } => {
   let deckCount = 1;
   const ids : number[] = [];
-  const iter = (currentPoint: Coords) : ShipClassType => {
+  const iter = (currentPoint: Coords) : ShipClass => {
     const { x, y } = currentPoint;
     ids.push(field[x][y]);
     let nextPoint = {};
@@ -67,7 +67,7 @@ const checkShips =  (field: Field) => {
 
         const hasShipPartsTheSameId = ids.every((id) => id === ids[0]);
         if (!hasShipPartsTheSameId) {
-          throw new Error(GameErrorMessages.ShipIds);
+          throw new Error(GameErrorMessage.ShipIds);
         }
         shipIds.add(ids[0]);
         if (shipsCount[shipClass]) {
@@ -81,12 +81,12 @@ const checkShips =  (field: Field) => {
 
   const isShipsCollectionCorrect = isEqual(shipsList, shipsCount);
   if (!isShipsCollectionCorrect) {
-    throw new Error(GameErrorMessages.ShipsCollection);
+    throw new Error(GameErrorMessage.ShipsCollection);
   }
 
   const isEveryShipHasUniqueId = shipsAmount === shipIds.size;
   if (!isEveryShipHasUniqueId) {
-    throw new Error(GameErrorMessages.ShipUniqueId);
+    throw new Error(GameErrorMessage.ShipUniqueId);
   }
 };
 
@@ -95,17 +95,17 @@ const checkShipsPosition = (field: Field) => {
     for (let row = 1; row < field.length; row += 1) {
       if (field[row][col]) {
         if (field[row - 1][col + 1] || field[row - 1][col - 1]) {
-          throw new Error(GameErrorMessages.ShipsPosition);
+          throw new Error(GameErrorMessage.ShipsPosition);
         }
       }
     }
   }
 };
 
-const checkField = (field: Field, shipShape: ShipShape = 'line') => {
+const checkField = (field: Field, shipShape: ShipShape = ShipShape.Line) => {
   try {
     if (shipShape !== 'line') {
-      throw new Error(GameErrorMessages.ShapeAny);
+      throw new Error(GameErrorMessage.ShapeAny);
     }
     
     checkFieldSize(field);

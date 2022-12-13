@@ -1,6 +1,6 @@
 import gameOptionsProcess, { initialGameOptionsState, setGameOptions } from './game-options-process';
 import { setAvailablePlayers } from '../available-players-process/available-players-process';
-import { fieldTypes, PlayerTypes, ShipShapes } from '../../const';
+import { fieldTypes, PlayerType, ShipShape } from '../../const';
 
 describe('Reducer: gameOptionsProcess', () => {
   it('without additional parameters should return initial state', () => {
@@ -8,7 +8,7 @@ describe('Reducer: gameOptionsProcess', () => {
   });
 
   it('should update players by set data', () => {
-    const newPlayers = { players: [{id: 'newId', name: 'playerName', type: PlayerTypes.Human}, {id: 'unknown', name: 'unknown', type: PlayerTypes.Robot}]};
+    const newPlayers = { players: [{id: 'newId', name: 'playerName', type: PlayerType.Human}, {id: 'unknown', name: 'unknown', type: PlayerType.Robot}]};
     const stateWithChangedPlayers = { ...initialGameOptionsState, ...newPlayers };
     expect(gameOptionsProcess.reducer(initialGameOptionsState, setGameOptions(newPlayers))).toEqual(stateWithChangedPlayers);
 
@@ -16,13 +16,13 @@ describe('Reducer: gameOptionsProcess', () => {
     const stateWithChangedFieldType = { ...initialGameOptionsState, ...newFieldType };
     expect(gameOptionsProcess.reducer(initialGameOptionsState, setGameOptions(newFieldType))).toEqual(stateWithChangedFieldType);
 
-    const newShipType = { shipType: ShipShapes.Any};
+    const newShipType = { shipType: ShipShape.Any};
     const stateWithChangedShipType = { ...initialGameOptionsState, ...newShipType };
     expect(gameOptionsProcess.reducer(initialGameOptionsState, setGameOptions(newShipType))).toEqual(stateWithChangedShipType);
   });
 
   it('should set the user as first player and first robot as second player when happening available players receiving', () => {
-    const availablePlayers = { user: { id: 'firstId', name: 'userName', type: PlayerTypes.Human }, robots: [{ id: 'secondId', name: 'robotName', type: PlayerTypes.Robot }] };
+    const availablePlayers = { user: { id: 'firstId', name: 'userName', type: PlayerType.Human }, robots: [{ id: 'secondId', name: 'robotName', type: PlayerType.Robot }] };
     const stateWithChangedPlayers = { ...initialGameOptionsState, players: [availablePlayers.user, availablePlayers.robots[0]] };
 
     expect(gameOptionsProcess.reducer(void 0, {type: 'UNKNOWN_ACTION'})).toEqual(initialGameOptionsState);

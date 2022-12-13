@@ -1,14 +1,14 @@
 import { Human } from '../../../types';
-import { PlayerTypes } from '../../../const';
+import { PlayerType } from '../../../const';
 
 export default class SinglePlayer implements Human {
   id;
   name;
-  type: PlayerTypes.Human;
+  type: PlayerType.Human;
 
   constructor() {
     this.id = 'user';
     this.name = 'user';
-    this.type = PlayerTypes.Human;
+    this.type = PlayerType.Human;
   }
 };

@@ -2,7 +2,8 @@ import OneDeckShip from './one-deck-ship/one-deck-ship';
 import DoubleDeckShip from './double-deck-ship/double-deck-ship';
 import ThreeDeckLineShip from './three-deck-line-ship/three-deck-line-ship';
 import FourDeckLineShip from './four-deck-line-ship/four-deck-line-ship';
-import { ShipClassType, ShipInterface, ShipShape } from '../types';
+import { ShipClass, ShipShape } from '../const';
+import { ShipInterface } from '../types';
 
 type FunctionConstractShip = (id: number) => ShipInterface;
 
@@ -12,25 +13,25 @@ const constractThreeDeckLineShip : FunctionConstractShip = (id) => new ThreeDeck
 const constractFourDeckLineShip : FunctionConstractShip = (id) => new FourDeckLineShip(id);
 
 const mapping = {
-  oneDeck: {
-    line: [constractOneDeckShip],
-    any: [constractOneDeckShip],
+  [ShipClass.One]: {
+    [ShipShape.Line]: [constractOneDeckShip],
+    [ShipShape.Any]: [constractOneDeckShip],
   },
-  doubleDeck: {
-    line: [constractDoubleDeckShip],
-    any: [constractDoubleDeckShip],
+  [ShipClass.Double]: {
+    [ShipShape.Line]: [constractDoubleDeckShip],
+    [ShipShape.Any]: [constractDoubleDeckShip],
   },
-  threeDeck: {
-    line: [constractThreeDeckLineShip],
-    any: [constractThreeDeckLineShip],
+  [ShipClass.Three]: {
+    [ShipShape.Line]: [constractThreeDeckLineShip],
+    [ShipShape.Any]: [constractThreeDeckLineShip],
   },
-  fourDeck: {
-    line: [constractFourDeckLineShip],
-    any: [constractFourDeckLineShip],
+  [ShipClass.Four]: {
+    [ShipShape.Line]: [constractFourDeckLineShip],
+    [ShipShape.Any]: [constractFourDeckLineShip],
   },
 };
 
-type getAvailableShipsType = (c: ShipClassType, s: ShipShape) => FunctionConstractShip[];
+type getAvailableShipsType = (c: ShipClass, s: ShipShape) => FunctionConstractShip[];
 
 const getAvailableShips : getAvailableShipsType = (shipClass, shipShape) => mapping[shipClass][shipShape];
 

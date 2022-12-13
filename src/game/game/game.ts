@@ -4,10 +4,10 @@ import JackSparrow from '../players/jack-sparrow/jack-sparrow';
 import { initialAvailablePlayersState } from '../../store/available-players-process/available-players-process';
 import { generateField, generateShipsList, getRandomElFromColl, getEnemy } from '../../services/utils';
 import checkField from '../../services/check-field';
-import { Coords, Field, FieldType, Human, Record, RecordText, Robot, ShipsList, ShipShape } from '../../types';
-import { GameErrorMessages, PlayerTypes, ShootResults } from '../../const';
+import { Coords, Field, FieldType, Human, Record, Robot, ShipsList } from '../../types';
+import { GameErrorMessage, PlayerType, ShipShape, ShootResult } from '../../const';
 
-const getHittingResult = (field: Field, target: number) : RecordText => {
+const getHittingResult = (field: Field, target: number) : ShootResult => {
   let isResultWin = true;
   let isResultWounded = false;
   field.forEach((row) => {
@@ -21,9 +21,9 @@ const getHittingResult = (field: Field, target: number) : RecordText => {
     });
   });
   if (isResultWin) {
-    return ShootResults.Won;
+    return ShootResult.Won;
   }
-  return isResultWounded ? ShootResults.Wounded : ShootResults.Killed;
+  return isResultWounded ? ShootResult.Wounded : ShootResult.Killed;
 };
 
 const players : { [index: string]: () => Human | Robot } = {
@@ -33,7 +33,7 @@ const players : { [index: string]: () => Human | Robot } = {
 
 const createPlayer = (id: string) => {
   if (!players[id]) {
-    throw new Error(GameErrorMessages.WrongPlayer);
+    throw new Error(GameErrorMessage.WrongPlayer);
   }
   return players[id]();
 };
@@ -45,7 +45,7 @@ const getPlayersData = () => {
     if (id === 'user') {
       acc.user = { id, name, type };
     }
-    if (type === PlayerTypes.Robot) {
+    if (type === PlayerType.Robot) {
       acc.robots = [...acc.robots, { id, name, type }];
     }
     return acc;
@@ -66,7 +66,7 @@ class Game {
     this.fields = [];
     this.activePlayer = 0;
     this.fieldType = '10';
-    this.shipShape = 'line';
+    this.shipShape = ShipShape.Line;
     this.shipList = {};
   }
 
@@ -80,11 +80,11 @@ class Game {
 
   handleRecord(record : Record) {
     this.players.forEach((player) => {
-      if (player.type === PlayerTypes.Robot) {
+      if (player.type === PlayerType.Robot) {
         player.handleShoot(record);
       }
     })
-    if (record[2] === ShootResults.OffTarget) {
+    if (record[2] === ShootResult.OffTarget) {
       this.activePlayer = getEnemy(this.getActivePlayer());
     }
   }
@@ -92,8 +92,8 @@ class Game {
   nextHumanTurn(coords: Coords) {
     try {
       const activePlayer = this.players[this.getActivePlayer()];
-      if (activePlayer.type === PlayerTypes.Human) {
-        const shootResult : RecordText = this.processShoot(coords);
+      if (activePlayer.type === PlayerType.Human) {
+        const shootResult : ShootResult = this.processShoot(coords);
         const record : Record = [this.getActivePlayer(), coords, shootResult];
         this.handleRecord(record);
         return record;
@@ -109,9 +109,9 @@ class Game {
   nextRobotTurn() {
     try {
       const activePlayer = this.players[this.getActivePlayer()];
-      if (activePlayer.type === PlayerTypes.Robot) {
+      if (activePlayer.type === PlayerType.Robot) {
         const shoot : Coords = activePlayer.shoot();
-        const shootResult : RecordText = this.processShoot(shoot);
+        const shootResult : ShootResult = this.processShoot(shoot);
         const record : Record = [this.getActivePlayer(), shoot, shootResult];
         this.handleRecord(record);
       } else {
@@ -128,22 +128,22 @@ class Game {
     this.fields.forEach((field) => checkingFunction(field));
   }
 
-  processShoot(coords: Coords) : RecordText {
+  processShoot(coords: Coords) : ShootResult {
     const { x, y } = coords;
     const enemy = getEnemy(this.getActivePlayer());
 
     if (!this.fields[enemy][x] || typeof this.fields[enemy][x][y] !== 'number') {
-      throw new Error(GameErrorMessages.WrongCoords);
+      throw new Error(GameErrorMessage.WrongCoords);
     }
 
     const target = this.fields[enemy][x][y];
 
     if (target === 0) {
-      return ShootResults.OffTarget;
+      return ShootResult.OffTarget;
     }
 
     this.fields[enemy][x][y] = 0;
-    const hittingResult: RecordText = getHittingResult(this.fields[enemy], target);
+    const hittingResult: ShootResult = getHittingResult(this.fields[enemy], target);
 
     return hittingResult;
   }
@@ -153,29 +153,29 @@ class Game {
     this.fields = [];
     this.activePlayer = 0;
     this.fieldType = '10';
-    this.shipShape = 'line';
+    this.shipShape = ShipShape.Line;
   }
 
   startBattle(field?: Field) {
     try {
-      if (this.players[1].type === PlayerTypes.Human) {
-        throw new Error(GameErrorMessages.WrongSecondPlayer);
+      if (this.players[1].type === PlayerType.Human) {
+        throw new Error(GameErrorMessage.WrongSecondPlayer);
       }
-      if (this.players[0].type === PlayerTypes.Human && !field) {
-        throw new Error(GameErrorMessages.ShouldGiveField);
+      if (this.players[0].type === PlayerType.Human && !field) {
+        throw new Error(GameErrorMessage.ShouldGiveField);
       }
 
       if (field) {
         this.fields[0] = field;
       }
       this.players.forEach((player, index) => {
-        if (player.type === PlayerTypes.Robot) {
+        if (player.type === PlayerType.Robot) {
           this.fields[index] = player.generateBattlefield(generateField(this.fieldType), cloneDeep(this.shipList), this.shipShape);
         }
       });
       this.checkFields();
       this.activePlayer = getRandomElFromColl([0, 1]);
-      return [this.getActivePlayer(), null , ShootResults.Started];
+      return [this.getActivePlayer(), null , ShootResult.Started];
     } catch (e: any) {
       const message = e.message ?? 'Unknown error recieved after checking field';
       return [-1, null, message];
@@ -202,7 +202,7 @@ class Game {
 
     this.shipList = generateShipsList(this.fieldType);
 
-    return this.players[0].type === PlayerTypes.Human
+    return this.players[0].type === PlayerType.Human
       ? { field: generateField(this.fieldType), fleet: cloneDeep(this.shipList) }
       : mockStartBattle ? mockStartBattle() : this.startBattle();
   }

@@ -3,8 +3,8 @@ import game from './game';
 import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
 import { generateField, generateShipsList, getEnemy } from '../../services/utils';
-import { Coords, Human, Field, FieldType, Robot, ShipShape, ShipsList } from '../../types';
-import { GameErrorMessages, ShootResults } from '../../const';
+import { Coords, Human, Field, FieldType, Robot, ShipsList } from '../../types';
+import { GameErrorMessage, ShipShape, ShootResult } from '../../const';
 import FakeRobot from './fake-robot';
 
 describe('Game', () => {
@@ -21,13 +21,13 @@ describe('Game', () => {
     game.players = [new JackSparrow(), new JackSparrow()];
     game.fields = [[[1]], [[1]]];
     game.fieldType = '3';
-    game.shipShape = 'any';
+    game.shipShape = ShipShape.Any;
     game.activePlayer = 1;
 
     expect(game.players.length).toBe(2);
     expect(game.fields.length).toBe(2);
     expect(game.fieldType).toBe('3');
-    expect(game.shipShape).toBe('any');
+    expect(game.shipShape).toBe(ShipShape.Any);
     expect(game.activePlayer).toBe(1);
 
     game.setDefaultOptions();
@@ -61,13 +61,13 @@ describe('Game', () => {
     });
 
     it('set right options', () => {
-      const gameOptions = { players: ['user', 'jack'], fieldType: '3' as FieldType, shipShapeType: 'any' as ShipShape };
+      const gameOptions = { players: ['user', 'jack'], fieldType: '3' as FieldType, shipShapeType: ShipShape.Any };
       game.startNewGame(gameOptions);
 
       expect(game.players[0]).toBeInstanceOf(SinglePlayer);
       expect(game.players[1]).toBeInstanceOf(JackSparrow);
       expect(game.fieldType).toBe('3');
-      expect(game.shipShape).toBe('any');
+      expect(game.shipShape).toBe(ShipShape.Any);
     });
 
     it('if "shipShapeType" not defined in options it should be "line" after run function', () => {
@@ -152,7 +152,7 @@ describe('Game', () => {
       game.startNewGame(gameOptions);
       const report = game.startBattle(wrongField);
 
-      expect(report).toEqual([-1, null, GameErrorMessages.ShipsCollection]);
+      expect(report).toEqual([-1, null, GameErrorMessage.ShipsCollection]);
     });
 
     it('should return report with an error if second player is human', () => {
@@ -160,7 +160,7 @@ describe('Game', () => {
       game.startNewGame(gameOptions);
       const report = game.startBattle(userField);
 
-      expect(report).toEqual([-1, null, GameErrorMessages.WrongSecondPlayer]);
+      expect(report).toEqual([-1, null, GameErrorMessage.WrongSecondPlayer]);
     });
 
     it('should return report with an error if human did not give his field', () => {
@@ -168,7 +168,7 @@ describe('Game', () => {
       game.startNewGame(gameOptions);
       const report = game.startBattle();
 
-      expect(report).toEqual([-1, null, GameErrorMessages.ShouldGiveField]);
+      expect(report).toEqual([-1, null, GameErrorMessage.ShouldGiveField]);
     });
   });
 
@@ -206,7 +206,7 @@ describe('Game', () => {
       game.startBattle(cloneDeep(field));
       game.activePlayer = 0;
 
-      expect(game.nextHumanTurn(incorrectCoords)).toEqual([-1, null, GameErrorMessages.WrongCoords]);
+      expect(game.nextHumanTurn(incorrectCoords)).toEqual([-1, null, GameErrorMessage.WrongCoords]);
     });
 
     it('should return report with error if called wrong function', () => {
@@ -226,20 +226,20 @@ describe('Game', () => {
       game.activePlayer = 0;
 
       const firstShoot = { x: 1, y: 1 };
-      expect(game.nextHumanTurn(firstShoot)).toEqual([0, firstShoot, ShootResults.OffTarget]);
+      expect(game.nextHumanTurn(firstShoot)).toEqual([0, firstShoot, ShootResult.OffTarget]);
       expect(game.activePlayer).toBe(1);
 
       game.activePlayer = 0;
       const secondShout = { x: 2, y: 3 };
-      expect(game.nextHumanTurn(secondShout)).toEqual([0, secondShout, ShootResults.Wounded]);
+      expect(game.nextHumanTurn(secondShout)).toEqual([0, secondShout, ShootResult.Wounded]);
       expect(game.activePlayer).toBe(0);
 
       const thirdShout = { x: 2, y: 4 };
-      expect(game.nextHumanTurn(thirdShout)).toEqual([0, thirdShout, ShootResults.Killed]);
+      expect(game.nextHumanTurn(thirdShout)).toEqual([0, thirdShout, ShootResult.Killed]);
       expect(game.activePlayer).toBe(0);
 
       const fourthShout = { x: 0, y: 2 };
-      expect(game.nextHumanTurn(fourthShout)).toEqual([0, fourthShout, ShootResults.Won]);
+      expect(game.nextHumanTurn(fourthShout)).toEqual([0, fourthShout, ShootResult.Won]);
       expect(game.activePlayer).toBe(0);
 
       const robot = game.players[1] as Robot;
@@ -300,7 +300,7 @@ describe('Game', () => {
       game.startBattle(field);
       game.activePlayer = 0;
 
-      expect(game.nextRobotTurn()).toEqual([-1, null, GameErrorMessages.WrongCoords]);
+      expect(game.nextRobotTurn()).toEqual([-1, null, GameErrorMessage.WrongCoords]);
     });
 
     it('should return report with error if called wrong function', () => {

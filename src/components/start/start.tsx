@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { getGameState } from '../../store/game-state-process/selectors';
 import { setGameState } from '../../store/game-state-process/game-state-process';
-import { GameStates } from '../../const';
+import { GameState } from '../../const';
 import { Dispatch, SetStateAction } from 'react';
 import { WarningModalType } from '../warning-modal/warning-modal';
 
@@ -15,9 +15,9 @@ const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>
 
   const getButtonLabel = () => {
     switch (gameState) {
-      case GameStates.NotStarted:
+      case GameState.NotStarted:
         return t('ui.navStart');
-      case GameStates.SettingFleet:
+      case GameState.SettingFleet:
         return t('ui.startBattle');
       default:
         return t('ui.newGame');
@@ -25,18 +25,18 @@ const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>
   };
   
   const handleClick = () => {
-    if (gameState === GameStates.SettingFleet) {
+    if (gameState === GameState.SettingFleet) {
       onShowWarning({
         text: t('alert.haveYouFinishedPlacing'),
-        dispatch: () => dispatch(setGameState(GameStates.Started)),
+        dispatch: () => dispatch(setGameState(GameState.Started)),
         show: true });
-    } else if(gameState === GameStates.Started) {
+    } else if(gameState === GameState.Started) {
       onShowWarning({
         text: [t('alert.restart'), t('alert.areYouSureToContinue')],
-        dispatch: () => dispatch(setGameState(GameStates.SettingFleet)),
+        dispatch: () => dispatch(setGameState(GameState.SettingFleet)),
         show: true });
     } else {
-      dispatch(setGameState(GameStates.SettingFleet));
+      dispatch(setGameState(GameState.SettingFleet));
     }
   };
 

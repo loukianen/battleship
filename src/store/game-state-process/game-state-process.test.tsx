@@ -1,7 +1,7 @@
 import gameStateProcess, { setGameState} from './game-state-process';
-import { GameStates } from '../../const';
+import { GameState } from '../../const';
 
-const initialState = GameStates.NotStarted;
+const initialState = GameState.NotStarted;
 
 describe('Reducer: gameStateProcess', () => {
   it('without additional parameters should return initial state', () => {
@@ -9,7 +9,7 @@ describe('Reducer: gameStateProcess', () => {
   });
 
   it('should update gameState by set data', () => {
-    expect(gameStateProcess.reducer(initialState, setGameState(GameStates.SettingFleet)))
-      .toBe(GameStates.SettingFleet);
+    expect(gameStateProcess.reducer(initialState, setGameState(GameState.SettingFleet)))
+      .toBe(GameState.SettingFleet);
   });
 });

@@ -1,5 +1,5 @@
 import store from './store/store';
-import { PlayerTypes } from './const';
+import { PlayerType, ShipShape, ShipClass, ShipOrientation, ShootResult } from './const';
 
 export type AppDispatch = typeof store.dispatch;
 
@@ -14,17 +14,15 @@ export type FieldType = '3' | '5' | '7' | '10';
 export interface Player {
   id: string,
   name: string,
-  type: PlayerTypes,
+  type: PlayerType,
 }
-
-export type Language = 'ru' | 'en';
 
 export type PlayersDataType = { user: Player, robots: Player[] };
 export type OptionsDataType = { players: Player[], fieldType: FieldType, shipType: ShipShape };
 export type OptionsPayloadDataType = { players?: Player[], fieldType?: FieldType, shipType?: ShipShape };
 
 export interface Human extends Player {
-  type: PlayerTypes.Human,
+  type: PlayerType.Human,
 }
 
 type OrientationMappingType = {
@@ -32,7 +30,7 @@ type OrientationMappingType = {
 };
 
 export interface Robot extends Player {
-  type: PlayerTypes.Robot,
+  type: PlayerType.Robot,
   enemyShipsList: ShipsList,
   enemyField: BattleFieldCell[][];
   woundedEnemyShip: Coords[];
@@ -46,13 +44,13 @@ export interface ShipInterface {
   id: number;
   coords: Coords[];
   mainPoint: Coords | null;
-  class: ShipClassType | null;
+  class: ShipClass | null;
   shape: ShipShape;
   orientation: ShipOrientation;
   orientationMapping: OrientationMappingType;
   getCoords: () => Coords[];
   getId: () => number;
-  getClass: () => ShipClassType | null;
+  getClass: () => ShipClass | null;
   calcCoords: (mainPoint: Coords) => Coords[];
   setCoords: (mainPoint: Coords) => void;
   setOrientation: (orientation: ShipOrientation) => void;
@@ -60,13 +58,13 @@ export interface ShipInterface {
   getOrientationVariants: () => ShipOrientation[];
 }
 
-export type ShipClassType = 'fourDeck' | 'threeDeck' | 'doubleDeck' | 'oneDeck';
+// export type ShipClassType = 'fourDeck' | 'threeDeck' | 'doubleDeck' | 'oneDeck';
 
 export type ShipsList = { [index: string]: number };
 
-export type ShipOrientation = 'east' | 'north' | 'west' | 'south';
+// export type ShipOrientation = 'east' | 'north' | 'west' | 'south';
 
-export type ShipShape = 'line' | 'any';
+// export type ShipShape = 'line' | 'any';
 
 export type Shoot = {
   playerId: number,
@@ -75,6 +73,6 @@ export type Shoot = {
 
 export type State = ReturnType<typeof store.getState>;
 
-export type Record = [number, Coords | null, RecordText];
+export type Record = [number, Coords | null, ShootResult];
 
-export type RecordText = 'offTarget' | 'wounded' | 'killed' | 'started' | 'won';
+// export type RecordText = 'offTarget' | 'wounded' | 'killed' | 'started' | 'won';

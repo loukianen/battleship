@@ -1,9 +1,9 @@
 import './language-dropdown-item.sass';
-import { Language } from "../../types";
+import { LanguageType } from "../../const";
 import { MouseEvent } from 'react';
 import { uniqueId } from '../../services/utils';
 
-const getLanguage = (lang: Language) => {
+const getLanguage = (lang: LanguageType) => {
   const mapping = {
     en: 'english',
     ru: 'russian',
@@ -12,14 +12,14 @@ const getLanguage = (lang: Language) => {
 };
 
 type LangDropdownItemProps = {
-  lang: Language,
+  lang: LanguageType,
   title: string,
   isActive: boolean,
-  onClick: (evt: MouseEvent) => void,
+  onClickFunc: (evt: MouseEvent) => void,
 };
 
 const LanguageDropdownItem = (props: LangDropdownItemProps) => {
-  const { lang, title, onClick, isActive } = props;
+  const { lang, title, onClickFunc, isActive } = props;
   const language = getLanguage(lang);
 
   const constPartClassName = 'lang-menu-button';
@@ -28,7 +28,7 @@ const LanguageDropdownItem = (props: LangDropdownItemProps) => {
 
   return (
     <li className="dropdown-item dropdown-menu-end dropdown-item_lang align-items-stretch d-flex flex-row">
-      <button className={buttonClassName} id={`${language}Language`} data-testid={`${lang}Button`} lang={lang} onClick={onClick}>
+      <button className={buttonClassName} id={`${language}Language`} data-testid={`${lang}Button`} lang={lang} onClick={onClickFunc}>
       <img className="flag rounded" src={`img/${language}_fl.png`} alt={`${language} flag`} />
         {title}
       </button>

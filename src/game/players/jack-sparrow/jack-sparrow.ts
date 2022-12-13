@@ -1,13 +1,13 @@
 import BasicFleetLocationStrategy from '../../strategies/basic-fleet-location-strategy/basic-fleet-location-strategy';
 import ShootingOnClearCellsStrategy from '../../strategies/shooting-on-clear-cells-strategy/shooting-on-clear-cells-strategy';
 import { calcArea, createBattlefield, isValidCoords } from '../../../services/utils';
-import { BattleFieldCell, Coords, Field, Record, Robot, ShipShape, ShipsList } from '../../../types';
-import { BattlefieldCellTypes, GameErrorMessages, PlayerTypes, ShootResults } from '../../../const';
+import { BattleFieldCell, Coords, Field, Record, Robot, ShipsList } from '../../../types';
+import { BattlefieldCellType, GameErrorMessage, PlayerType, ShipShape, ShootResult } from '../../../const';
 
 export default class JackSparrow implements Robot {
   id;
   name;
-  type: PlayerTypes.Robot;
+  type: PlayerType.Robot;
   enemyShipsList: ShipsList;
   enemyField: BattleFieldCell[][];
   shipShape: ShipShape;
@@ -16,34 +16,34 @@ export default class JackSparrow implements Robot {
   constructor() {
     this.id = 'jack';
     this.name = 'Jack Sparrow';
-    this.type = PlayerTypes.Robot;
+    this.type = PlayerType.Robot;
     this.enemyShipsList = {};
     this.enemyField = [];
-    this.shipShape = 'line';
+    this.shipShape = ShipShape.Line;
     this.woundedEnemyShip = [];
   }
 
   processHit(coords: Coords) {
     const { x, y } = coords;
-    this.enemyField[x][y].type = BattlefieldCellTypes.Killed;
+    this.enemyField[x][y].type = BattlefieldCellType.Killed;
     this.woundedEnemyShip.push(coords);
   }
 
   makrCellAsShooted(coords: Coords) {
     const { x, y } = coords;
-    this.enemyField[x][y].type = BattlefieldCellTypes.Shooted;
+    this.enemyField[x][y].type = BattlefieldCellType.Shooted;
   }
 
   handleShoot(record: Record) {
     const [, coords, message] = record;
     if (!coords) return;
-    if (message === ShootResults.OffTarget) {
+    if (message === ShootResult.OffTarget) {
       this.makrCellAsShooted(coords);
     }
-    if (message === ShootResults.Wounded) {
+    if (message === ShootResult.Wounded) {
       this.processHit(coords);
     }
-    if (message === ShootResults.Killed) {
+    if (message === ShootResult.Killed) {
       this.processHit(coords);
       const killedShipArea = calcArea(this.woundedEnemyShip)
         .filter((item) => isValidCoords(item, 0, this.enemyField.length - 1));
@@ -78,7 +78,7 @@ export default class JackSparrow implements Robot {
     const strategy = this.getStrategy();
     const shoot = strategy.getShoot();
     if (!shoot) {
-      throw new Error(GameErrorMessages.WrongShoot);
+      throw new Error(GameErrorMessage.WrongShoot);
     }
     return shoot;
   }

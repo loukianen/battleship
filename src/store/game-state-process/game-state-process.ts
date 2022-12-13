@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GameStates, NameSpace } from '../../const';
+import { GameState, NameSpace } from '../../const';
 
 const gameStateProcess = createSlice({
   name: NameSpace.GameState,
-  initialState: GameStates.NotStarted,
+  initialState: GameState.NotStarted,
   reducers: {
-    setGameState: (state, action: PayloadAction<GameStates>) => {
+    setGameState: (state, action: PayloadAction<GameState>) => {
       state = action.payload;
       return state;
     },

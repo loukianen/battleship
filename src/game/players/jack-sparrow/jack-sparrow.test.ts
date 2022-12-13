@@ -2,7 +2,7 @@ import flatten from 'lodash-ts/flatten';
 import JackSparrow from './jack-sparrow';
 import checkField from '../../../services/check-field';
 import { calcArea, generateField, generateShipsList } from '../../../services/utils';
-import { BattlefieldCellTypes, fieldTypes, GameErrorMessages, ShootResults } from '../../../const';
+import { BattlefieldCellType, fieldTypes, GameErrorMessage, PlayerType, ShootResult } from '../../../const';
 import { Record } from '../../../types';
 import ShootingOnClearCellsStrategy from '../../strategies/shooting-on-clear-cells-strategy/shooting-on-clear-cells-strategy';
 
@@ -11,7 +11,7 @@ describe('JackSparrow', () => {
     const player = new JackSparrow();
     expect(player.id).toBe('jack');
     expect(player.name).toBe('Jack Sparrow');
-    expect(player.type).toBe('robot');
+    expect(player.type).toBe(PlayerType.Robot);
     expect(player.enemyShipsList).toEqual({});
     expect(player.enemyField).toEqual([]);
     expect(player.shipShape).toBe('line');
@@ -39,34 +39,34 @@ describe('JackSparrow', () => {
 
     it('should mark cell as "shooted" if recieved message "offTarget"', () => {
       const coords1 = { x: 0, y: 0 };
-      const reportOffTarget: Record = [0, coords1 , ShootResults.OffTarget];
+      const reportOffTarget: Record = [0, coords1 , ShootResult.OffTarget];
       jack.handleShoot(reportOffTarget);
 
-      expect(jack.enemyField[coords1.x][coords1.y].type).toBe(BattlefieldCellTypes.Shooted);
+      expect(jack.enemyField[coords1.x][coords1.y].type).toBe(BattlefieldCellType.Shooted);
     });
 
     it('should mark cell as "killed ship" if recieved message "wounded" and add coords to wounded ship', () => {
       const coords2 = { x: 1, y: 1 };
-      const reportWounded: Record = [0, coords2 , ShootResults.Wounded];
+      const reportWounded: Record = [0, coords2 , ShootResult.Wounded];
       jack.handleShoot(reportWounded);
 
-      expect(jack.enemyField[coords2.x][coords2.y].type).toBe(BattlefieldCellTypes.Killed);
+      expect(jack.enemyField[coords2.x][coords2.y].type).toBe(BattlefieldCellType.Killed);
       expect(jack.woundedEnemyShip).toContainEqual(coords2);
     });
 
     it('should mark cell as "killed ship" if recieved message "killed" and mark ship area as "shooted"', () => {
       const ship = [{ x: 1, y: 1 }, { x: 1, y: 2 }];
       const shipArea = calcArea(ship);
-      const reportWounded: Record = [0, ship[0] , ShootResults.Wounded];
+      const reportWounded: Record = [0, ship[0] , ShootResult.Wounded];
       jack.handleShoot(reportWounded);
-      const reportKilled: Record = [0, ship[1] , ShootResults.Killed];
+      const reportKilled: Record = [0, ship[1] , ShootResult.Killed];
       jack.handleShoot(reportKilled);
 
-      expect(jack.enemyField[ship[0].x][ship[0].y].type).toBe(BattlefieldCellTypes.Killed);
-      expect(jack.enemyField[ship[1].x][ship[1].y].type).toBe(BattlefieldCellTypes.Killed);
+      expect(jack.enemyField[ship[0].x][ship[0].y].type).toBe(BattlefieldCellType.Killed);
+      expect(jack.enemyField[ship[1].x][ship[1].y].type).toBe(BattlefieldCellType.Killed);
       expect(jack.woundedEnemyShip).toEqual([]);
       shipArea.forEach(({ x, y }) => {
-        expect(jack.enemyField[x][y].type).toBe(BattlefieldCellTypes.Shooted);
+        expect(jack.enemyField[x][y].type).toBe(BattlefieldCellType.Shooted);
       });
     });
   });
@@ -92,7 +92,7 @@ describe('JackSparrow', () => {
       fakeStrategy.getShoot = () => null;
       jack.getStrategy = () => fakeStrategy;
 
-      expect(() => jack.shoot()).toThrowError(GameErrorMessages.WrongShoot);
+      expect(() => jack.shoot()).toThrowError(GameErrorMessage.WrongShoot);
     });
   });
 });

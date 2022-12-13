@@ -1,5 +1,6 @@
 import FinishOffShipStrategy from '../finish-off-ship-strategy/finish-off-ship-strategy';
-import { BattleFieldCell, Coords, ShipShape } from '../../../types';
+import { BattleFieldCell, Coords } from '../../../types';
+import { ShipShape } from '../../../const';
 import { getClearCells, getRandomElFromColl } from '../../../services/utils';
 
 class ShootingOnClearCellsStrategy {

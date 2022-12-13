@@ -5,7 +5,7 @@ import isEmpty from 'lodash-ts/isEmpty';
 import isEqual from 'lodash-ts/isEqual';
 import { BattleFieldCell, Coords, Field, FieldType, Player, ShipsList } from "../types";
 import { OptionsMenuKeys } from '../locales/types';
-import { BattlefieldCellTypes } from '../const';
+import { BattlefieldCellType } from '../const';
 
 const isArrayNotIncludesObject = <Type>(arr: Type[], object: Type) : boolean => arr.every((item) => !isEqual(item, object));
 
@@ -112,7 +112,7 @@ const shipListMapping : { [index: string]: ShipsList} = {
 
 export const createBattlefield = (field: Field) => field.map((row, x) => row.map((val, y) => {
   const id = uniqueId();
-  const type = BattlefieldCellTypes.Clear;
+  const type = BattlefieldCellType.Clear;
   const shipId = null;
   const coords: Coords = { x, y };
   return { id, coords, type, shipId };
@@ -124,7 +124,7 @@ export const getClearCells = (battlefield: BattleFieldCell[][]) => {
   const clearCells : { ids: Array<number>, cells: { [i: string | number]: BattleFieldCell } } = { ids: [], cells: {} };
   battlefield.forEach((row) => {
     row.forEach((cell) => {
-      if (cell.type === BattlefieldCellTypes.Clear) {
+      if (cell.type === BattlefieldCellType.Clear) {
         const cellId = cell.id;
         clearCells.ids.push(cellId);
         clearCells.cells[cellId] = cell;
@@ -151,7 +151,7 @@ export const isValidShipCoords = (field: BattleFieldCell[][], shipCoords: Coords
   }
   return coords.every(({ x, y }) => {
     const cellType = field[x][y].type;
-    return cellType === BattlefieldCellTypes.Clear;
+    return cellType === BattlefieldCellType.Clear;
   });
 };
 

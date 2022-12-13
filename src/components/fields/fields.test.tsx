@@ -23,8 +23,8 @@ describe('Fields', () => {
     });
     renderFields(store);
 
-    expect(screen.getByText('Admiral unknown I')).toBeInTheDocument();
-    expect(screen.getByText('Admiral unknown II')).toBeInTheDocument();
+    expect(screen.getByText('Admiral: unknown I')).toBeInTheDocument();
+    expect(screen.getByText('Admiral: unknown II')).toBeInTheDocument();
   });
 
   it('should render admiral names as "You" and "Nahimov"', () => {
@@ -33,7 +33,7 @@ describe('Fields', () => {
     });
     renderFields(store);
 
-    expect(screen.getByText('Admiral You')).toBeInTheDocument();
-    expect(screen.getByText('Admiral Nahimov')).toBeInTheDocument();
+    expect(screen.getByText('Admiral: You')).toBeInTheDocument();
+    expect(screen.getByText('Admiral: Nahimov')).toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
 import { calcArea, createBattlefield, generateField } from "../../../services/utils";
 import { BattleFieldCell } from "../../../types";
-import { BattlefieldCellTypes, ShipShapes } from "../../../const";
+import { BattlefieldCellType, ShipShape } from "../../../const";
 import FinishOffShipStrategy from "./finish-off-ship-strategy";
 
 describe('FinishOffShipStrategy', () => {
@@ -15,48 +15,48 @@ describe('FinishOffShipStrategy', () => {
   it('should give shoot from full correct area if ship length = 1 and type = line', () => {
     const ship = [{ x: 1, y: 1}];
     const correctArea = calcArea(ship, 'without');
-    const strategy = new FinishOffShipStrategy(battlefield, ship, ShipShapes.Line);
+    const strategy = new FinishOffShipStrategy(battlefield, ship, ShipShape.Line);
 
     expect(correctArea).toContainEqual(strategy.getShoot());
   });
 
   it('should give shoot from only one coord if area stricted', () => {
     const ship = [{ x: 0, y: 0}];
-    battlefield[0][1].type = BattlefieldCellTypes.Shooted;
-    const strategy = new FinishOffShipStrategy(battlefield, ship, ShipShapes.Line);
+    battlefield[0][1].type = BattlefieldCellType.Shooted;
+    const strategy = new FinishOffShipStrategy(battlefield, ship, ShipShape.Line);
 
     expect(strategy.getShoot()).toEqual({ x: 1, y: 0});
   });
 
   it('should give right shoot if ship length = 2 and type = line and area stricted', () => {
     const ship = [{ x: 1, y: 1 }, { x: 1, y: 2 }];
-    battlefield[1][0].type = BattlefieldCellTypes.Shooted;
-    const strategy = new FinishOffShipStrategy(battlefield, ship, ShipShapes.Line);
+    battlefield[1][0].type = BattlefieldCellType.Shooted;
+    const strategy = new FinishOffShipStrategy(battlefield, ship, ShipShape.Line);
 
     expect(strategy.getShoot()).toEqual({ x: 1, y: 3 });
     
     const verticalShip = [{ x: 3, y: 4 }, { x: 4, y: 4 }];
-    const strategy1 = new FinishOffShipStrategy(battlefield, verticalShip, ShipShapes.Line);
+    const strategy1 = new FinishOffShipStrategy(battlefield, verticalShip, ShipShape.Line);
     expect(strategy1.getShoot()).toEqual({ x: 2, y: 4 });
   });
 
   it('should give right shoot if ship length = 2 and type = any and area stricted', () => {
     const ship = [{ x: 1, y: 1 }, { x: 1, y: 2 }];
-    battlefield[1][0].type = BattlefieldCellTypes.Shooted;
-    battlefield[2][1].type = BattlefieldCellTypes.Shooted;
-    battlefield[2][2].type = BattlefieldCellTypes.Shooted;
-    battlefield[1][3].type = BattlefieldCellTypes.Shooted;
-    battlefield[0][2].type = BattlefieldCellTypes.Shooted;
-    const strategy = new FinishOffShipStrategy(battlefield, ship, ShipShapes.Any);
+    battlefield[1][0].type = BattlefieldCellType.Shooted;
+    battlefield[2][1].type = BattlefieldCellType.Shooted;
+    battlefield[2][2].type = BattlefieldCellType.Shooted;
+    battlefield[1][3].type = BattlefieldCellType.Shooted;
+    battlefield[0][2].type = BattlefieldCellType.Shooted;
+    const strategy = new FinishOffShipStrategy(battlefield, ship, ShipShape.Any);
 
     expect(strategy.getShoot()).toEqual({ x: 0, y: 1 });
   });
 
   it('should return null if are not variants for shooting', () => {
     const ship = [{ x: 1, y: 1 }, { x: 1, y: 2 }];
-    battlefield[1][0].type = BattlefieldCellTypes.Shooted;
-    battlefield[1][3].type = BattlefieldCellTypes.Shooted;
-    const strategy = new FinishOffShipStrategy(battlefield, ship, ShipShapes.Line);
+    battlefield[1][0].type = BattlefieldCellType.Shooted;
+    battlefield[1][3].type = BattlefieldCellType.Shooted;
+    const strategy = new FinishOffShipStrategy(battlefield, ship, ShipShape.Line);
 
     expect(strategy.getShoot()).toBeNull();
   });

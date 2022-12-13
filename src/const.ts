@@ -1,6 +1,11 @@
-import { FieldType, ShipClassType, ShipOrientation } from "./types";
+import { FieldType } from "./types";
 
-export enum BattlefieldCellTypes {
+export enum BattlefieldType {
+  EnemyField = 'enemy field',
+  PlayerField = 'player field',
+}
+
+export enum BattlefieldCellType {
   Clear = 'clear',
   Ship = 'ship',
   Area = 'area',
@@ -8,7 +13,7 @@ export enum BattlefieldCellTypes {
   Shooted = 'shooted',
 }
 
-export enum GameErrorMessages {
+export enum GameErrorMessage {
   ShapeAny = 'An algorithm for checking the field with not line ships is not created yet',
   FieldType = 'Unknown field type',
   ShipIds = 'One ship has differant ids',
@@ -22,23 +27,28 @@ export enum GameErrorMessages {
   WrongShoot = 'Did not menage to recieve a correct shoot',
 }
 
-export enum GameOptions {
+export enum GameOption {
   Player1 = 'player1',
   Player2 = 'player2',
   FieldSize = 'fieldSize',
   ShipType = 'shipType',
 }
 
-export enum GameStates {
+export enum GameState {
   NotStarted = 'not started',
   SettingFleet = 'setting fleet',
   Started = 'started',
   Finished = 'finished',
 }
 
-export enum GameTypes {
+export enum GameType {
   WithAI = 'human-robot',
   Auto = 'robot-robot',
+}
+
+export enum LanguageType {
+  En = 'en',
+  Ru = 'ru',
 }
 
 export enum NameSpace {
@@ -56,17 +66,31 @@ export enum NameSpace {
   ShipInMove = 'SHIP_IN_MOVE',
 }
 
-export enum PlayerTypes {
+export enum PlayerType {
   Human = 'human',
   Robot = 'robot',
 }
 
-export enum ShipShapes {
+export enum ShipShape {
   Any = 'any',
   Line = 'line',
 }
 
-export enum ShootResults {
+export enum ShipClass {
+  Four = 'fourDeck',
+  Three = 'threeDeck',
+  Double = 'doubleDeck',
+  One = 'oneDeck',
+}
+
+export enum ShipOrientation {
+  East = 'east',
+  North = 'north',
+  West = 'west',
+  South = 'south',
+}
+
+export enum ShootResult {
   OffTarget = 'offTarget',
   Wounded = 'wounded',
   Killed = 'killed',
@@ -74,12 +98,12 @@ export enum ShootResults {
   Won = 'won',
 }
 
-export const ShipMainClasses : ShipClassType[] = ['fourDeck', 'threeDeck', 'doubleDeck', 'oneDeck'];
+export const shipMainClasses : ShipClass[] = [ShipClass.Four, ShipClass.Three, ShipClass.Double, ShipClass.One];
 
-export const ShipOrientations: ShipOrientation[] = ['east', 'north', 'west', 'south'];
+export const shipOrientations: ShipOrientation[] = [ShipOrientation.East, ShipOrientation.North, ShipOrientation.West, ShipOrientation.South];
 
-export const LineShipOrientations: ShipOrientation[] =  ['east', 'north'];
+export const lineShipOrientations: ShipOrientation[] =  [ShipOrientation.East, ShipOrientation.North];
 
 export const fieldTypes: FieldType[] = ['3', '5', '7', '10'];
 
-export const shipTypes: ShipShapes[] = [ShipShapes.Line];
+export const shipTypes: ShipShape[] = [ShipShape.Line];

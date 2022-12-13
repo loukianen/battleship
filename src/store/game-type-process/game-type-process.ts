@@ -2,13 +2,13 @@ import isEmpty from 'lodash-ts/isEmpty';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { setAvailablePlayers } from '../available-players-process/available-players-process';
 import { setGameOptions } from '../game-options-process/game-options-process';
-import { GameTypes, NameSpace, PlayerTypes } from '../../const';
+import { GameType, NameSpace, PlayerType } from '../../const';
 
 const gameTypeProcess = createSlice({
   name: NameSpace.GameType,
-  initialState: GameTypes.WithAI,
+  initialState: GameType.WithAI,
   reducers: {
-    setGameType: (state, action: PayloadAction<GameTypes>) => {
+    setGameType: (state, action: PayloadAction<GameType>) => {
       state = action.payload;
       return state;
     },
@@ -17,16 +17,16 @@ const gameTypeProcess = createSlice({
     builder.addCase(setAvailablePlayers, (state, action) => {
       const { user } = action.payload;
       if (!isEmpty(user.id)) {
-        state = GameTypes.WithAI;
+        state = GameType.WithAI;
       } else {
-        state = GameTypes.Auto;
+        state = GameType.Auto;
       }
       return state;
     });
     builder.addCase(setGameOptions, (state, action) => {
       const { players } = action.payload;
       if (players && players[0]) {
-        state = players[0].type === PlayerTypes.Human ? GameTypes.WithAI : GameTypes.Auto;
+        state = players[0].type === PlayerType.Human ? GameType.WithAI : GameType.Auto;
       }
       return state;
     });

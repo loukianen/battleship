@@ -1,10 +1,10 @@
 import Ship from './ship';
-import { ShipOrientations } from '../../const';
+import { ShipOrientation, shipOrientations, ShipShape } from '../../const';
 
 describe('Ship', () => {
   it('Should have right default proprerties', () => {
     const ship = new Ship(1);
-    const defaultValues = {id: 1, coords: [], mainPoint: null, class: null, shape: 'line', orientation: 'east' };
+    const defaultValues = {id: 1, coords: [], mainPoint: null, class: null, shape: ShipShape.Line, orientation: ShipOrientation.East };
 
     expect(ship).toMatchObject(defaultValues);
   });
@@ -21,20 +21,20 @@ describe('Ship', () => {
   describe('method "setOrientation" should', () => {
     it('work correctly', () => {
       const ship = new Ship(1);
-      ship.setOrientation('west');
+      ship.setOrientation(ShipOrientation.West);
 
-      expect(ship).toMatchObject({ id: 1, orientation: 'west' });
+      expect(ship).toMatchObject({ id: 1, orientation: ShipOrientation.West });
     });
 
     it('should run method "setCoords" if main point was defined', () => {
       const ship = new Ship(1);
       ship.setCoords = jest.fn();
-      ship.setOrientation('west');
+      ship.setOrientation(ShipOrientation.West);
       expect(ship.mainPoint).toBeNull();
       expect(ship.setCoords).not.toBeCalled();
 
       ship.mainPoint = {x:1, y:1};
-      ship.setOrientation('north');
+      ship.setOrientation(ShipOrientation.North);
       expect(ship.setCoords).toBeCalled();
     });
   });
@@ -54,17 +54,17 @@ describe('Ship', () => {
   describe('Function changeOrientation should set next or first value from posible values', () => {
     it('with any ships', () => {
       const ship = new Ship(4);
-      ship.shape = 'any';
-      ship.setOrientation(ShipOrientations[1]);
+      ship.shape = ShipShape.Any;
+      ship.setOrientation(shipOrientations[1]);
 
       ship.changeOrientation();
-      expect(ship.orientation).toBe(ShipOrientations[2]);
+      expect(ship.orientation).toBe(shipOrientations[2]);
 
       ship.changeOrientation();
-      expect(ship.orientation).toBe(ShipOrientations[3]);
+      expect(ship.orientation).toBe(shipOrientations[3]);
       
       ship.changeOrientation();
-      expect(ship.orientation).toBe(ShipOrientations[0]);
+      expect(ship.orientation).toBe(shipOrientations[0]);
     });
   });
 });

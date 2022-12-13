@@ -1,5 +1,5 @@
-import { ShipOrientations } from '../../const';
-import { Coords, ShipClassType, ShipOrientation, ShipShape } from '../../types';
+import { shipOrientations, ShipClass, ShipOrientation, ShipShape } from '../../const';
+import { Coords,  } from '../../types';
 
 const isValidMainPoint = (point: Coords) => {
   const { x, y } = point;
@@ -14,7 +14,7 @@ export default class Ship {
   id: number;
   coords: Coords[];
   mainPoint: Coords | null;
-  class: ShipClassType | null;
+  class: ShipClass | null;
   shape: ShipShape;
   orientation: ShipOrientation;
   orientationMapping: OrientationMappingType;
@@ -24,8 +24,8 @@ export default class Ship {
     this.coords = [];
     this.mainPoint = null;
     this.class = null;
-    this.shape= 'line';
-    this.orientation = 'east';
+    this.shape= ShipShape.Line;
+    this.orientation = ShipOrientation.East;
     this.orientationMapping = {
       east: ({ x, y }: Coords) : Coords[] => [{ x, y }],
       north: ({ x, y }: Coords) : Coords[] => [{ x, y }],
@@ -47,7 +47,7 @@ export default class Ship {
   }
 
   getOrientationVariants() {
-    return  ShipOrientations
+    return  shipOrientations
       .filter((item) => Object.keys(this.orientationMapping).includes(item));
   }
 

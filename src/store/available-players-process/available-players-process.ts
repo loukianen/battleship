@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {PlayersDataType } from '../../types';
-import { NameSpace, PlayerTypes } from '../../const';
+import { NameSpace, PlayerType } from '../../const';
 
-export const initialAvailablePlayersState: PlayersDataType = { user: { id: '', name: '', type: PlayerTypes.Human }, robots:[] };
+export const initialAvailablePlayersState: PlayersDataType = { user: { id: '', name: '', type: PlayerType.Human }, robots:[] };
 
 const availablePlayersProcess = createSlice({
   name: NameSpace.AvailablePlayers,
