@@ -10,24 +10,24 @@ import { getPlayers, getFieldType, getShipType } from '../../store/game-options-
 import OptionsDropdownItem from '../options-dropdown-item/options-dropdown-item';
 import { fieldTypes, shipTypes, GameOptions } from '../../const';
 import { OptionsMenuKeys } from '../../locales/types';
-import { PlayerDataType } from '../../types';
+import { Player } from '../../types';
 import { getLocalizedUsername } from '../../services/utils';
 
 const Options = () => {
   const { t, i18n } = useTranslation();
-  const getPlayerValues = (users: PlayerDataType[]) => users.map(
-    ({id, name }) => {
-      const text = getLocalizedUsername({id, name}, i18n);
-      return { value: id, text };
-    });
-
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
   const robots = useAppSelector(getRobots);
   const curShipType = useAppSelector(getShipType) as OptionsMenuKeys;
   const curFieldType = useAppSelector(getFieldType) as OptionsMenuKeys;
   const [player1, player2] = useAppSelector(getPlayers);
-  
+
+  const getPlayerValues = (users: Player[]) => users.map(
+    ({id, name }) => {
+      const text = getLocalizedUsername({id, name}, i18n);
+      return { value: id, text };
+    });
+
   const handleChooseOption = (evt: SyntheticEvent) => {
     const target = evt.target as HTMLSelectElement;
     const { name, value } = target;

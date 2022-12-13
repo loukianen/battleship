@@ -36,6 +36,11 @@ export enum GameStates {
   Finished = 'finished',
 }
 
+export enum GameTypes {
+  WithAI = 'human-robot',
+  Auto = 'robot-robot',
+}
+
 export enum NameSpace {
   ActivePlayer = 'ACTIVE_PLAYER',
   AvailablePlayers = 'AVAILABLE_PLAYERS',
@@ -44,6 +49,7 @@ export enum NameSpace {
   Fleet = 'FLEET',
   GameOptions = 'GAME_OPTIONS',
   GameState = 'GAME_STATE',
+  GameType = 'GAME_TYPE',
   Log = 'LOG',
   Players = 'PLAYERS',
   Score = 'SCORE',

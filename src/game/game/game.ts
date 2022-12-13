@@ -43,10 +43,10 @@ const getPlayersData = () => {
   const playersData = allPlayers.reduce((acc, player) => {
     const { id, name, type } = player;
     if (id === 'user') {
-      acc.user = { id, name };
+      acc.user = { id, name, type };
     }
     if (type === PlayerTypes.Robot) {
-      acc.robots = [...acc.robots, { id, name }];
+      acc.robots = [...acc.robots, { id, name, type }];
     }
     return acc;
   }, cloneDeep(initialAvailablePlayersState));

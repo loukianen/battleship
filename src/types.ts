@@ -1,4 +1,5 @@
 import store from './store/store';
+import { PlayerTypes } from './const';
 
 export type AppDispatch = typeof store.dispatch;
 
@@ -13,18 +14,17 @@ export type FieldType = '3' | '5' | '7' | '10';
 export interface Player {
   id: string,
   name: string,
-  type: 'human' | 'robot',
+  type: PlayerTypes,
 }
 
 export type Language = 'ru' | 'en';
 
-export type PlayerDataType = Pick<Player, 'id' | 'name'>;
-export type PlayersDataType = { user: PlayerDataType, robots: PlayerDataType[] };
-export type OptionsDataType = { players: PlayerDataType[], fieldType: FieldType, shipType: ShipShape };
-export type OptionsPayloadDataType = { players?: PlayerDataType[], fieldType?: FieldType, shipType?: ShipShape };
+export type PlayersDataType = { user: Player, robots: Player[] };
+export type OptionsDataType = { players: Player[], fieldType: FieldType, shipType: ShipShape };
+export type OptionsPayloadDataType = { players?: Player[], fieldType?: FieldType, shipType?: ShipShape };
 
 export interface Human extends Player {
-  type: 'human',
+  type: PlayerTypes.Human,
 }
 
 type OrientationMappingType = {
@@ -32,7 +32,7 @@ type OrientationMappingType = {
 };
 
 export interface Robot extends Player {
-  type: 'robot',
+  type: PlayerTypes.Robot,
   enemyShipsList: ShipsList,
   enemyField: BattleFieldCell[][];
   woundedEnemyShip: Coords[];

@@ -1,6 +1,6 @@
 import gameOptionsProcess, { initialGameOptionsState, setGameOptions } from './game-options-process';
 import { setAvailablePlayers } from '../available-players-process/available-players-process';
-import { fieldTypes, ShipShapes } from '../../const';
+import { fieldTypes, PlayerTypes, ShipShapes } from '../../const';
 
 describe('Reducer: gameOptionsProcess', () => {
   it('without additional parameters should return initial state', () => {
@@ -8,7 +8,7 @@ describe('Reducer: gameOptionsProcess', () => {
   });
 
   it('should update players by set data', () => {
-    const newPlayers = { players: [{id: 'newId', name: 'playerName'}, {id: 'unknown', name: 'unknown'}]};
+    const newPlayers = { players: [{id: 'newId', name: 'playerName', type: PlayerTypes.Human}, {id: 'unknown', name: 'unknown', type: PlayerTypes.Robot}]};
     const stateWithChangedPlayers = { ...initialGameOptionsState, ...newPlayers };
     expect(gameOptionsProcess.reducer(initialGameOptionsState, setGameOptions(newPlayers))).toEqual(stateWithChangedPlayers);
 
@@ -22,7 +22,7 @@ describe('Reducer: gameOptionsProcess', () => {
   });
 
   it('should set the user as first player and first robot as second player when happening available players receiving', () => {
-    const availablePlayers = { user: { id: 'firstId', name: 'userName' }, robots: [{ id: 'secondId', name: 'robotName' }] };
+    const availablePlayers = { user: { id: 'firstId', name: 'userName', type: PlayerTypes.Human }, robots: [{ id: 'secondId', name: 'robotName', type: PlayerTypes.Robot }] };
     const stateWithChangedPlayers = { ...initialGameOptionsState, players: [availablePlayers.user, availablePlayers.robots[0]] };
 
     expect(gameOptionsProcess.reducer(void 0, {type: 'UNKNOWN_ACTION'})).toEqual(initialGameOptionsState);

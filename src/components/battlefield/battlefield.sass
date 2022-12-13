@@ -1,0 +1,30 @@
+@use '../variables' as *
+
+.battlefield
+  color: $ship-border
+
+.field
+  width: 360px
+  height: 360px
+  display: grid
+
+.field-container
+  width: 360px
+  flex-grow: 0
+  flex-shrink: 0
+
+.grid-3 
+  grid-template-columns: repeat(4, 1fr)
+  grid-template-rows: repeat(4, 1fr)
+
+.grid-5
+  grid-template-columns: repeat(6, 1fr)
+  grid-template-rows: repeat(6, 1fr)
+
+.grid-7
+  grid-template-columns: repeat(8, 1fr)
+  grid-template-rows: repeat(8, 1fr)
+
+.grid-10
+  grid-template-columns: repeat(11, 1fr)
+  grid-template-rows: repeat(11, 1fr)

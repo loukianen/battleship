@@ -2,10 +2,10 @@ import isEmpty from 'lodash-ts/isEmpty';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { setAvailablePlayers } from '../available-players-process/available-players-process';
 import { OptionsDataType, OptionsPayloadDataType } from '../../types';
-import { fieldTypes, NameSpace, ShipShapes } from '../../const';
+import { fieldTypes, NameSpace, PlayerTypes, ShipShapes } from '../../const';
 
 export const initialGameOptionsState: OptionsDataType = {
-  players: [{id: 'unknown', name: 'unknown'}, {id: 'unknown', name: 'unknown'}],
+  players: [{id: 'unknown', name: 'unknown', type: PlayerTypes.Human}, {id: 'unknown', name: 'unknown', type: PlayerTypes.Robot}],
   fieldType: fieldTypes[3],
   shipType: ShipShapes.Line,
 };
@@ -25,6 +25,7 @@ const availablePlayersProcess = createSlice({
       if (!isEmpty(robots)) {
         state.players = [state.players[0], robots[0]];
       }
+      return state;
     });
   },
 });

@@ -355,7 +355,7 @@ describe('Game', () => {
 
   it('getAvailablePlayers() should return correct data', () => {
     game.setDefaultOptions();
-    const correctPlayerData = { id: expect.any(String), name: expect.any(String) };
+    const correctPlayerData = { id: expect.any(String), name: expect.any(String), type: expect.any(String) };
     const players = game.getAvailablePlayers();
 
     expect(players).toMatchObject({
