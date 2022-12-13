@@ -11,7 +11,7 @@ describe('LanguageDropdownItem', () => {
   ];
 
   it.each(options)('should renred correct element for %s', (lang, title, buttonId, buttonTestId, fileName, altText) => {
-    render(<LanguageDropdownItem lang={lang} title={title} onClickFunc={onClick} isActive={false} />);
+    render(<LanguageDropdownItem lang={lang} title={title} onClick={onClick} isActive={false} />);
 
     const img = screen.getByRole('img');
     expect(img).toBeInTheDocument();

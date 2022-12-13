@@ -58,13 +58,7 @@ export interface ShipInterface {
   getOrientationVariants: () => ShipOrientation[];
 }
 
-// export type ShipClassType = 'fourDeck' | 'threeDeck' | 'doubleDeck' | 'oneDeck';
-
 export type ShipsList = { [index: string]: number };
-
-// export type ShipOrientation = 'east' | 'north' | 'west' | 'south';
-
-// export type ShipShape = 'line' | 'any';
 
 export type Shoot = {
   playerId: number,
@@ -74,5 +68,3 @@ export type Shoot = {
 export type State = ReturnType<typeof store.getState>;
 
 export type Record = [number, Coords | null, ShootResult];
-
-// export type RecordText = 'offTarget' | 'wounded' | 'killed' | 'started' | 'won';

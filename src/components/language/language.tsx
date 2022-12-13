@@ -14,7 +14,7 @@ const Language = () => {
   const isLanguageActive = (lang: string) => i18n.language === lang;
 
   const handleLangButtonClick = useCallback((evt: MouseEvent) => {
-    const node = evt.target as HTMLElement; 
+    let node = evt.target as HTMLElement;
     const newLanguage = node.getAttribute('lang') as string;
     i18n.changeLanguage(newLanguage);
   }, [i18n]);
@@ -23,8 +23,8 @@ const Language = () => {
     <Dropdown as={ButtonGroup} className="text-center" data-testid="langDropdown">
       <Dropdown.Toggle className="btn-light nav-btn" data-testid="languageButton">{t('ui.navLanguage')}</Dropdown.Toggle>
       <Dropdown.Menu data-testid="languageMenu">
-        <Dropdown.Item as={LanguageDropdownItem} lang={en} title={t('ui.englishLanguage')} isActive={isLanguageActive(en)} onClickFunc={handleLangButtonClick} />
-        <Dropdown.Item as={LanguageDropdownItem} lang={ru} title={t('ui.russianLanguage')} isActive={isLanguageActive(ru)} onClickFunc={handleLangButtonClick} />
+        <Dropdown.Item as={LanguageDropdownItem} lang={en} title={t('ui.englishLanguage')} isActive={isLanguageActive(en)} onClick={handleLangButtonClick} />
+        <Dropdown.Item as={LanguageDropdownItem} lang={ru} title={t('ui.russianLanguage')} isActive={isLanguageActive(ru)} onClick={handleLangButtonClick} />
       </Dropdown.Menu>
     </Dropdown>
   );
