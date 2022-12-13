@@ -1,9 +1,10 @@
 import isEqual from 'lodash-ts/isEqual';
 import { calcArea, generateField, uniqueId, getLocalizedUsername } from './utils';
-import { Field, FieldType, PlayerDataType } from '../types';
+import { Field, FieldType, Player } from '../types';
 import i18n from 'i18next';
 import en from '../locales/en';
 import ru from '../locales/ru';
+import { PlayerTypes } from '../const';
 
 describe('Function CalcArea', () => {
   const shipCoords = [{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }, { x: 2, y: 3 }];
@@ -85,19 +86,19 @@ describe('getLocalizedUserName', () => {
       },
     }));
 
-    const testData: [PlayerDataType, string][] = [
-      [{ id: 'user', name: 'user' }, 'You'],
-      [{ id: 'ushakov', name: 'some name' }, 'Ushakov'],
-      [{ id: 'jack', name: 'some name' }, 'Jack Sparrow'],
-      [{ id: 'nahimov', name: 'some name' }, 'Nahimov'],
+    const testData: [Player, string][] = [
+      [{ id: 'user', name: 'user', type: PlayerTypes.Human }, 'You'],
+      [{ id: 'ushakov', name: 'some name', type: PlayerTypes.Robot }, 'Ushakov'],
+      [{ id: 'jack', name: 'some name', type: PlayerTypes.Robot }, 'Jack Sparrow'],
+      [{ id: 'nahimov', name: 'some name', type: PlayerTypes.Robot }, 'Nahimov'],
     ];
-    it.each(testData)('should return english username %s', (player: PlayerDataType, originalName: string) => {
+    it.each(testData)('should return english username %s', (player: Player, originalName: string) => {
       expect(getLocalizedUsername(player, i18n)).toBe(originalName);
     });
 
     it('should return original name if user id is unknown', () => {
       const userName = 'Unknown Username'
-      const user = { id: 'unknown', name: userName };
+      const user = { id: 'unknown', name: userName, type: PlayerTypes.Human };
       expect(getLocalizedUsername(user, i18n)).toBe(userName);
     });
   });
@@ -119,20 +120,20 @@ describe('getLocalizedUserName', () => {
       },
     }));
 
-    const testData: [PlayerDataType, string][] = [
-      [{ id: 'user', name: 'user' }, 'Вы'],
-      [{ id: 'ushakov', name: 'some name' }, 'Ушаков'],
-      [{ id: 'jack', name: 'some name' }, 'Джек Воробей'],
-      [{ id: 'nahimov', name: 'some name' }, 'Нахимов'],
+    const testData: [Player, string][] = [
+      [{ id: 'user', name: 'user', type: PlayerTypes.Human }, 'Вы'],
+      [{ id: 'ushakov', name: 'some name', type: PlayerTypes.Robot }, 'Ушаков'],
+      [{ id: 'jack', name: 'some name', type: PlayerTypes.Robot }, 'Джек Воробей'],
+      [{ id: 'nahimov', name: 'some name', type: PlayerTypes.Robot }, 'Нахимов'],
     ];
 
-    it.each(testData)('should return russian username %s', (player: PlayerDataType, originalName: string) => {
+    it.each(testData)('should return russian username %s', (player: Player, originalName: string) => {
       expect(getLocalizedUsername(player, i18n)).toBe(originalName);
     });
 
     it('should return original name if user id is unknown', () => {
       const userName = 'Unknown Username'
-      const user = { id: 'unknown', name: userName };
+      const user = { id: 'unknown', name: userName, type: PlayerTypes.Robot };
       expect(getLocalizedUsername(user, i18n)).toBe(userName);
     });
   });

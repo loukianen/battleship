@@ -2,9 +2,9 @@ import './battlefield.sass';
 import flatten from 'lodash-ts/flatten';
 import { useTranslation } from 'react-i18next';
 import { getLocalizedUsername } from '../../services/utils';
-import { PlayerDataType } from '../../types';
+import { Player } from '../../types';
 
-const Battlefield = (props: {owner: PlayerDataType, mark?: string}) => {
+const Battlefield = (props: {owner: Player, mark?: string}) => {
   const { t, i18n } = useTranslation();
   const { owner, mark } = props;
   const markText = mark ? ` ${mark}` : '';

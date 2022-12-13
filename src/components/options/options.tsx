@@ -23,8 +23,8 @@ const Options = () => {
   const [player1, player2] = useAppSelector(getPlayers);
 
   const getPlayerValues = (users: Player[]) => users.map(
-    ({id, name }) => {
-      const text = getLocalizedUsername({id, name}, i18n);
+    ({id, name, type }) => {
+      const text = getLocalizedUsername({id, name, type}, i18n);
       return { value: id, text };
     });
 

@@ -3,7 +3,7 @@ import flatten from 'lodash-ts/flatten';
 import isArray from 'lodash-ts/isArray';
 import isEmpty from 'lodash-ts/isEmpty';
 import isEqual from 'lodash-ts/isEqual';
-import { BattleFieldCell, Coords, Field, FieldType, PlayerDataType, ShipsList } from "../types";
+import { BattleFieldCell, Coords, Field, FieldType, Player, ShipsList } from "../types";
 import { OptionsMenuKeys } from '../locales/types';
 import { BattlefieldCellTypes } from '../const';
 
@@ -59,7 +59,7 @@ const pointAreaMapping = {
 };
 
 type LocalisationFunc = typeof i18n;
-export const getLocalizedUsername = (user: PlayerDataType, lf: LocalisationFunc) => {
+export const getLocalizedUsername = (user: Player, lf: LocalisationFunc) => {
   const { id, name } = user;
   let text: string = name;
   if (lf.exists(`optionsMenu.${id}`)) {
