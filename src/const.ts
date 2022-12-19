@@ -5,12 +5,21 @@ export enum BattlefieldType {
   PlayerField = 'player field',
 }
 
-export enum BattlefieldCellType {
-  Clear = 'clear',
+export enum CellType {
+  Clear = 'cell',
   Ship = 'ship',
   Area = 'area',
   Killed = 'killed ship',
   Shooted = 'shooted',
+  TL = 'cell-top-left',
+  T = 'cell-top',
+  TR = 'cell-top-right',
+  R = 'cell-right',
+  BR = 'cell-bottom-right',
+  B = 'cell-bottom',
+  BL = 'cell-bottom-left',
+  L = 'cell-left',
+  I = 'cell-inside',
 }
 
 export enum GameErrorMessage {

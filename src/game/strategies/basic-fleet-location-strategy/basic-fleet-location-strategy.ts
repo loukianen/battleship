@@ -2,7 +2,7 @@ import flatten from 'lodash-ts/flatten';
 import getAvailableShips from '../../../ships/get-available-ships';
 import {calcArea, createBattlefield, getClearCells, getRandomElFromColl, isValidCoords, isValidShipCoords, uniqueId } from '../../../services/utils';
 import { BattleFieldCell, Coords, Field, ShipInterface, ShipsList } from '../../../types';
-import { BattlefieldCellType, shipMainClasses, ShipShape } from '../../../const';
+import { CellType, shipMainClasses, ShipShape } from '../../../const';
 import Ship from '../../../ships/ship/ship';
 
 const normalizeBattlefieldForGame = (battlefield: BattleFieldCell[][]) : Field => battlefield
@@ -53,7 +53,7 @@ class BasicFleetLocationStrategy {
     const clearCells : { ids: Array<number>, cells: { [i: string | number]: BattleFieldCell } } = { ids: [], cells: {} };
     return this.battlefield.forEach((row) => {
       row.forEach((cell) => {
-        if (cell.type === BattlefieldCellType.Clear) {
+        if (cell.type === CellType.Clear) {
           const cellId = cell.id;
           clearCells.ids.push(cellId);
           clearCells.cells[cellId] = cell;
@@ -86,14 +86,14 @@ class BasicFleetLocationStrategy {
     shipCoordsForWritingOnTheField.forEach(({ x, y }) => {
       const cell = this.battlefield[x][y];
       cell.shipId = shipId;
-      cell.type = BattlefieldCellType.Ship;
+      cell.type = CellType.Ship;
     });
 
     const shipArea = calcArea(shipCoordsForWritingOnTheField);
     const areaForWritingOnTheField = shipArea.filter((item) => isValidCoords(item, 0, this.battlefield.length - 1));
     areaForWritingOnTheField.forEach(({ x, y}) => {
       const cell = this.battlefield[x][y];
-      cell.type = BattlefieldCellType.Area;
+      cell.type = CellType.Area;
     })
   }
 }

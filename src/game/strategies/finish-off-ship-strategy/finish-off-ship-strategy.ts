@@ -1,5 +1,5 @@
 import { calcArea, getRandomElFromColl, isValidCoords } from "../../../services/utils";
-import { BattlefieldCellType, ShipOrientation, ShipShape } from "../../../const";
+import { CellType, ShipOrientation, ShipShape } from "../../../const";
 import { BattleFieldCell, Coords } from "../../../types";
 
 const getOverMinEndMax = (arr: number[]) => ([Math.min(...arr) - 1, Math.max(...arr) + 1]);
@@ -54,7 +54,7 @@ class FinishOffShipStrategy {
     const areaForShooting = this.shipOrientation ? this.getEdgePoints() : calcArea(this.woundedShip, 'without');
     const posibleShoots = areaForShooting
       .filter((coords) => isValidCoords(coords, 0, this.battlefield.length - 1))
-      .filter(({x, y}) => this.battlefield[x][y].type === BattlefieldCellType.Clear);
+      .filter(({x, y}) => this.battlefield[x][y].type === CellType.Clear);
     return posibleShoots.length > 0 ? getRandomElFromColl(posibleShoots) : null;
   }
 

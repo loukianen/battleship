@@ -2,7 +2,7 @@ import BasicFleetLocationStrategy from '../../strategies/basic-fleet-location-st
 import ShootingOnClearCellsStrategy from '../../strategies/shooting-on-clear-cells-strategy/shooting-on-clear-cells-strategy';
 import { calcArea, createBattlefield, isValidCoords } from '../../../services/utils';
 import { BattleFieldCell, Coords, Field, Record, Robot, ShipsList } from '../../../types';
-import { BattlefieldCellType, GameErrorMessage, PlayerType, ShipShape, ShootResult } from '../../../const';
+import { CellType, GameErrorMessage, PlayerType, ShipShape, ShootResult } from '../../../const';
 
 export default class JackSparrow implements Robot {
   id;
@@ -25,13 +25,13 @@ export default class JackSparrow implements Robot {
 
   processHit(coords: Coords) {
     const { x, y } = coords;
-    this.enemyField[x][y].type = BattlefieldCellType.Killed;
+    this.enemyField[x][y].type = CellType.Killed;
     this.woundedEnemyShip.push(coords);
   }
 
   makrCellAsShooted(coords: Coords) {
     const { x, y } = coords;
-    this.enemyField[x][y].type = BattlefieldCellType.Shooted;
+    this.enemyField[x][y].type = CellType.Shooted;
   }
 
   handleShoot(record: Record) {

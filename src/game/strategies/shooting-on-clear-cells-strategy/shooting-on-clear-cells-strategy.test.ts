@@ -1,6 +1,6 @@
 import { createBattlefield, generateField } from "../../../services/utils";
 import { BattleFieldCell, Coords } from "../../../types";
-import { BattlefieldCellType, ShipShape } from "../../../const";
+import { CellType, ShipShape } from "../../../const";
 import ShootingOnClearCellsStrategy from "./shooting-on-clear-cells-strategy";
 
 describe('ShootingOnClearCellsStrategy', () => {
@@ -8,14 +8,14 @@ describe('ShootingOnClearCellsStrategy', () => {
 
   const makeClearArea = (coords: Coords[]) => {
     coords.forEach(({x, y}) => {
-      shootedBattlefield[x][y].type = BattlefieldCellType.Clear;
+      shootedBattlefield[x][y].type = CellType.Clear;
     });
   };
 
   beforeEach(() => {
     const field = generateField('5');
     const battlefield = createBattlefield(field);
-    shootedBattlefield = battlefield.map((row) => row.map((cell) => ({...cell, type: BattlefieldCellType.Shooted})));
+    shootedBattlefield = battlefield.map((row) => row.map((cell) => ({...cell, type: CellType.Shooted})));
   });
 
   it('should give shoot from correct area', () => {

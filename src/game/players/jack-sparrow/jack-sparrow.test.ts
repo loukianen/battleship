@@ -2,7 +2,7 @@ import flatten from 'lodash-ts/flatten';
 import JackSparrow from './jack-sparrow';
 import checkField from '../../../services/check-field';
 import { calcArea, generateField, generateShipsList } from '../../../services/utils';
-import { BattlefieldCellType, fieldTypes, GameErrorMessage, PlayerType, ShootResult } from '../../../const';
+import { CellType, fieldTypes, GameErrorMessage, PlayerType, ShootResult } from '../../../const';
 import { Record } from '../../../types';
 import ShootingOnClearCellsStrategy from '../../strategies/shooting-on-clear-cells-strategy/shooting-on-clear-cells-strategy';
 
@@ -42,7 +42,7 @@ describe('JackSparrow', () => {
       const reportOffTarget: Record = [0, coords1 , ShootResult.OffTarget];
       jack.handleShoot(reportOffTarget);
 
-      expect(jack.enemyField[coords1.x][coords1.y].type).toBe(BattlefieldCellType.Shooted);
+      expect(jack.enemyField[coords1.x][coords1.y].type).toBe(CellType.Shooted);
     });
 
     it('should mark cell as "killed ship" if recieved message "wounded" and add coords to wounded ship', () => {
@@ -50,7 +50,7 @@ describe('JackSparrow', () => {
       const reportWounded: Record = [0, coords2 , ShootResult.Wounded];
       jack.handleShoot(reportWounded);
 
-      expect(jack.enemyField[coords2.x][coords2.y].type).toBe(BattlefieldCellType.Killed);
+      expect(jack.enemyField[coords2.x][coords2.y].type).toBe(CellType.Killed);
       expect(jack.woundedEnemyShip).toContainEqual(coords2);
     });
 
@@ -62,11 +62,11 @@ describe('JackSparrow', () => {
       const reportKilled: Record = [0, ship[1] , ShootResult.Killed];
       jack.handleShoot(reportKilled);
 
-      expect(jack.enemyField[ship[0].x][ship[0].y].type).toBe(BattlefieldCellType.Killed);
-      expect(jack.enemyField[ship[1].x][ship[1].y].type).toBe(BattlefieldCellType.Killed);
+      expect(jack.enemyField[ship[0].x][ship[0].y].type).toBe(CellType.Killed);
+      expect(jack.enemyField[ship[1].x][ship[1].y].type).toBe(CellType.Killed);
       expect(jack.woundedEnemyShip).toEqual([]);
       shipArea.forEach(({ x, y }) => {
-        expect(jack.enemyField[x][y].type).toBe(BattlefieldCellType.Shooted);
+        expect(jack.enemyField[x][y].type).toBe(CellType.Shooted);
       });
     });
   });

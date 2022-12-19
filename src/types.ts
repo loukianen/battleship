@@ -1,9 +1,11 @@
 import store from './store/store';
-import { PlayerType, ShipShape, ShipClass, ShipOrientation, ShootResult } from './const';
+import { CellType, PlayerType, ShipShape, ShipClass, ShipOrientation, ShootResult } from './const';
 
 export type AppDispatch = typeof store.dispatch;
 
-export type BattleFieldCell = { id: number, type: string, shipId: number | null, coords: Coords };
+export type BattleFieldCell = Omit<Cell, 'defaultType' | 'value'>;
+
+export type Cell = { id: number, shipId: number | null, type: CellType, defaultType: CellType, value: string | number | null, coords: Coords }; // UI-cell
 
 export type Coords = { x: number, y: number };
 
@@ -20,6 +22,7 @@ export interface Player {
 export type PlayersDataType = { user: Player, robots: Player[] };
 export type OptionsDataType = { players: Player[], fieldType: FieldType, shipType: ShipShape };
 export type OptionsPayloadDataType = { players?: Player[], fieldType?: FieldType, shipType?: ShipShape };
+export type FieldsPayloadDataType = { field: string }
 
 export interface Human extends Player {
   type: PlayerType.Human,
