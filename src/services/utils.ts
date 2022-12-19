@@ -4,7 +4,7 @@ import isArray from 'lodash-ts/isArray';
 import isEmpty from 'lodash-ts/isEmpty';
 import isEqual from 'lodash-ts/isEqual';
 import { BattleFieldCell, Coords, Field, FieldType, Player, ShipsList } from "../types";
-import { OptionsMenuKeys } from '../locales/types';
+import { OptionsMenuKey } from '../locales/types';
 import { CellType } from '../const';
 
 const isArrayNotIncludesObject = <Type>(arr: Type[], object: Type) : boolean => arr.every((item) => !isEqual(item, object));
@@ -63,7 +63,7 @@ export const getLocalizedUsername = (user: Player, lf: LocalisationFunc) => {
   const { id, name } = user;
   let text: string = name;
   if (lf.exists(`optionsMenu.${id}`)) {
-    const menuKey = id as OptionsMenuKeys;
+    const menuKey = id as OptionsMenuKey;
     text = lf.t(`optionsMenu.${menuKey}`);
   }
   return text;

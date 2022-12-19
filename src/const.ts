@@ -39,7 +39,7 @@ export enum GameErrorMessage {
 export enum GameOption {
   Player1 = 'player1',
   Player2 = 'player2',
-  FieldSize = 'fieldSize',
+  FieldSize = 'fieldType',
   ShipType = 'shipType',
 }
 

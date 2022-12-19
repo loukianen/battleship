@@ -1,30 +1,95 @@
 @use '../variables' as *
 
-.battlefield
-  color: $ship-border
-
-.field
-  width: 360px
-  height: 360px
-  display: grid
-
 .field-container
   width: 360px
   flex-grow: 0
   flex-shrink: 0
 
-.grid-3 
-  grid-template-columns: repeat(4, 1fr)
-  grid-template-rows: repeat(4, 1fr)
+  &_battlefield
+  color: $ship-border
 
-.grid-5
-  grid-template-columns: repeat(6, 1fr)
-  grid-template-rows: repeat(6, 1fr)
+  &_grid
+    &__3 
+      grid-template-columns: repeat(4, 1fr)
+      grid-template-rows: repeat(4, 1fr)
+      font-size: 180%
 
-.grid-7
-  grid-template-columns: repeat(8, 1fr)
-  grid-template-rows: repeat(8, 1fr)
+    &__5
+      grid-template-columns: repeat(6, 1fr)
+      grid-template-rows: repeat(6, 1fr)
+      font-size: 150%
 
-.grid-10
-  grid-template-columns: repeat(11, 1fr)
-  grid-template-rows: repeat(11, 1fr)
+    &__7
+      grid-template-columns: repeat(8, 1fr)
+      grid-template-rows: repeat(8, 1fr)
+      font-size: 130%
+
+    &__10
+      grid-template-columns: repeat(11, 1fr)
+      grid-template-rows: repeat(11, 1fr)
+
+  &_field
+    width: 360px
+    height: 360px
+    display: grid
+
+    &_cell
+      text-align: center
+      font-weight: bold
+      font-style: italic
+      color: $ship-border
+      background-color: $bg-field
+
+      &__cell
+        background-color: transparent
+
+      &__cell-top-left
+        border-left: $border-thick solid $main-color
+        border-top: $border-thick solid $main-color
+        border-right: $border-thin solid $main-color
+        border-bottom: $border-thin solid $main-color
+
+      &__cell-top-right
+        border-left: $border-thin solid $main-color
+        border-top: $border-thick solid $main-color
+        border-right: $border-thick solid $main-color
+        border-bottom: $border-thin solid $main-color
+
+      &__cell-top
+        border-left: $border-thin solid $main-color
+        border-top: $border-thick solid $main-color
+        border-right: $border-thin solid $main-color
+        border-bottom: $border-thin solid $main-color
+
+      &__cell-bottom-left
+        border-left: $border-thick solid $main-color
+        border-top: $border-thin solid $main-color
+        border-right: $border-thin solid $main-color
+        border-bottom: $border-thick solid $main-color
+
+      &__cell-bottom-right
+        border-left: $border-thin solid $main-color
+        border-top: $border-thin solid $main-color
+        border-right: $border-thick solid $main-color
+        border-bottom: $border-thick solid $main-color
+
+      &__cell-bottom
+        border-left: $border-thin solid $main-color
+        border-top: $border-thin solid $main-color
+        border-right: $border-thin solid $main-color
+        border-bottom: $border-thick solid $main-color
+
+      &__cell-left
+        border-left: $border-thick solid $main-color
+        border-top: $border-thin solid $main-color
+        border-right: $border-thin solid $main-color
+        border-bottom: $border-thin solid $main-color
+
+      &__cell-right
+        border-left: $border-thin solid $main-color
+        border-top: $border-thin solid $main-color
+        border-right: $border-thick solid $main-color
+        border-bottom: $border-thin solid $main-color
+
+      &__cell-inside
+        border: $border-thin solid $main-color

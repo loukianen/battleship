@@ -1,7 +1,7 @@
 import './options-dropdown-item.sass';
 import { useTranslation } from 'react-i18next';
 import Form from 'react-bootstrap/Form';
-import { OptionsMenuKeys } from '../../locales/types';
+import { OptionsMenuKey } from '../../locales/types';
 
 type OptionsDropdownItemProps = {
   itemName: string;
@@ -13,7 +13,7 @@ const OptionsDropdownItem = (props: OptionsDropdownItemProps) => {
   const { itemName, options, curValue } = props;
   const { t } = useTranslation();
 
-  const menuKey = itemName as OptionsMenuKeys;
+  const menuKey = itemName as OptionsMenuKey;
   const isOnlyOneValue = options.length < 2;
 
   return (

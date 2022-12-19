@@ -2,25 +2,28 @@ import './battlefield.sass';
 import flatten from 'lodash-ts/flatten';
 import { useTranslation } from 'react-i18next';
 import { getLocalizedUsername } from '../../services/utils';
-import { Player } from '../../types';
+import { Cell, Player } from '../../types';
+import { FieldTextKey } from '../../locales/types';
 import { BattlefieldType } from '../../const';
 
-const Battlefield = (props: {owner: Player, type: BattlefieldType, mark?: string}) => {
+const Battlefield = (props: {owner: Player, type: BattlefieldType, mark?: string, field: Cell[][]}) => {
   const { t, i18n } = useTranslation();
-  const { owner, mark } = props;
+  const { owner, mark, field } = props;
   const markText = mark ? ` ${mark}` : '';
   const ownerName = `${t('ui.admiral')}: ${getLocalizedUsername(owner, i18n)}${markText}`;
+  const fieldSize = field.length - 1;
 
-  const renderEnemyFieldCell = (id: string, cellValue: string) => (
-    <div key={id} className={`d-flex justify-content-center align-items-center`}>{cellValue}</div>
-  );
+  const renderCell = (id: string, type: string, cellValue: FieldTextKey | number) => {
+    const cellClassName = `field-container_field_cell field-container_field_cell__${type}`;
+    const text = cellValue && typeof cellValue !== 'number' ? t(`field.${cellValue}`) : cellValue;
+    return (<div key={id} className={`${cellClassName} d-flex justify-content-center align-items-center`}>{text}</div>);
+  };
 
   return(
     <div className="field-container">
-      <div className="text-center battlefield h4" id={`${owner.id}-fleet`}>{ownerName}</div>
-      <div className={`col field rounded mb-3 grid-${10}`} id={'fieldId'}>
-        {flatten(Array.from(Array(11), () => Array(11).fill('.')).map((row, y) => row
-          .map((el, x) => renderEnemyFieldCell(`${x}${y}`, el))))}
+      <div className="text-center field-container_battlefield h4" id={`${owner.id}-fleet`}>{ownerName}</div>
+      <div className={`col field-container_field rounded mb-3 field-container_grid__${fieldSize}`} id={'fieldId'}>
+        {flatten(field).map(({id, type, value}) => renderCell(id, type, value))}
       </div>
     </div>
   );

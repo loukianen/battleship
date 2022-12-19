@@ -9,7 +9,7 @@ import { getUser, getRobots } from '../../store/available-players-process/select
 import { getPlayers, getFieldType, getShipType } from '../../store/game-options-process/selectors';
 import OptionsDropdownItem from '../options-dropdown-item/options-dropdown-item';
 import { fieldTypes, shipTypes, GameOption } from '../../const';
-import { OptionsMenuKeys } from '../../locales/types';
+import { OptionsMenuKey } from '../../locales/types';
 import { Player } from '../../types';
 import { getLocalizedUsername } from '../../services/utils';
 
@@ -18,8 +18,8 @@ const Options = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
   const robots = useAppSelector(getRobots);
-  const curShipType = useAppSelector(getShipType) as OptionsMenuKeys;
-  const curFieldType = useAppSelector(getFieldType) as OptionsMenuKeys;
+  const curShipType = useAppSelector(getShipType) as OptionsMenuKey;
+  const curFieldType = useAppSelector(getFieldType) as OptionsMenuKey;
   const [player1, player2] = useAppSelector(getPlayers);
 
   const getPlayerValues = (users: Player[]) => users.map(

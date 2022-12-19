@@ -66,7 +66,7 @@ const en = {
     unit: 'pcs',
   },
   optionsMenu: {
-    fieldSize: 'Battle field size',
+    fieldType: 'Battle field size',
     '10': '10 x 10 cells',
     '7': '7 x 7 cells',
     '5': '5 x 5 cells',

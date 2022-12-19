@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { configureMockStore, MockStore } from '@jedmao/redux-mock-store';
 import Fields from './fields';
 import { initialGameOptionsState } from '../../store/game-options-process/game-options-process';
+import { initialFieldsState } from '../../store/fields-process/fields-process';
 import { NameSpace } from '../../const';
 
 const mockStore = configureMockStore();
@@ -20,6 +21,7 @@ describe('Fields', () => {
   it('should render admiral names as "Unknown I" and "Unknown II"', () => {
     const store = mockStore({
       [NameSpace.GameOptions]: initialGameOptionsState,
+      [NameSpace.Fields]: initialFieldsState,
     });
     renderFields(store);
 
@@ -30,6 +32,7 @@ describe('Fields', () => {
   it('should render admiral names as "You" and "Nahimov"', () => {
     const store = mockStore({
       [NameSpace.GameOptions]: { ...initialGameOptionsState, players: [{id: 'user', name: 'user'}, {id: 'nahimov', name: 'unknown'}]},
+      [NameSpace.Fields]: initialFieldsState,
     });
     renderFields(store);
 
