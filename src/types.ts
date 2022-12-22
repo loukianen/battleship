@@ -11,7 +11,22 @@ export type Coords = { x: number, y: number };
 
 export type Field = Array<Array<number>>; // empty cell - 0, ship - any number > 0 as ship id;
 
+export type FieldsPayloadDataType = { field: string };
+
 export type FieldType = '3' | '5' | '7' | '10';
+
+export interface Human extends Player {
+  type: PlayerType.Human,
+}
+
+export type LogRecord = [number, ...Record];
+
+export type OptionsDataType = { players: Player[], fieldType: FieldType, shipType: ShipShape };
+export type OptionsPayloadDataType = { players?: Player[], fieldType?: FieldType, shipType?: ShipShape };
+
+type OrientationMappingType = {
+  [index: string]: Function,
+};
 
 export interface Player {
   id: string,
@@ -20,17 +35,6 @@ export interface Player {
 }
 
 export type PlayersDataType = { user: Player, robots: Player[] };
-export type OptionsDataType = { players: Player[], fieldType: FieldType, shipType: ShipShape };
-export type OptionsPayloadDataType = { players?: Player[], fieldType?: FieldType, shipType?: ShipShape };
-export type FieldsPayloadDataType = { field: string }
-
-export interface Human extends Player {
-  type: PlayerType.Human,
-}
-
-type OrientationMappingType = {
-  [index: string]: Function,
-};
 
 export interface Robot extends Player {
   type: PlayerType.Robot,
