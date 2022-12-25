@@ -3,9 +3,19 @@ import {Provider} from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import { configureMockStore, MockStore } from '@jedmao/redux-mock-store';
 import AuxiliaryField from './auxiliary-field';
-import { GameState, NameSpace } from '../../const';
+import { GameState, NameSpace, PlayerType, ShootResult } from '../../const';
 
 const mockStore = configureMockStore();
+const gameOptions = { players: [
+  {id: 'user', name: 'user', type: PlayerType.Human},
+  {id: 'jack', name: 'Jack', type: PlayerType.Robot},
+],
+};
+const logState = [
+  [3, 2, {x: 1, y: 1}, ShootResult.OffTarget],
+  [2, 1, {x: 2, y: 1}, ShootResult.OffTarget],
+  [1, 1, {x: 2, y: 2}, ShootResult.Wounded],
+];
 
 const renderAuxiliaryField = (store: MockStore) => {
   render (
@@ -41,6 +51,9 @@ describe('Auxiliary Field', () => {
   it('should show Info and Log and should not show Dock if game state is started', () => {
     const store = mockStore({
       [NameSpace.GameState]: GameState.Started,
+      [NameSpace.GameOptions]: gameOptions,
+      [NameSpace.Log]: logState,
+      
     });
     renderAuxiliaryField(store);
 
@@ -52,6 +65,8 @@ describe('Auxiliary Field', () => {
   it('should show Info and Log and should not show Dock if game state is finished', () => {
     const store = mockStore({
       [NameSpace.GameState]: GameState.Finished,
+      [NameSpace.GameOptions]: gameOptions,
+      [NameSpace.Log]: logState,
     });
     renderAuxiliaryField(store);
 
