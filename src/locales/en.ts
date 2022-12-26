@@ -1,3 +1,5 @@
+import { GameType } from "../const";
+
 const en = {
   ui: {
     altLogo: 'Warship',
@@ -23,28 +25,28 @@ const en = {
   },
   info: {
     makeSetting: 'Set options and push "Start game" if you ready',
-    setFlot: 'Arrange the ships so that they do not touch each other. Double click to rotate the ship. When push "Start battle"',
+    setFleet: 'Arrange the ships so that they do not touch each other. Double click to rotate the ship. When push "Start battle"',
     killEnemy: 'Good luck!',
     putYourShips: 'You must finish arrangement your ships before starting the battle',
     turn: {
-      enemy: "The enemy's turn",
-      user: 'The your turn',
+      [GameType.Auto]: "'s turn",
+      [GameType.WithAI]: 'Your turn',
     },
     wounded: {
-      enemy: "The enemy hit your ship! The enemy's turn",
-      user: "You hit enemy's ship! The your turn",
+      [GameType.Auto]: " hit enemy's ship!",
+      [GameType.WithAI]: "You hit enemy's ship!",
     },
     killed: {
-      enemy: "The enemy has sunk your ship! The enemy's turn",
-      user: "You has sunk enemy's ship! The your turn",
+      [GameType.Auto]: " has sunk enemy's ship!",
+      [GameType.WithAI]: "You has sunk enemy's ship!",
     },
     won: {
-      enemy: 'The enemy won',
-      user: 'You won!',
+      [GameType.Auto]: ' won',
+      [GameType.WithAI]: 'You won!',
     },
     offTarget: {
-      enemy: 'The enemy missed the target. The your turn',
-      user: "You missed the target. The enemy's turn",
+      [GameType.Auto]: ' missed the target.',
+      [GameType.WithAI]: "You missed the target.",
     },
   },
   field: {
