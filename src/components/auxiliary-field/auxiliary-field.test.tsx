@@ -12,9 +12,9 @@ const gameOptions = { players: [
 ],
 };
 const logState = [
-  [3, 2, {x: 1, y: 1}, ShootResult.OffTarget],
-  [2, 1, {x: 2, y: 1}, ShootResult.OffTarget],
-  [1, 1, {x: 2, y: 2}, ShootResult.Wounded],
+  [3, 1, {x: 1, y: 1}, ShootResult.OffTarget],
+  [2, 0, {x: 2, y: 1}, ShootResult.OffTarget],
+  [1, 0, {x: 2, y: 2}, ShootResult.Wounded],
 ];
 
 const renderAuxiliaryField = (store: MockStore) => {

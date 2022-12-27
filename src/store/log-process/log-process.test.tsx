@@ -7,9 +7,9 @@ import { LogRecord, Record } from '../../types';
 const initialState: LogRecord[] = [];
 
 const state1: LogRecord[] = [
-  [3, 2, {x: 1, y: 1}, ShootResult.OffTarget],
-  [2, 1, {x: 2, y: 1}, ShootResult.OffTarget],
-  [1, 1, {x: 2, y: 2}, ShootResult.Wounded],
+  [3, 1, {x: 1, y: 1}, ShootResult.OffTarget],
+  [2, 0, {x: 2, y: 1}, ShootResult.OffTarget],
+  [1, 0, {x: 2, y: 2}, ShootResult.Wounded],
 ];
 
 describe('Reducer: logProcess', () => {
@@ -19,9 +19,9 @@ describe('Reducer: logProcess', () => {
 
   it('should set reversed data with ids', () => {
     const data: Record[] = [
-      [1, {x: 2, y: 2}, ShootResult.Wounded],
-      [1, {x: 2, y: 1}, ShootResult.OffTarget],
-      [2, {x: 1, y: 1}, ShootResult.OffTarget],
+      [0, {x: 2, y: 2}, ShootResult.Wounded],
+      [0, {x: 2, y: 1}, ShootResult.OffTarget],
+      [1, {x: 1, y: 1}, ShootResult.OffTarget],
     ];
     const expectedLog = state1;
 

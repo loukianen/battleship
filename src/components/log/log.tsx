@@ -11,7 +11,7 @@ import { FieldTextKey } from '../../locales/types';
 const Log = () => {
   const { t, i18n } = useTranslation();
   const records = useAppSelector(getLog);
-  const [player1, player2] = useAppSelector(getPlayers);
+  const players = useAppSelector(getPlayers);
   const score = 'unknown';
 
   const renderTHeader = () => (
@@ -26,7 +26,7 @@ const Log = () => {
   );
 
   const renderTBody = (data: [number, number, Coords | null, ShootResult][]) => data.map(([id, player, coords, result]) => {
-    const currentPlayer = player === 1 ? player1 : player2;
+    const currentPlayer = players[player];
     const playerName = getLocalizedUsername(currentPlayer, i18n);
     let coordsValue = null;
     if (coords !== null) {
