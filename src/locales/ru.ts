@@ -29,15 +29,15 @@ const ru = {
     killEnemy: 'Удачи!',
     putYourShips: 'Вы должны расставить все свои корабли до начала битвы',
     turn: {
-      [GameType.Auto]: 'Стреляет ',
+      [GameType.Auto]: ' cтреляет',
       [GameType.WithAI]: 'Ваш ход',
     },
     wounded: {
-      [GameType.Auto]: ' ранил вражеский корабль!',
+      [GameType.Auto]: ' ранил корабль!',
       [GameType.WithAI]: 'Вы ранили вражеский корабль!',
     },
     killed: {
-      [GameType.Auto]: ' потопил вражеский корабль!',
+      [GameType.Auto]: ' потопил корабль!',
       [GameType.WithAI]: 'Вы потопили вражеский корабль!',
     },
     won: {

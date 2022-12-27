@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { setGameState } from '../game-state-process/game-state-process';
 import { GameState, NameSpace } from '../../const';
-import { InfoKey } from '../../locales/types';
+import { InfoState, InfoStatePayload } from '../../types';
 
-const initialState = 'makeSetting' as InfoKey;
+export const initialInfoState : InfoState = { message: 'makeSetting', player: null};
 
 const infoProcess = createSlice({
   name: NameSpace.Billboard,
-  initialState: initialState,
+  initialState: initialInfoState,
   reducers: {
-    setInfo: (state, action: PayloadAction<InfoKey>) => {
-      state = action.payload;
+    setInfo: (state, action: PayloadAction<InfoStatePayload>) => {
+      const { message, player } = action.payload;
+      state.message = message;
+      state.player = player ? player : null;
       return state;
     },
   },
@@ -18,10 +20,10 @@ const infoProcess = createSlice({
     builder.addCase(setGameState, (state, action) => {
       const gameState = action.payload;
       if (gameState === GameState.NotStarted) {
-        state = initialState;
+        state = initialInfoState;
       }
       if (gameState === GameState.Started) {
-        state = 'setFleet';
+        state = {message: 'setFleet', player: null };
       }
       return state;
     });

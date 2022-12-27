@@ -3,7 +3,7 @@ import flatten from 'lodash-ts/flatten';
 import isArray from 'lodash-ts/isArray';
 import isEmpty from 'lodash-ts/isEmpty';
 import isEqual from 'lodash-ts/isEqual';
-import { BattleFieldCell, Coords, Field, FieldType, Player, ShipsList } from "../types";
+import { BattleFieldCell, Coords, Field, FieldType, Player, PlayerIndex, ShipsList } from "../types";
 import { OptionsMenuKey } from '../locales/types';
 import { CellType } from '../const';
 
@@ -96,7 +96,7 @@ export const generateField = (size: FieldType) : Field => {
   return Array(fieldSize).fill(Array(fieldSize).fill(0));
 };
 
-export const getEnemy = (index: number) : number => index === 0 ? 1 : 0;
+export const getEnemy = (index: PlayerIndex) : PlayerIndex => index === 0 ? 1 : 0;
 
 export const getRandomElFromColl = <Type>(arr: Array<Type>) : Type => {
   const index = Math.round(Math.random() * (arr.length - 1));

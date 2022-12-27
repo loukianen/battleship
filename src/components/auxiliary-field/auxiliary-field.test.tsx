@@ -3,6 +3,7 @@ import {Provider} from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import { configureMockStore, MockStore } from '@jedmao/redux-mock-store';
 import AuxiliaryField from './auxiliary-field';
+import { initialInfoState } from '../../store/info-process/info-process';
 import { GameState, NameSpace, PlayerType, ShootResult } from '../../const';
 
 const mockStore = configureMockStore();
@@ -29,6 +30,8 @@ describe('Auxiliary Field', () => {
   it('should show Info and Dock and should not show Log if game state is not started', () => {
     const store = mockStore({
       [NameSpace.GameState]: GameState.NotStarted,
+      [NameSpace.GameOptions]: gameOptions,
+      [NameSpace.Billboard]: initialInfoState,
     });
     renderAuxiliaryField(store);
 
@@ -40,6 +43,8 @@ describe('Auxiliary Field', () => {
   it('should show Info and Dock and should not show Log if game state is fleet setting', () => {
     const store = mockStore({
       [NameSpace.GameState]: GameState.SettingFleet,
+      [NameSpace.GameOptions]: gameOptions,
+      [NameSpace.Billboard]: initialInfoState,
     });
     renderAuxiliaryField(store);
 
@@ -53,7 +58,7 @@ describe('Auxiliary Field', () => {
       [NameSpace.GameState]: GameState.Started,
       [NameSpace.GameOptions]: gameOptions,
       [NameSpace.Log]: logState,
-      
+      [NameSpace.Billboard]: initialInfoState,
     });
     renderAuxiliaryField(store);
 
@@ -67,6 +72,7 @@ describe('Auxiliary Field', () => {
       [NameSpace.GameState]: GameState.Finished,
       [NameSpace.GameOptions]: gameOptions,
       [NameSpace.Log]: logState,
+      [NameSpace.Billboard]: initialInfoState,
     });
     renderAuxiliaryField(store);
 

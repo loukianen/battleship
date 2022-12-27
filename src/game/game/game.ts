@@ -4,7 +4,7 @@ import JackSparrow from '../players/jack-sparrow/jack-sparrow';
 import { initialAvailablePlayersState } from '../../store/available-players-process/available-players-process';
 import { generateField, generateShipsList, getRandomElFromColl, getEnemy } from '../../services/utils';
 import checkField from '../../services/check-field';
-import { Coords, Field, FieldType, Human, Record, Robot, ShipsList } from '../../types';
+import { Coords, Field, FieldType, Human, PlayerIndex, Record, Robot, ShipsList } from '../../types';
 import { GameErrorMessage, PlayerType, ShipShape, ShootResult } from '../../const';
 
 const getHittingResult = (field: Field, target: number) : ShootResult => {
@@ -56,7 +56,7 @@ const getPlayersData = () => {
 class Game {
   players: Array<Human | Robot>; // first player can be Human or Robot, second only Robot
   fields: Field[];
-  activePlayer: number;
+  activePlayer: PlayerIndex;
   fieldType: FieldType;
   shipShape: ShipShape;
   shipList: ShipsList;

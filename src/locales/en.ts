@@ -1,4 +1,4 @@
-import { GameType } from "../const";
+import { GameType, ShootResult } from "../const";
 
 const en = {
   ui: {
@@ -28,23 +28,23 @@ const en = {
     setFleet: 'Arrange the ships so that they do not touch each other. Double click to rotate the ship. When push "Start battle"',
     killEnemy: 'Good luck!',
     putYourShips: 'You must finish arrangement your ships before starting the battle',
-    turn: {
+    [ShootResult.Started]: {
       [GameType.Auto]: "'s turn",
       [GameType.WithAI]: 'Your turn',
     },
-    wounded: {
-      [GameType.Auto]: " hit enemy's ship!",
+    [ShootResult.Wounded]: {
+      [GameType.Auto]: " hit ship!",
       [GameType.WithAI]: "You hit enemy's ship!",
     },
-    killed: {
-      [GameType.Auto]: " has sunk enemy's ship!",
+    [ShootResult.Killed]: {
+      [GameType.Auto]: " has sunk ship!",
       [GameType.WithAI]: "You has sunk enemy's ship!",
     },
-    won: {
+    [ShootResult.Won]: {
       [GameType.Auto]: ' won',
       [GameType.WithAI]: 'You won!',
     },
-    offTarget: {
+    [ShootResult.OffTarget]: {
       [GameType.Auto]: ' missed the target.',
       [GameType.WithAI]: "You missed the target.",
     },

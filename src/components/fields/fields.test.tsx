@@ -5,6 +5,7 @@ import { configureMockStore, MockStore } from '@jedmao/redux-mock-store';
 import Fields from './fields';
 import { initialGameOptionsState } from '../../store/game-options-process/game-options-process';
 import { initialFieldsState } from '../../store/fields-process/fields-process';
+import { initialInfoState } from '../../store/info-process/info-process';
 import { NameSpace } from '../../const';
 
 const mockStore = configureMockStore();
@@ -22,6 +23,7 @@ describe('Fields', () => {
     const store = mockStore({
       [NameSpace.GameOptions]: initialGameOptionsState,
       [NameSpace.Fields]: initialFieldsState,
+      [NameSpace.Billboard]: initialInfoState,
     });
     renderFields(store);
 
@@ -33,6 +35,7 @@ describe('Fields', () => {
     const store = mockStore({
       [NameSpace.GameOptions]: { ...initialGameOptionsState, players: [{id: 'user', name: 'user'}, {id: 'nahimov', name: 'unknown'}]},
       [NameSpace.Fields]: initialFieldsState,
+      [NameSpace.Billboard]: initialInfoState,
     });
     renderFields(store);
 

@@ -1,5 +1,6 @@
 import store from './store/store';
 import { CellType, PlayerType, ShipShape, ShipClass, ShipOrientation, ShootResult } from './const';
+import { InfoKey } from './locales/types';
 
 export type AppDispatch = typeof store.dispatch;
 
@@ -19,10 +20,13 @@ export interface Human extends Player {
   type: PlayerType.Human,
 }
 
+export type InfoState = { message: InfoKey, player: PlayerIndex | null };
+export type InfoStatePayload = { message: InfoKey, player?: PlayerIndex };
+
 export type LogRecord = [number, ...Record];
 
 export type OptionsDataType = { players: Player[], fieldType: FieldType, shipType: ShipShape };
-export type OptionsPayloadDataType = { players?: Player[], fieldType?: FieldType, shipType?: ShipShape };
+export type OptionsPayloadDataType = Partial<OptionsDataType>; // { players?: Player[], fieldType?: FieldType, shipType?: ShipShape };
 
 type OrientationMappingType = {
   [index: string]: Function,
@@ -35,6 +39,8 @@ export interface Player {
 }
 
 export type PlayersDataType = { user: Player, robots: Player[] };
+
+export type PlayerIndex = 0 | 1;
 
 export interface Robot extends Player {
   type: PlayerType.Robot,
@@ -74,4 +80,4 @@ export type Shoot = {
 
 export type State = ReturnType<typeof store.getState>;
 
-export type Record = [number, Coords | null, ShootResult];
+export type Record = [PlayerIndex, Coords | null, ShootResult];

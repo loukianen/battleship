@@ -2,7 +2,7 @@ import '../../locales/i18n';
 import { render, screen } from '@testing-library/react';
 import Info from './info';
 
-describe('Info', () => {
+xdescribe('Info', () => {
   it('should render element with dock test id', () => {
     render(<Info />);
 
