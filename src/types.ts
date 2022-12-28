@@ -1,6 +1,5 @@
 import store from './store/store';
 import { CellType, PlayerType, ShipShape, ShipClass, ShipOrientation, ShootResult } from './const';
-import { InfoKey } from './locales/types';
 
 export type AppDispatch = typeof store.dispatch;
 
@@ -20,13 +19,15 @@ export interface Human extends Player {
   type: PlayerType.Human,
 }
 
+export type InfoKey = ShootResult | NotShootResultInfokey;
+export type NotShootResultInfokey = 'makeSetting' | 'setFleet' | 'killEnemy' | 'putYourShips';
 export type InfoState = { message: InfoKey, player: PlayerIndex | null };
 export type InfoStatePayload = { message: InfoKey, player?: PlayerIndex };
 
 export type LogRecord = [number, ...Record];
 
 export type OptionsDataType = { players: Player[], fieldType: FieldType, shipType: ShipShape };
-export type OptionsPayloadDataType = Partial<OptionsDataType>; // { players?: Player[], fieldType?: FieldType, shipType?: ShipShape };
+export type OptionsPayloadDataType = Partial<OptionsDataType>;
 
 type OrientationMappingType = {
   [index: string]: Function,

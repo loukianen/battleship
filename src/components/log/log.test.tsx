@@ -1,10 +1,10 @@
 import '../../locales/i18n';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import { configureMockStore, MockStore } from '@jedmao/redux-mock-store';
 import Log from './log';
 import english from '../../locales/en';
-import {NameSpace, PlayerType, ShootResult } from '../../const';
+import { NameSpace, PlayerType, ShootResult } from '../../const';
 
 const mockStore = configureMockStore();
 const gameOptions = { players: [
