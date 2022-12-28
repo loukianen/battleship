@@ -64,6 +64,7 @@ export enum NameSpace {
   ActivePlayer = 'ACTIVE_PLAYER',
   AvailablePlayers = 'AVAILABLE_PLAYERS',
   Billboard = 'BILLBOARD',
+  Dock = 'DOCK',
   Fields = 'FIELDS',
   Fleet = 'FLEET',
   GameOptions = 'GAME_OPTIONS',

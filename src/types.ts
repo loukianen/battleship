@@ -82,3 +82,5 @@ export type Shoot = {
 export type State = ReturnType<typeof store.getState>;
 
 export type Record = [PlayerIndex, Coords | null, ShootResult];
+
+export type UserFleet = { [ShipClass.One]: ShipInterface[], [ShipClass.Double]: ShipInterface[], [ShipClass.Three]: ShipInterface[], [ShipClass.Four]: ShipInterface[] };

@@ -3,9 +3,10 @@ import flatten from 'lodash-ts/flatten';
 import isArray from 'lodash-ts/isArray';
 import isEmpty from 'lodash-ts/isEmpty';
 import isEqual from 'lodash-ts/isEqual';
-import { BattleFieldCell, Coords, Field, FieldType, Player, PlayerIndex, ShipsList } from "../types";
+import getAvailableShips from '../ships/get-available-ships';
+import { BattleFieldCell, Coords, Field, FieldType, Player, PlayerIndex, ShipsList, UserFleet } from "../types";
 import { OptionsMenuKey } from '../locales/types';
-import { CellType } from '../const';
+import { CellType, ShipClass, shipMainClasses, ShipShape } from '../const';
 
 const isArrayNotIncludesObject = <Type>(arr: Type[], object: Type) : boolean => arr.every((item) => !isEqual(item, object));
 
@@ -117,6 +118,21 @@ export const createBattlefield = (field: Field) => field.map((row, x) => row.map
   const coords: Coords = { x, y };
   return { id, coords, type, shipId };
 }));
+
+export const createUserFleet = (shipsList: ShipsList, shipShape: ShipShape) => {
+  const fleet : UserFleet = { [ShipClass.One]: [], [ShipClass.Double]: [], [ShipClass.Three]: [], [ShipClass.Four]: [] };
+    for (const shipClass of shipMainClasses) {
+      const shipsFromClass = Array.from(Array(shipsList[shipClass]), () => {
+        const shipConstructors = getAvailableShips(shipClass, shipShape);
+        const shipConstructor = getRandomElFromColl(shipConstructors);
+        const shipId = uniqueId();
+        const ship = shipConstructor(shipId);
+        return ship;
+      });
+      fleet[shipClass] = shipsFromClass;
+    }
+  return fleet;
+};
 
 export const generateShipsList = (size: FieldType) : ShipsList => shipListMapping[size];
 

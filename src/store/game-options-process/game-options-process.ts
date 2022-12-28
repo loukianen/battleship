@@ -10,7 +10,7 @@ export const initialGameOptionsState: OptionsDataType = {
   shipType: ShipShape.Line,
 };
 
-const availablePlayersProcess = createSlice({
+const gameOptionsProcess = createSlice({
   name: NameSpace.GameOptions,
   initialState: initialGameOptionsState,
   reducers: {
@@ -30,6 +30,6 @@ const availablePlayersProcess = createSlice({
   },
 });
 
-export const { setGameOptions } = availablePlayersProcess.actions;
+export const { setGameOptions } = gameOptionsProcess.actions;
 
-export default availablePlayersProcess;
+export default gameOptionsProcess;
