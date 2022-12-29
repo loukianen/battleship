@@ -12,3 +12,15 @@
 .dock
   &_shipsfield
     @include shipsfield
+
+  &_cell30x30
+    height: 25px
+    width: 25px
+
+    &__ship 
+      background-color: $main-color
+      border: $border-thin solid $ship-border
+
+    &__empty-dock
+      background-color: $bg-field
+      border: $border-thin solid $main-color

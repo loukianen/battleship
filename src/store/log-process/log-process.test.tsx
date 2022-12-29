@@ -1,7 +1,7 @@
 import logProcess, { setLog, addNewRecord } from './log-process';
 import { setGameOptions } from '../game-options-process/game-options-process';
 import { setGameState } from '../game-state-process/game-state-process';
-import { fieldTypes, GameState, ShootResult } from '../../const';
+import { fieldTypes, GameState, PlayerType, ShootResult, ShipShape } from '../../const';
 import { LogRecord, Record } from '../../types';
 
 const initialState: LogRecord[] = [];
@@ -37,7 +37,15 @@ describe('Reducer: logProcess', () => {
 
   it('should clear log if change game options', () => {
     const currentState = state1;
-    expect(logProcess.reducer(currentState, setGameOptions({fieldType: fieldTypes[0]}))).toEqual(initialState);
+    const gameOptions = {
+      players: [
+        {id: 'newId', name: 'playerName', type: PlayerType.Robot},
+        {id: 'unknown', name: 'unknown', type: PlayerType.Robot},
+      ],
+      fieldType: fieldTypes[0],
+      shipType: ShipShape.Line,
+    };
+    expect(logProcess.reducer(currentState, setGameOptions(gameOptions))).toEqual(initialState);
   });
 
   it('should clear log if the game state was set to "setting fleet"', () => {

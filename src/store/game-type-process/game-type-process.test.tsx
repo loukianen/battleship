@@ -1,7 +1,7 @@
 import gameTypeProcess, { setGameType} from './game-type-process';
 import { setAvailablePlayers } from '../available-players-process/available-players-process';
 import { setGameOptions } from '../game-options-process/game-options-process';
-import { fieldTypes, GameType, PlayerType } from '../../const';
+import { fieldTypes, GameType, PlayerType, ShipShape } from '../../const';
 
 const initialState = GameType.WithAI;
 
@@ -25,15 +25,26 @@ describe('Reducer: gameTypeProcess', () => {
 
   it('should set game type by setGameOptions action with right data', () => {
     const gameOptions = {
-      players: [{id: 'newId', name: 'playerName', type: PlayerType.Robot},
-      {id: 'unknown', name: 'unknown', type: PlayerType.Robot}],
+      players: [
+        {id: 'newId', name: 'playerName', type: PlayerType.Robot},
+        {id: 'unknown', name: 'unknown', type: PlayerType.Robot},
+      ],
+      fieldType: fieldTypes[3],
+      shipType: ShipShape.Line,
     };
 
     expect(gameTypeProcess.reducer(GameType.WithAI, setGameOptions(gameOptions))).toEqual(GameType.Auto);
   });
 
   it('should not set game type by setGameOptions action without right data', () => {
-    const gameOptions = { fieldType: fieldTypes[0] };
+    const gameOptions = {
+      players: [
+        {id: 'newId', name: 'playerName', type: PlayerType.Human},
+        {id: 'unknown', name: 'unknown', type: PlayerType.Robot},
+      ],
+      fieldType: fieldTypes[0],
+      shipType: ShipShape.Line,
+    };
 
     expect(gameTypeProcess.reducer(GameType.WithAI, setGameOptions(gameOptions))).toEqual(GameType.WithAI);
   });

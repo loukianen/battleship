@@ -1,11 +1,63 @@
 import './dock.sass';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../hooks/hooks';
+import { getDock } from '../../store/dock-process/selectors';
+import { getGameState } from '../../store/game-state-process/selectors';
+import { GameState, shipMainClasses, ShipOrientation } from '../../const';
+
+export const initDocOrientationState = shipMainClasses
+  .reduce((acc: { [p: string]: ShipOrientation }, shipClass) => {
+    acc[shipClass] = ShipOrientation.East;
+    return acc;
+  }, {});
+
+const getDockStyle = (isDockEmpty: boolean) => {
+  if (isDockEmpty) {
+    return <div className="dock_cell30x30 dock_cell30x30__empty-dock rounded"></div>;
+  }
+  return <div className="dock_cell30x30 dock_cell30x30__ship rounded"></div>;
+};
 
 const Dock = () => {
+  const [docksOrientation, setDockOrientation] = useState(initDocOrientationState);
   const { t } = useTranslation();
+  const dock = useAppSelector(getDock);
+  const gameState = useAppSelector(getGameState);
+  const handleDragEnd = () => null;
+  // const handleDoubleClick = (className: unknown) => (el: HTMLDivElement) => {};
+  // const handleDragstart = (className: unknown) => (el: DragEvent) => {};
+
+  const renderTable = () => shipMainClasses.map((className, index) => {
+    const amountOfShips = dock[className].length;
+    const isDockEmpty = amountOfShips === 0;
+    const dockClasses = docksOrientation[className] === ShipOrientation.East
+    ? 'd-flex flex-row'
+    : 'd-flex flex-column';
+    const dockDesign = Array(shipMainClasses.length - index).fill(getDockStyle(isDockEmpty));
+    return (<tr key={className}>
+      <td>
+        {gameState !== GameState.SettingFleet
+          ? <div className={dockClasses} onDragEnd={handleDragEnd}>{dockDesign}</div>
+          : <div
+              className={dockClasses}
+            >
+              {dockDesign}
+          </div>}
+      </td>
+      <td>{amountOfShips}</td>
+      <td>{t('shipsTable.unit')}</td>
+    </tr>);
+  });
+
   return (
     <div className="d-flex flex-column dock_shipsfield justify-content-center text-center rounded" data-testid="dock">
         <h5 className="mt-2">{t('shipsTable.header')}</h5>
+        <table className="table table-borderless color-ship-border">
+          <tbody>
+            {renderTable()}
+          </tbody>
+        </table>
     </div>
   );
 };
