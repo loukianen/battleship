@@ -1,6 +1,5 @@
-import flatten from 'lodash-ts/flatten';
-import getAvailableShips from '../../../ships/get-available-ships';
-import {calcArea, createBattlefield, getClearCells, getRandomElFromColl, isValidCoords, isValidShipCoords, uniqueId } from '../../../services/utils';
+import {calcArea, createBattlefield, createUserFleet, getClearCells,
+  getRandomElFromColl, isValidCoords, isValidShipCoords } from '../../../services/utils';
 import { BattleFieldCell, Coords, Field, ShipInterface, ShipsList } from '../../../types';
 import { CellType, shipMainClasses, ShipShape } from '../../../const';
 import Ship from '../../../ships/ship/ship';
@@ -22,20 +21,8 @@ class BasicFleetLocationStrategy {
   }
 
   createFleet = () => {
-    const fleet = shipMainClasses.map((shipClass) => {
-      if (!this.shipsList[shipClass]) {
-        return [];
-      }
-      const shipsFromClass = Array.from(Array(this.shipsList[shipClass]), () => {
-        const shipConstructors = getAvailableShips(shipClass, this.shipShape);
-        const shipConstructor = getRandomElFromColl(shipConstructors);
-        const shipId = uniqueId();
-        const ship = shipConstructor(shipId);
-        return ship;
-      });
-      return shipsFromClass;
-    });
-    this.fleet = flatten(fleet);
+    const fleet = createUserFleet(this.shipsList, this.shipShape);
+    this.fleet = shipMainClasses.reduce((acc: ShipInterface[], shipClass) => [...acc, ...fleet[shipClass]], []);
   }
 
   getBattleField = (field: Field, shipsList: ShipsList, shipShape?: ShipShape) => {

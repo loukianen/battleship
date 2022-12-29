@@ -1,7 +1,7 @@
 import isEmpty from 'lodash-ts/isEmpty';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { setAvailablePlayers } from '../available-players-process/available-players-process';
-import { OptionsDataType, OptionsPayloadDataType } from '../../types';
+import { OptionsDataType } from '../../types';
 import { fieldTypes, NameSpace, PlayerType, ShipShape } from '../../const';
 
 export const initialGameOptionsState: OptionsDataType = {
@@ -14,7 +14,7 @@ const gameOptionsProcess = createSlice({
   name: NameSpace.GameOptions,
   initialState: initialGameOptionsState,
   reducers: {
-    setGameOptions: (state, action: PayloadAction<OptionsPayloadDataType>) => ({ ...state, ...action.payload }),
+    setGameOptions: (state, action: PayloadAction<OptionsDataType>) => action.payload,
   },
   extraReducers: (builder) => {
     builder.addCase(setAvailablePlayers, (state, action) => {

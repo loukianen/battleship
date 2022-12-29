@@ -27,7 +27,6 @@ export type InfoStatePayload = { message: InfoKey, player?: PlayerIndex };
 export type LogRecord = [number, ...Record];
 
 export type OptionsDataType = { players: Player[], fieldType: FieldType, shipType: ShipShape };
-export type OptionsPayloadDataType = Partial<OptionsDataType>;
 
 type OrientationMappingType = {
   [index: string]: Function,
@@ -83,4 +82,9 @@ export type State = ReturnType<typeof store.getState>;
 
 export type Record = [PlayerIndex, Coords | null, ShootResult];
 
-export type UserFleet = { [ShipClass.One]: ShipInterface[], [ShipClass.Double]: ShipInterface[], [ShipClass.Three]: ShipInterface[], [ShipClass.Four]: ShipInterface[] };
+export type UserFleet = {
+  [ShipClass.One]: ShipInterface[],
+  [ShipClass.Double]: ShipInterface[],
+  [ShipClass.Three]: ShipInterface[],
+  [ShipClass.Four]: ShipInterface[],
+};

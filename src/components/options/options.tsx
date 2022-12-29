@@ -8,9 +8,8 @@ import { setGameOptions } from '../../store/game-options-process/game-options-pr
 import { getUser, getRobots } from '../../store/available-players-process/selectors';
 import { getPlayers, getFieldType, getShipType } from '../../store/game-options-process/selectors';
 import OptionsDropdownItem from '../options-dropdown-item/options-dropdown-item';
-import { fieldTypes, shipTypes, GameOption } from '../../const';
-import { OptionsMenuKey } from '../../locales/types';
-import { Player } from '../../types';
+import { fieldTypes, shipTypes, GameOption, ShipShape } from '../../const';
+import { FieldType, OptionsDataType, Player } from '../../types';
 import { getLocalizedUsername } from '../../services/utils';
 
 const Options = () => {
@@ -18,8 +17,8 @@ const Options = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
   const robots = useAppSelector(getRobots);
-  const curShipType = useAppSelector(getShipType) as OptionsMenuKey;
-  const curFieldType = useAppSelector(getFieldType) as OptionsMenuKey;
+  const curShipType: ShipShape = useAppSelector(getShipType);
+  const curFieldType: FieldType = useAppSelector(getFieldType);
   const [player1, player2] = useAppSelector(getPlayers);
 
   const getPlayerValues = (users: Player[]) => users.map(
@@ -30,13 +29,14 @@ const Options = () => {
 
   const handleChooseOption = (evt: SyntheticEvent) => {
     const target = evt.target as HTMLSelectElement;
+    const oldState: OptionsDataType = { players: [player1, player2], fieldType: curFieldType, shipType: curShipType };
     const { name, value } = target;
     if (name === GameOption.Player1 || name === GameOption.Player2) {
       const newPlayer = [user, ...robots].filter(({id}) => id === value)[0];
       const players = name === GameOption.Player1 ? [newPlayer, player2] : [player1, newPlayer];
-      dispatch(setGameOptions({players}));
+      dispatch(setGameOptions({...oldState, players}));
     } else {
-      dispatch(setGameOptions({[name]: value}));
+      dispatch(setGameOptions({...oldState, [name]: value}));
     }
   };
 

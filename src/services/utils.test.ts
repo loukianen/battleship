@@ -1,10 +1,10 @@
 import isEqual from 'lodash-ts/isEqual';
-import { calcArea, generateField, uniqueId, getLocalizedUsername } from './utils';
+import { calcArea, createUserFleet, generateField, generateShipsList, getLocalizedUsername, replaceShipsToInfo, uniqueId } from './utils';
 import { Field, FieldType, Player } from '../types';
 import i18n from 'i18next';
 import en from '../locales/en';
 import ru from '../locales/ru';
-import { PlayerType } from '../const';
+import { PlayerType, ShipClass, shipMainClasses, ShipShape } from '../const';
 
 describe('Function CalcArea', () => {
   const shipCoords = [{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }, { x: 2, y: 3 }];
@@ -42,7 +42,29 @@ describe('Function CalcArea', () => {
     const isAllAreaIncludesCoords = !allArea.every((item) => !isEqual(item, coords));
     expect(isAllAreaIncludesCoords).toBeTruthy();
   });
-})
+});
+
+describe('Function CreateUserFleet', () => {
+  const fleetTestData: [FieldType, ShipShape, { [i: string]: number}][] = [
+    ['3', ShipShape.Line, { [ShipClass.Four]: 0, [ShipClass.Three]: 0, [ShipClass.Double]: 0,  [ShipClass.One]: 1 }],
+    ['5', ShipShape.Line, { [ShipClass.Four]: 0, [ShipClass.Three]: 0, [ShipClass.Double]: 1,  [ShipClass.One]: 2 }],
+    ['7', ShipShape.Line, { [ShipClass.Four]: 0, [ShipClass.Three]: 1, [ShipClass.Double]: 2,  [ShipClass.One]: 3 }],
+    ['10', ShipShape.Line, { [ShipClass.Four]: 1, [ShipClass.Three]: 2, [ShipClass.Double]: 3,  [ShipClass.One]: 4 }],
+  ];
+
+  it.each(fleetTestData)('should generate right line fleet by field size: %s, %s', (fieldType, shipType, shipList) => {
+    const fleet = createUserFleet(generateShipsList(fieldType), shipType);
+    const fleetInfo = replaceShipsToInfo(fleet);
+
+    shipMainClasses.forEach((shipClass) => {
+      const shipInClassCount = fleetInfo[shipClass].length;
+      expect(shipInClassCount).toBe(shipList[shipClass]);
+
+      const shipsInClass = fleetInfo[shipClass];
+      expect(shipsInClass.every((info) => info.shipClass === shipClass && info.shipShape === shipType)).toBeTruthy();
+    });
+  });
+});
 
 describe('function generateField', () => {
   type testDataType = Array<[FieldType, Field]>;
@@ -63,9 +85,12 @@ describe('function generateField', () => {
 });
 
 it('UniqueId should return a new id after each calling', () => {
-  expect(uniqueId()).toBe(1);
-  expect(uniqueId()).toBe(2);
-  expect(uniqueId()).toBe(3);
+  const id1 = uniqueId();
+  const id2 = uniqueId();
+  const id3 = uniqueId();
+  expect(id1).not.toBe(id2);
+  expect(id2).not.toBe(id3);
+  expect(id3).not.toBe(id1);
 });
 
 describe('getLocalizedUserName', () => {
