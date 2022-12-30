@@ -4,6 +4,7 @@ import { initialGameOptionsState, setGameOptions } from '../game-options-process
 import { replaceShipsToInfo } from '../../services/utils';
 import { UserFleet } from '../../types';
 import { fieldTypes, ShipClass, ShipShape } from '../../const';
+import { takeShipOutOfDock } from '../ship-in-move-process/ship-in-move-process';
 
 describe('Reducer: gameOptionsProcess', () => {
   it('without additional parameters should return initial state', () => {
@@ -44,4 +45,11 @@ describe('Reducer: gameOptionsProcess', () => {
       expect(replaceShipsToInfo(newState)).toEqual(expectedInfo);
     });
   });
+
+  it('should remove took out of dock ship', () => {
+    const tookOutShip = initialDockState[ShipClass.One][0];
+    const expectedState = { ...initialDockState, [ShipClass.One]: initialDockState[ShipClass.One].slice(1) };
+
+    expect(dockProcess.reducer(initialDockState, takeShipOutOfDock(tookOutShip))).toEqual(expectedState);
+  })
 });

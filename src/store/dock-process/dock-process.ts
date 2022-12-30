@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialGameOptionsState, setGameOptions } from '../game-options-process/game-options-process';
+import { takeShipOutOfDock } from '../ship-in-move-process/ship-in-move-process';
 import { createUserFleet, generateShipsList } from '../../services/utils';
-import { UserFleet } from '../../types';
-import { NameSpace } from '../../const';
+import { ShipInterface, UserFleet } from '../../types';
+import { NameSpace, ShipClass } from '../../const';
 
 const { fieldType, shipType } = initialGameOptionsState;
 const shipList = generateShipsList(fieldType);
@@ -19,6 +20,12 @@ const dockProcess = createSlice({
       const { fieldType, shipType } = action.payload;
       const shipList = generateShipsList(fieldType);
       return createUserFleet(shipList, shipType);
+    });
+    builder.addCase(takeShipOutOfDock, (state, action) => {
+      const ship = action.payload;
+      const shipClass = ship.class as ShipClass;
+      state[shipClass] = state[shipClass].filter((item: ShipInterface) => item.id !== ship.id);
+      return state;
     });
   },
 });
