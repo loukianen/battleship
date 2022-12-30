@@ -6,6 +6,7 @@ import gameState from './game-state-process/game-state-process';
 import gameType from './game-type-process/game-type-process';
 import info from './info-process/info-process';
 import log from './log-process/log-process';
+import shipInMove from './ship-in-move-process/ship-in-move-process';
 import {combineReducers} from 'redux';
 import { NameSpace } from '../const';
 
@@ -18,6 +19,7 @@ const reducer = combineReducers({
   [NameSpace.GameType]: gameType.reducer,
   [NameSpace.Billboard]: info.reducer,
   [NameSpace.Log]: log.reducer,
+  [NameSpace.ShipInMove]: shipInMove.reducer,
 });
 
 export default reducer;
