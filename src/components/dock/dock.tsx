@@ -1,10 +1,10 @@
 import './dock.sass';
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../hooks/hooks';
 import { getDock } from '../../store/dock-process/selectors';
 import { getGameState } from '../../store/game-state-process/selectors';
-import { GameState, shipMainClasses, ShipOrientation } from '../../const';
+import { GameState, ShipClass, shipMainClasses, ShipOrientation } from '../../const';
 
 export const initDocOrientationState = shipMainClasses
   .reduce((acc: { [p: string]: ShipOrientation }, shipClass) => {
@@ -12,11 +12,11 @@ export const initDocOrientationState = shipMainClasses
     return acc;
   }, {});
 
-const getDockStyle = (isDockEmpty: boolean) => {
-  if (isDockEmpty) {
-    return <div className="dock_cell30x30 dock_cell30x30__empty-dock rounded"></div>;
-  }
-  return <div className="dock_cell30x30 dock_cell30x30__ship rounded"></div>;
+const getDockStyle = (isDockEmpty: boolean, prefix: string) => {
+  const classNames = isDockEmpty
+    ? 'dock_cell30x30 dock_cell30x30__empty-dock rounded'
+    : 'dock_cell30x30 dock_cell30x30__ship rounded';
+  return <div key={`${prefix}-s`} className={classNames}></div>;
 };
 
 const Dock = () => {
@@ -24,6 +24,15 @@ const Dock = () => {
   const { t } = useTranslation();
   const dock = useAppSelector(getDock);
   const gameState = useAppSelector(getGameState);
+
+  const handleDoubleClick = (className: ShipClass) => (e: MouseEvent) => {
+    e.stopPropagation();
+    const newState = {...initDocOrientationState};
+    const orientation = docksOrientation[className] === ShipOrientation.East ? ShipOrientation.North : ShipOrientation.East;
+    newState[className] = orientation;
+    setDockOrientation(newState);
+  };
+
   const handleDragEnd = () => null;
   // const handleDoubleClick = (className: unknown) => (el: HTMLDivElement) => {};
   // const handleDragstart = (className: unknown) => (el: DragEvent) => {};
@@ -34,19 +43,20 @@ const Dock = () => {
     const dockClasses = docksOrientation[className] === ShipOrientation.East
     ? 'd-flex flex-row'
     : 'd-flex flex-column';
-    const dockDesign = Array(shipMainClasses.length - index).fill(getDockStyle(isDockEmpty));
+    const dockDesign = shipMainClasses.slice(index).map((className) => getDockStyle(isDockEmpty, className));
     return (<tr key={className}>
-      <td>
+      <td key={`${className}-i`}>
         {gameState !== GameState.SettingFleet
           ? <div className={dockClasses} onDragEnd={handleDragEnd}>{dockDesign}</div>
           : <div
               className={dockClasses}
+              onDoubleClick={handleDoubleClick(className)}
             >
               {dockDesign}
           </div>}
       </td>
-      <td>{amountOfShips}</td>
-      <td>{t('shipsTable.unit')}</td>
+      <td key={`${className}-a`}>{amountOfShips}</td>
+      <td  key={`${className}-u`}>{t('shipsTable.unit')}</td>
     </tr>);
   });
 
