@@ -11,10 +11,15 @@ const shipInMoveProcess = createSlice({
   name: NameSpace.ShipInMove,
   initialState: initialShipInMoveState as ShipInMoveState,
   reducers: {
+    moveShip: (state, action: PayloadAction<ShipInterface>) => {
+      state = action.payload;
+      return state;
+    },
     takeShipOutOfDock: (state, action: PayloadAction<ShipInterface>) => {
       state = action.payload;
       return state;
     },
+    
   },
   extraReducers: (builder) => {
     builder.addCase(setGameOptions, () => null);
@@ -22,6 +27,6 @@ const shipInMoveProcess = createSlice({
   },
 });
 
-export const { takeShipOutOfDock } = shipInMoveProcess.actions;
+export const { moveShip, takeShipOutOfDock } = shipInMoveProcess.actions;
 
 export default shipInMoveProcess;

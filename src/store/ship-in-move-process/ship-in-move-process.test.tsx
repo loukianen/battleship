@@ -5,6 +5,7 @@ import OneDeckShip from '../../ships/one-deck-ship/one-deck-ship';
 import { GameState } from '../../const';
 
 const initialState = null;
+const ship = new OneDeckShip(1);
 
 describe('Reducer: shipInMoveProcess', () => {
   it('without additional parameters should return initial state', () => {
@@ -12,22 +13,18 @@ describe('Reducer: shipInMoveProcess', () => {
   });
 
   it('should set new state', () => {
-    const ship = new OneDeckShip(1);
     expect(shipInMoveProcess.reducer(initialState, takeShipOutOfDock(ship))).toEqual(ship);
   });
 
   it('should set initial state if game options shanged', () => {
-    const ship = new OneDeckShip(1);
     expect(shipInMoveProcess.reducer(ship, setGameOptions(initialGameOptionsState))).toBe(initialState);
   });
 
   it('should set initial state if game state "setting fleet"', () => {
-    const ship = new OneDeckShip(1);
     expect(shipInMoveProcess.reducer(ship, setGameState(GameState.SettingFleet))).toBe(initialState);
   });
 
   it('should not change state if game state not "setting fleet"', () => {
-    const ship = new OneDeckShip(1);
     expect(shipInMoveProcess.reducer(ship, setGameState(GameState.Finished))).toEqual(ship);
   });
 });
