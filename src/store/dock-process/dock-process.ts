@@ -4,6 +4,7 @@ import { takeShipOutOfDock } from '../ship-in-move-process/ship-in-move-process'
 import { createUserFleet, generateShipsList } from '../../services/utils';
 import { ShipInterface, UserFleet } from '../../types';
 import { NameSpace, ShipClass } from '../../const';
+import Ship from '../../ships/ship/ship';
 
 const { fieldType, shipType } = initialGameOptionsState;
 const shipList = generateShipsList(fieldType);
@@ -14,6 +15,13 @@ const dockProcess = createSlice({
   initialState: initialDockState,
   reducers: {
     fillDock: (state, action: PayloadAction<UserFleet>) => action.payload,
+    returnShipIntoDock: (state, action: PayloadAction<Ship>) => {
+      const ship = action.payload;
+      if (ship.class) {
+        state[ship.class].push(ship);
+      }
+      return state;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(setGameOptions, (state, action) => {
@@ -30,6 +38,6 @@ const dockProcess = createSlice({
   },
 });
 
-export const { fillDock } = dockProcess.actions;
+export const { fillDock, returnShipIntoDock } = dockProcess.actions;
 
 export default dockProcess;

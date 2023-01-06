@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { GameState, NameSpace } from '../../const';
+import { setGameOptions } from '../game-options-process/game-options-process';
 
 const gameStateProcess = createSlice({
   name: NameSpace.GameState,
@@ -9,6 +10,9 @@ const gameStateProcess = createSlice({
       state = action.payload;
       return state;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(setGameOptions, () => GameState.NotStarted);
   },
 });
 

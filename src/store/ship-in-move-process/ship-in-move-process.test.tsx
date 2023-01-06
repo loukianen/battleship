@@ -1,4 +1,5 @@
 import shipInMoveProcess, { takeShipOutOfDock } from './ship-in-move-process';
+import { returnShipIntoDock } from '../dock-process/dock-process';
 import { setGameOptions, initialGameOptionsState } from '../game-options-process/game-options-process';
 import { setGameState } from '../game-state-process/game-state-process';
 import OneDeckShip from '../../ships/one-deck-ship/one-deck-ship';
@@ -14,6 +15,10 @@ describe('Reducer: shipInMoveProcess', () => {
 
   it('should set new state', () => {
     expect(shipInMoveProcess.reducer(initialState, takeShipOutOfDock(ship))).toEqual(ship);
+  });
+
+  it('should set initial state case "returnShipIntoDock" action', () => {
+    expect(shipInMoveProcess.reducer(ship, returnShipIntoDock(ship))).toBe(initialState);
   });
 
   it('should set initial state if game options shanged', () => {

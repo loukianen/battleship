@@ -1,12 +1,12 @@
 import cloneDeep from 'lodash-ts/cloneDeep';
-import dockProcess, { initialDockState, fillDock } from './dock-process';
+import dockProcess, { initialDockState, fillDock, returnShipIntoDock } from './dock-process';
 import { initialGameOptionsState, setGameOptions } from '../game-options-process/game-options-process';
 import { replaceShipsToInfo } from '../../services/utils';
 import { UserFleet } from '../../types';
 import { fieldTypes, ShipClass, ShipShape } from '../../const';
 import { takeShipOutOfDock } from '../ship-in-move-process/ship-in-move-process';
 
-describe('Reducer: gameOptionsProcess', () => {
+describe('Reducer: dockProcess', () => {
   it('without additional parameters should return initial state', () => {
     expect(dockProcess.reducer(void 0, {type: 'UNKNOWN_ACTION'})).toEqual(initialDockState);
   });
@@ -51,5 +51,14 @@ describe('Reducer: gameOptionsProcess', () => {
     const expectedState = { ...initialDockState, [ShipClass.One]: initialDockState[ShipClass.One].slice(1) };
 
     expect(dockProcess.reducer(initialDockState, takeShipOutOfDock(tookOutShip))).toEqual(expectedState);
-  })
+  });
+
+  it('should add a ship in the dock case "returnShipIntoDock" action', () => {
+    const returnedShip = initialDockState[ShipClass.Double][0];
+    const expectedState = { ...initialDockState };
+    expectedState[ShipClass.Double] = [...expectedState[ShipClass.Double], returnedShip];
+    console.log(expectedState[ShipClass.Double]);
+
+    expect(dockProcess.reducer(initialDockState, returnShipIntoDock(returnedShip))).toEqual(expectedState);
+  });
 });
