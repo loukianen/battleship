@@ -22,6 +22,11 @@ export enum CellType {
   I = 'cell-inside',
 }
 
+export enum FieldName {
+  First = 'field1',
+  Second = 'field2',
+}
+
 export enum GameErrorMessage {
   ShapeAny = 'An algorithm for checking the field with not line ships is not created yet',
   FieldType = 'Unknown field type',
