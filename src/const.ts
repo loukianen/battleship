@@ -8,7 +8,9 @@ export enum BattlefieldType {
 export enum CellType {
   Clear = 'cell',
   Ship = 'ship',
-  Area = 'area',
+  SW = 'ship-wrong',
+  Area = 'ship-area',
+  AW = 'ship-area-wrong',
   Killed = 'killed ship',
   Shooted = 'shooted',
   TL = 'cell-top-left',

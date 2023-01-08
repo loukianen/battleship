@@ -1,4 +1,4 @@
-import fieldsProcess, { initialFieldsState } from './fields-process';
+import fieldsProcess, { changeFields, initialFieldsState } from './fields-process';
 import { addNewRecord, setLog } from '../log-process/log-process';
 import { moveShip } from '../ship-in-move-process/ship-in-move-process';
 import { placeShipOnBattlefield } from '../fleet-process/fleet-process';
@@ -11,6 +11,48 @@ import cloneDeep from 'lodash-ts/cloneDeep';
 describe('Reducer: fieldsProcess', () => {
   it('without additional parameters should return initial state', () => {
     expect(fieldsProcess.reducer(void 0, {type: 'UNKNOWN_ACTION'})).toEqual(initialFieldsState);
+  });
+
+  describe('should correctly change fields', () => {
+    it('with empty data should return inintial state', () => {
+      const dataForChange = {};
+      const newState = fieldsProcess.reducer(initialFieldsState, changeFields(dataForChange));
+
+      expect(newState).toEqual(initialFieldsState);
+    });
+
+    it('should correctly work with 1 field and without value', () => {
+      const firstCoords = {x: 2, y: 2};
+      const secondCoords = {x: 3, y: 2};
+      const dataForChange = {
+        [FieldName.First]: [
+          { coords: firstCoords, options: { type: CellType.Ship } },
+          { coords: secondCoords, options: { type: CellType.AW } },
+        ],
+      };
+      const newState = fieldsProcess.reducer(initialFieldsState, changeFields(dataForChange));
+
+      expect(newState[FieldName.First][firstCoords.y][firstCoords.x].type).toBe(dataForChange[FieldName.First][0].options.type);
+      expect(newState[FieldName.First][secondCoords.y][secondCoords.x].type).toBe(dataForChange[FieldName.First][1].options.type);
+    });
+
+    it('should correctly work with 2 field and with value', () => {
+      const firstCoords = {x: 2, y: 2};
+      const secondCoords = {x: 3, y: 2};
+      const dataForChange = {
+        [FieldName.First]: [
+          { coords: firstCoords, options: { type: CellType.Ship } },
+        ],
+        [FieldName.Second]: [
+          { coords: secondCoords, options: { type: CellType.Killed, value: 'x' } },
+        ],
+      };
+      const newState = fieldsProcess.reducer(initialFieldsState, changeFields(dataForChange));
+
+      expect(newState[FieldName.First][firstCoords.y][firstCoords.x].type).toBe(dataForChange[FieldName.First][0].options.type);
+      expect(newState[FieldName.Second][secondCoords.y][secondCoords.x].type).toBe(dataForChange[FieldName.Second][0].options.type);
+      expect(newState[FieldName.Second][secondCoords.y][secondCoords.x].value).toBe(dataForChange[FieldName.Second][0].options.value);
+    });
   });
 
   it('should shange field size if game options had been changed', () => {

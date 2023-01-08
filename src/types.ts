@@ -1,5 +1,5 @@
 import store from './store/store';
-import { CellType, PlayerType, ShipShape, ShipClass, ShipOrientation, ShootResult } from './const';
+import { CellType, PlayerType, ShipShape, ShipClass, ShipOrientation, ShootResult, FieldName } from './const';
 
 export type AppDispatch = typeof store.dispatch;
 
@@ -11,7 +11,8 @@ export type Coords = { x: number, y: number };
 
 export type Field = Array<Array<number>>; // empty cell - 0, ship - any number > 0 as ship id;
 
-export type FieldsPayloadDataType = { field: string };
+export type FieldChangeDataType = { coords: Coords, options: { type: CellType, value?: string } }[];
+export type FieldsPayloadDataType = { [FieldName.First]?: FieldChangeDataType, [FieldName.Second]?: FieldChangeDataType };
 
 export type FieldType = '3' | '5' | '7' | '10';
 

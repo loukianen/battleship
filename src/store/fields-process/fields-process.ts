@@ -49,7 +49,20 @@ const fieldsProcess = createSlice({
   name: NameSpace.Fields,
   initialState: initialFieldsState,
   reducers: {
-    changeField: (state, action: PayloadAction<FieldsPayloadDataType>) => state,
+    changeFields: (state, action: PayloadAction<FieldsPayloadDataType>) => {
+      [FieldName.First, FieldName.Second].forEach((fieldName) => {
+        const data = action.payload[fieldName];
+        if (data) {
+          data.forEach(({coords: { x, y }, options: { type, value}}) => {
+            state[fieldName][y][x].type = type;
+            if (value) {
+              state[fieldName][y][x].value = value;
+            }
+          })
+        }
+      });
+      return state;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(addNewRecord, (state, action) => {
@@ -97,6 +110,6 @@ const fieldsProcess = createSlice({
   },
 });
 
-export const { changeField } = fieldsProcess.actions;
+export const { changeFields } = fieldsProcess.actions;
 
 export default fieldsProcess;
