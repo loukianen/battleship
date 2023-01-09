@@ -1,4 +1,5 @@
 import shipInMoveProcess, { takeShipOutOfDock } from './ship-in-move-process';
+import { placeShipOnBattlefield } from '../fleet-process/fleet-process';
 import { returnShipIntoDock } from '../dock-process/dock-process';
 import { setGameOptions, initialGameOptionsState } from '../game-options-process/game-options-process';
 import { setGameState } from '../game-state-process/game-state-process';
@@ -15,6 +16,10 @@ describe('Reducer: shipInMoveProcess', () => {
 
   it('should set new state', () => {
     expect(shipInMoveProcess.reducer(initialState, takeShipOutOfDock(ship))).toEqual(ship);
+  });
+
+  it('should set initial state case "placeShipOnBattlefield" action', () => {
+    expect(shipInMoveProcess.reducer(ship, placeShipOnBattlefield(ship))).toBe(initialState);
   });
 
   it('should set initial state case "returnShipIntoDock" action', () => {

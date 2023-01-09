@@ -18,9 +18,9 @@ const Fields = () => {
   return (
     <main className="mt-3" data-testid="fields">
       <div className="d-flex flex-column flex-md-row text-center align-items-center align-items-md-end">
-        <Battlefield owner={player1} type={player1FieldType} mark={arePlayersTheSame ? 'I' : ''} field={field1} />
+        <Battlefield owner={player1} fieldType={player1FieldType} mark={arePlayersTheSame ? 'I' : ''} field={field1} />
         <Auxiliaryfield />
-        <Battlefield owner={player2} type={BattlefieldType.EnemyField} mark={arePlayersTheSame ? 'II' : ''} field={field2}/>
+        <Battlefield owner={player2} fieldType={BattlefieldType.EnemyField} mark={arePlayersTheSame ? 'II' : ''} field={field2}/>
       </div>
     </main>
   );

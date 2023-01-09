@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { placeShipOnBattlefield } from '../fleet-process/fleet-process';
 import { returnShipIntoDock } from '../dock-process/dock-process';
 import { setGameOptions } from '../game-options-process/game-options-process';
 import { setGameState } from '../game-state-process/game-state-process';
@@ -23,6 +24,7 @@ const shipInMoveProcess = createSlice({
     
   },
   extraReducers: (builder) => {
+    builder.addCase(placeShipOnBattlefield, () => null);
     builder.addCase(returnShipIntoDock, () => null);
     builder.addCase(setGameOptions, () => null);
     builder.addCase(setGameState, (state, action) => action.payload === GameState.SettingFleet ? null : state);

@@ -9,7 +9,6 @@ import { CellType, FieldName, NameSpace, ShootResult } from '../../const';
 
 const initialFieldSize = '10';
 
-
 export const initialFieldsState = {
   [FieldName.First]: getFieldData(initialFieldSize),
   [FieldName.Second]: getFieldData(initialFieldSize),
