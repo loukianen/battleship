@@ -48,6 +48,7 @@ const fieldsProcess = createSlice({
   name: NameSpace.Fields,
   initialState: initialFieldsState,
   reducers: {
+    setFields: (state, action: PayloadAction<FieldsStateType>) => action.payload,
     changeFields: (state, action: PayloadAction<FieldsPayloadDataType>) => {
       [FieldName.First, FieldName.Second].forEach((fieldName) => {
         const data = action.payload[fieldName];
@@ -109,6 +110,6 @@ const fieldsProcess = createSlice({
   },
 });
 
-export const { changeFields } = fieldsProcess.actions;
+export const { changeFields, setFields } = fieldsProcess.actions;
 
 export default fieldsProcess;

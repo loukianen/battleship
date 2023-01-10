@@ -51,10 +51,11 @@ export enum GameOption {
 }
 
 export enum GameState {
+  Battle = 'battle is on',
+  Finished = 'finished',
   NotStarted = 'not started',
   SettingFleet = 'setting fleet',
   Started = 'started',
-  Finished = 'finished',
 }
 
 export enum GameType {

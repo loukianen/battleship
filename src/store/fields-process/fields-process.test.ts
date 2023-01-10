@@ -1,16 +1,26 @@
-import fieldsProcess, { changeFields, initialFieldsState } from './fields-process';
+import fieldsProcess, { changeFields, initialFieldsState, setFields } from './fields-process';
 import { addNewRecord, setLog } from '../log-process/log-process';
 import { moveShip } from '../ship-in-move-process/ship-in-move-process';
 import { placeShipOnBattlefield } from '../fleet-process/fleet-process';
 import { setGameOptions } from '../game-options-process/game-options-process';
 import { CellType, FieldName, fieldTypes, PlayerType, ShipShape, ShootResult } from '../../const';
-import { Coords, Record } from '../../types';
+import { Cell, Coords, Record } from '../../types';
 import DoubleDeckShip from '../../ships/double-deck-ship/double-deck-ship';
 import cloneDeep from 'lodash-ts/cloneDeep';
 
 describe('Reducer: fieldsProcess', () => {
   it('without additional parameters should return initial state', () => {
     expect(fieldsProcess.reducer(void 0, {type: 'UNKNOWN_ACTION'})).toEqual(initialFieldsState);
+  });
+
+  it('should set new state', () => {
+    const copy = cloneDeep(initialFieldsState);
+    const newState = {
+      [FieldName.First]: copy[FieldName.First].slice(0, 3).map((row: Cell[]) => row.slice(0, 3)),
+      [FieldName.Second]: copy[FieldName.Second].slice(0, 3).map((row: Cell[]) => row.slice(0, 3)),
+    };
+
+    expect(fieldsProcess.reducer(initialFieldsState, setFields(newState))).toEqual(newState);
   });
 
   describe('should correctly change fields', () => {
