@@ -20,6 +20,7 @@ const en = {
     restart: 'The restart game will lose current data.',
     changeSetting: 'Changing setting will restart game and current data will lost',
     haveYouFinishedPlacing: 'Have you finished placing your ships?',
+    putYourShips: 'You must finish arrangement your ships before starting the battle',
     continue: 'Continue',
     cancel: 'Cancel',
   },

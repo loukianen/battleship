@@ -4,19 +4,23 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import getFieldData from '../../services/gen-field-data';
 import { fillDock } from '../../store/dock-process/dock-process';
 import { getFieldType, getShipType } from '../../store/game-options-process/selectors';
+import { getDock } from '../../store/dock-process/selectors';
 import { getGameState } from '../../store/game-state-process/selectors';
 import { setFields } from '../../store/fields-process/fields-process';
 import { setGameState } from '../../store/game-state-process/game-state-process';
-import { FieldName, GameState } from '../../const';
+import { FieldName, GameState, shipMainClasses } from '../../const';
 import { UserFleet } from '../../types';
 import { Dispatch, SetStateAction } from 'react';
 import { WarningModalType } from '../warning-modal/warning-modal';
 import { createUserFleet, generateShipsList } from '../../services/utils';
 
+const isDockEmpty = (dock: UserFleet) => shipMainClasses.every((item) => dock[item].length === 0);
+
 const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>>} ) => {
   const { onShowWarning } = props;
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const dock = useAppSelector(getDock);
   const gameState = useAppSelector(getGameState);
   const fieldType = useAppSelector(getFieldType);
   const shipType = useAppSelector(getShipType);
@@ -34,10 +38,17 @@ const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>
   
   const handleClick = () => {
     if (gameState === GameState.SettingFleet) {
+      if (!isDockEmpty(dock)) {
+        onShowWarning({
+          text: t('alert.putYourShips'),
+          dispatch: () => null,
+          show: true });
+      } else {
       onShowWarning({
         text: t('alert.haveYouFinishedPlacing'),
         dispatch: () => dispatch(setGameState(GameState.Battle)),
         show: true });
+      }
     } else if(gameState === GameState.Battle) {
       const newFieldsState = {
         [FieldName.First]: getFieldData(fieldType),

@@ -21,8 +21,8 @@ describe('Reducer: InfoProcess', () => {
     const setFleetState: InfoState = { message: 'setFleet', player: null };
 
     expect(infoProcess.reducer(setFleetState, setGameState(GameState.NotStarted))).toEqual(initialState);
-    expect(infoProcess.reducer(initialState, setGameState(GameState.Started))).toEqual(setFleetState);
-    expect(infoProcess.reducer(initialState, setGameState(GameState.SettingFleet))).toEqual(initialState);
+    expect(infoProcess.reducer(initialState, setGameState(GameState.Battle))).toEqual(initialState);
+    expect(infoProcess.reducer(initialState, setGameState(GameState.SettingFleet))).toEqual(setFleetState);
     expect(infoProcess.reducer(setFleetState, setGameState(GameState.Finished))).toEqual(setFleetState);
   });
 });

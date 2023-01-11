@@ -12,7 +12,6 @@ const Log = () => {
   const { t, i18n } = useTranslation();
   const records = useAppSelector(getLog);
   const players = useAppSelector(getPlayers);
-  const score = 'unknown';
 
   const renderTHeader = () => (
     <thead>
@@ -45,13 +44,8 @@ const Log = () => {
     );
   });
 
-  console.log(records);
   return (
     <div className="d-flex flex-column log_shipsfield text-center rounded" data-testid="log">
-      <div className="d-flex flex-row justify-content-around">
-        <h5 className="mt-2 color-ship-border">{t('ui.score')}</h5>
-        <h5 className="mt-2 color-ship-border">{score}</h5>
-      </div>
       <table className="table-sm table-borderless color-ship-border border-top border-info">
         {renderTHeader()}
         <tbody>

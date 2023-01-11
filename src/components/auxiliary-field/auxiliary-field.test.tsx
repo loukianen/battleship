@@ -56,10 +56,10 @@ describe('Auxiliary Field', () => {
     expect(screen.queryByTestId('log')).not.toBeInTheDocument();
   });
 
-  it('should show Info and Log and should not show Dock if game state is started', () => {
+  it('should show Info and Log and should not show Dock if game state is "battle"', () => {
     const store = mockStore({
       [NameSpace.Dock]: initialDockState,
-      [NameSpace.GameState]: GameState.Started,
+      [NameSpace.GameState]: GameState.Battle,
       [NameSpace.GameOptions]: gameOptions,
       [NameSpace.Log]: logState,
       [NameSpace.Billboard]: initialInfoState,

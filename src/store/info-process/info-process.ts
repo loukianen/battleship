@@ -22,7 +22,7 @@ const infoProcess = createSlice({
       if (gameState === GameState.NotStarted) {
         state = initialInfoState;
       }
-      if (gameState === GameState.Started) {
+      if (gameState === GameState.SettingFleet) {
         state = {message: 'setFleet', player: null };
       }
       return state;

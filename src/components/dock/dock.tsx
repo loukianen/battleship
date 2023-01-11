@@ -42,6 +42,7 @@ const Dock = () => {
       dispatch(returnShipIntoDock(shipInMove));
     }
   };
+
   const handleDragStart = (className: ShipClass) : DragEventHandler<HTMLElement> => (e) => {
     const ship = dock[className][0];
     ship.setOrientation(docksOrientation[className]);
@@ -50,7 +51,7 @@ const Dock = () => {
     }
   };
 
-  const renderTable = () => shipMainClasses.map((className, index) => {
+  const renderDock = () => shipMainClasses.map((className, index) => {
     const amountOfShips = dock[className].length;
     const isDockEmpty = amountOfShips === 0;
     const dockClasses = docksOrientation[className] === ShipOrientation.East
@@ -79,7 +80,7 @@ const Dock = () => {
         <h5 className="mt-2">{t('shipsTable.header')}</h5>
         <table className="table table-borderless color-ship-border">
           <tbody>
-            {renderTable()}
+            {renderDock()}
           </tbody>
         </table>
     </div>

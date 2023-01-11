@@ -11,7 +11,7 @@ const Auxiliaryfield = () => {
   return(
     <div id="centerField" className="d-flex flex-column mb-3">
       <Info />
-      {gameState === GameState.Started || gameState === GameState.Finished ? <Log /> : <Dock />}
+      {gameState === GameState.Battle || gameState === GameState.Finished ? <Log /> : <Dock />}
     </div>
   );
 };

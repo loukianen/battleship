@@ -74,7 +74,6 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
   const handleDragEnd = (e:SyntheticEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(e.type, 'dragEnd work');
     if (shipInMove) {
       dispatch(returnShipIntoDock(shipInMove));
     }
