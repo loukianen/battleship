@@ -2,6 +2,8 @@ import store from './store/store';
 import { CellType, PlayerType, ShipShape, ShipClass, ShipOrientation, ShootResult, FieldName } from './const';
 import { FieldTextKey } from './locales/types';
 
+export type ActivePlayerState = 0 | 1 | 'undefined';
+
 export type AppDispatch = typeof store.dispatch;
 
 export type BattleFieldCell = Omit<Cell, 'defaultType' | 'value'>;

@@ -1,3 +1,4 @@
+import activePlayerProcess from './active-player-process/active-player-process';
 import availablePlayers from './available-players-process/available-players-process';
 import dock from './dock-process/dock-process';
 import fields from './fields-process/fields-process';
@@ -12,6 +13,7 @@ import {combineReducers} from 'redux';
 import { NameSpace } from '../const';
 
 const reducer = combineReducers({
+  [NameSpace.ActivePlayer]: activePlayerProcess.reducer,
   [NameSpace.AvailablePlayers]: availablePlayers.reducer,
   [NameSpace.Dock]: dock.reducer,
   [NameSpace.Fields]: fields.reducer,
