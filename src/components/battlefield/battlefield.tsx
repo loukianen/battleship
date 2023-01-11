@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { useTranslation } from 'react-i18next';
 import { changeFields } from '../../store/fields-process/fields-process';
 import { getLocalizedUsername } from '../../services/utils';
+import { getActivePlayer } from '../../store/active-player-process/selectors';
 import { getFleet } from '../../store/fleet-process/selectors';
 import { getGameState } from '../../store/game-state-process/selectors';
 import { getGameType } from '../../store/game-type-process/selectors';
@@ -42,6 +43,7 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
   const { owner, mark, field, fieldType } = props;
   const { t, i18n } = useTranslation();
   const dispatch = useAppDispatch();
+  const activePlayer = useAppSelector(getActivePlayer);
   const fleet = useAppSelector(getFleet);
   const gameState = useAppSelector(getGameState);
   const gameType = useAppSelector(getGameType);
@@ -52,7 +54,6 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
   const fieldSize = field.length - 1;
 
   const makeDataForChange = (data: Coords[], styleRight: CellType, styleWrong: CellType)  => {
-    // for every cell { coords, options: [['style', new style], ['value', new value]] }
     const maxCoordValue = field.length - 1;
     return data.reduce((acc, coords) => {
       if (isValidCoords(coords, 1, maxCoordValue)) {
@@ -187,7 +188,8 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
     if (fieldType === BattlefieldType.PlayerField && gameState === GameState.SettingFleet) {
       return renderDraggableCell(cell, cellClassName, text);
     }
-    if (fieldType === BattlefieldType.EnemyField && gameType === GameType.WithAI && gameState === GameState.Battle) {
+    if (fieldType === BattlefieldType.EnemyField && gameType === GameType.WithAI
+      && gameState === GameState.Battle && activePlayer === 0) {
       return renderClickableCell(id, coords, cellClassName, text);
     }
     return renderUsualCell(id, cellClassName, text);
