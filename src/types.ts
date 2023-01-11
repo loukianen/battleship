@@ -1,17 +1,18 @@
 import store from './store/store';
 import { CellType, PlayerType, ShipShape, ShipClass, ShipOrientation, ShootResult, FieldName } from './const';
+import { FieldTextKey } from './locales/types';
 
 export type AppDispatch = typeof store.dispatch;
 
 export type BattleFieldCell = Omit<Cell, 'defaultType' | 'value'>;
 
-export type Cell = { id: number, shipId: number | null, type: CellType, defaultType: CellType, value: string | number | null, coords: Coords }; // UI-cell
+export type Cell = { id: number, shipId: number | null, type: CellType, defaultType: CellType, value: FieldTextKey | number | null, coords: Coords }; // UI-cell
 
 export type Coords = { x: number, y: number };
 
 export type Field = Array<Array<number>>; // empty cell - 0, ship - any number > 0 as ship id;
 
-export type FieldChangeDataType = { coords: Coords, options: { type: CellType, value?: string } }[];
+export type FieldChangeDataType = { coords: Coords, options: { type: CellType, value?: FieldTextKey } }[];
 export type FieldsPayloadDataType = { [FieldName.First]?: FieldChangeDataType, [FieldName.Second]?: FieldChangeDataType };
 
 export type FieldType = '3' | '5' | '7' | '10';

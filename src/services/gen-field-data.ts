@@ -3,7 +3,7 @@ import { Cell, FieldType } from '../types';
 import { CellType } from '../const';
 
 const generateFirstRow = (size: number) => {
-  const values = letters.slice(0, size);
+  const values = [null, ...letters.slice(0, size - 1)];
   let currentId = 1;
   const row = values.map((value, index) => {
     const cell : Cell = {

@@ -7,6 +7,7 @@ import { CellType, FieldName, fieldTypes, PlayerType, ShipShape, ShootResult } f
 import { Cell, Coords, Record } from '../../types';
 import DoubleDeckShip from '../../ships/double-deck-ship/double-deck-ship';
 import cloneDeep from 'lodash-ts/cloneDeep';
+import { FieldTextKey } from '../../locales/types';
 
 describe('Reducer: fieldsProcess', () => {
   it('without additional parameters should return initial state', () => {
@@ -54,7 +55,7 @@ describe('Reducer: fieldsProcess', () => {
           { coords: firstCoords, options: { type: CellType.Ship } },
         ],
         [FieldName.Second]: [
-          { coords: secondCoords, options: { type: CellType.Killed, value: 'x' } },
+          { coords: secondCoords, options: { type: CellType.Killed, value: 'x' as FieldTextKey } },
         ],
       };
       const newState = fieldsProcess.reducer(initialFieldsState, changeFields(dataForChange));

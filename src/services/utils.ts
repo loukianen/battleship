@@ -5,7 +5,7 @@ import isEmpty from 'lodash-ts/isEmpty';
 import isEqual from 'lodash-ts/isEqual';
 import getAvailableShips from '../ships/get-available-ships';
 import { BattleFieldCell, Coords, Field, FieldType, Player, PlayerIndex, ShipInterface, ShipsList, UserFleet } from "../types";
-import { OptionsMenuKey } from '../locales/types';
+import {FieldTextKey, OptionsMenuKey } from '../locales/types';
 import { CellType, shipMainClasses, ShipShape } from '../const';
 
 const isArrayNotIncludesObject = <Type>(arr: Type[], object: Type) : boolean => arr.every((item) => !isEqual(item, object));
@@ -172,7 +172,7 @@ export const isValidShipCoords = (field: BattleFieldCell[][], shipCoords: Coords
   });
 };
 
-export const letters = [null, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+export const letters: FieldTextKey[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
 type Key = keyof UserFleet;
 type Acc = { [k: string]: { shipClass: string | null, shipShape: string }[]};
