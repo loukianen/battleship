@@ -5,10 +5,11 @@ import { moveShip } from '../ship-in-move-process/ship-in-move-process';
 import { placeShipOnBattlefield } from '../fleet-process/fleet-process';
 import { setGameOptions } from '../game-options-process/game-options-process';
 import { FieldsPayloadDataType, FieldType, Record } from '../../types';
+import { initialGameOptionsState } from '../game-options-process/game-options-process';
 import { CellType, FieldName, NameSpace, ShootResult } from '../../const';
 import { FieldTextKey } from '../../locales/types';
 
-const initialFieldSize = '10';
+const initialFieldSize = initialGameOptionsState.fieldType;
 
 export const initialFieldsState = {
   [FieldName.First]: getFieldData(initialFieldSize),
@@ -20,7 +21,7 @@ export type FieldsStateType = typeof initialFieldsState;
 const getChangesForCell = (actionResult: ShootResult) => {
   const mapping = {
     [ShootResult.Started]: {},
-    [ShootResult.Won]: {},
+    [ShootResult.Won]: { type: CellType.Killed, value: 'x' as FieldTextKey },
     [ShootResult.OffTarget]: { value: 'point' as FieldTextKey },
     [ShootResult.Killed]: { type: CellType.Killed, value: 'x' as FieldTextKey },
     [ShootResult.Wounded]: { type: CellType.Killed, value: 'x' as FieldTextKey },

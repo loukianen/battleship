@@ -11,7 +11,7 @@ export enum CellType {
   SW = 'ship-wrong',
   Area = 'ship-area',
   AW = 'ship-area-wrong',
-  Killed = 'killed ship',
+  Killed = 'killed-ship',
   Shooted = 'shooted',
   TL = 'cell-top-left',
   T = 'cell-top',
@@ -24,10 +24,14 @@ export enum CellType {
   I = 'cell-inside',
 }
 
+export const DALAY_BEFORE_RENDER_ROBOT_ACTION = 2500;
+
 export enum FieldName {
   First = 'field1',
   Second = 'field2',
 }
+
+export const fieldTypes: FieldType[] = ['3', '5', '7', '10'];
 
 export enum GameErrorMessage {
   ShapeAny = 'An algorithm for checking the field with not line ships is not created yet',
@@ -121,7 +125,5 @@ export const shipMainClasses : ShipClass[] = [ShipClass.Four, ShipClass.Three, S
 export const shipOrientations: ShipOrientation[] = [ShipOrientation.East, ShipOrientation.North, ShipOrientation.West, ShipOrientation.South];
 
 export const lineShipOrientations: ShipOrientation[] =  [ShipOrientation.East, ShipOrientation.North];
-
-export const fieldTypes: FieldType[] = ['3', '5', '7', '10'];
 
 export const shipTypes: ShipShape[] = [ShipShape.Line];

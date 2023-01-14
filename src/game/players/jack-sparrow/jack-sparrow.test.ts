@@ -38,19 +38,19 @@ describe('JackSparrow', () => {
     });
 
     it('should mark cell as "shooted" if recieved message "offTarget"', () => {
-      const coords1 = { x: 0, y: 0 };
+      const coords1 = { x: 0, y: 2 };
       const reportOffTarget: Record = [0, coords1 , ShootResult.OffTarget];
       jack.handleShoot(reportOffTarget);
 
-      expect(jack.enemyField[coords1.x][coords1.y].type).toBe(CellType.Shooted);
+      expect(jack.enemyField[coords1.y][coords1.x].type).toBe(CellType.Shooted);
     });
 
     it('should mark cell as "killed ship" if recieved message "wounded" and add coords to wounded ship', () => {
-      const coords2 = { x: 1, y: 1 };
+      const coords2 = { x: 1, y: 0 };
       const reportWounded: Record = [0, coords2 , ShootResult.Wounded];
       jack.handleShoot(reportWounded);
 
-      expect(jack.enemyField[coords2.x][coords2.y].type).toBe(CellType.Killed);
+      expect(jack.enemyField[coords2.y][coords2.x].type).toBe(CellType.Killed);
       expect(jack.woundedEnemyShip).toContainEqual(coords2);
     });
 
@@ -62,11 +62,11 @@ describe('JackSparrow', () => {
       const reportKilled: Record = [0, ship[1] , ShootResult.Killed];
       jack.handleShoot(reportKilled);
 
-      expect(jack.enemyField[ship[0].x][ship[0].y].type).toBe(CellType.Killed);
-      expect(jack.enemyField[ship[1].x][ship[1].y].type).toBe(CellType.Killed);
+      expect(jack.enemyField[ship[0].y][ship[0].x].type).toBe(CellType.Killed);
+      expect(jack.enemyField[ship[1].y][ship[1].x].type).toBe(CellType.Killed);
       expect(jack.woundedEnemyShip).toEqual([]);
       shipArea.forEach(({ x, y }) => {
-        expect(jack.enemyField[x][y].type).toBe(CellType.Shooted);
+        expect(jack.enemyField[y][x].type).toBe(CellType.Shooted);
       });
     });
   });

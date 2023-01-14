@@ -2,6 +2,7 @@ import cloneDeep from 'lodash-ts/cloneDeep';
 import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
 import { initialAvailablePlayersState } from '../../store/available-players-process/available-players-process';
+import { initialGameOptionsState } from '../../store/game-options-process/game-options-process';
 import { generateField, generateShipsList, getRandomElFromColl, getEnemy } from '../../services/utils';
 import checkField from '../../services/check-field';
 import { Coords, Field, FieldType, Human, PlayerIndex, Record, Robot, ShipsList } from '../../types';
@@ -29,6 +30,12 @@ const getHittingResult = (field: Field, target: number) : ShootResult => {
 const players : { [index: string]: () => Human | Robot } = {
   user: () => new SinglePlayer(),
   jack: () => new JackSparrow(),
+  max: () => {
+    const player = new JackSparrow();
+    player.id = 'max';
+    player.name = 'Max';
+    return player;
+  },
 };
 
 const createPlayer = (id: string) => {
@@ -65,7 +72,7 @@ class Game {
     this.players = [];
     this.fields = [];
     this.activePlayer = 0;
-    this.fieldType = '10';
+    this.fieldType = initialGameOptionsState.fieldType;
     this.shipShape = ShipShape.Line;
     this.shipList = {};
   }
@@ -79,11 +86,10 @@ class Game {
   }
 
   handleRecord(record : Record) {
-    this.players.forEach((player) => {
-      if (player.type === PlayerType.Robot) {
-        player.handleShoot(record);
-      }
-    })
+    const currentPlayer = this.players[record[0]];
+    if (currentPlayer.type === PlayerType.Robot) {
+      currentPlayer.handleShoot(record);
+    }
     if (record[2] === ShootResult.OffTarget) {
       this.activePlayer = getEnemy(this.getActivePlayer());
     }
@@ -105,7 +111,7 @@ class Game {
       return [-1, null, message];
     }
   }
-
+  
   nextRobotTurn() {
     try {
       const activePlayer = this.players[this.getActivePlayer()];
@@ -114,6 +120,7 @@ class Game {
         const shootResult : ShootResult = this.processShoot(shoot);
         const record : Record = [this.getActivePlayer(), shoot, shootResult];
         this.handleRecord(record);
+        return record;
       } else {
         throw new Error(`Wrong action ${this.nextRobotTurn.name} for this ${activePlayer.type} type of player`);
       }
@@ -132,17 +139,17 @@ class Game {
     const { x, y } = coords;
     const enemy = getEnemy(this.getActivePlayer());
 
-    if (!this.fields[enemy][x] || typeof this.fields[enemy][x][y] !== 'number') {
+    if (!this.fields[enemy][y] || typeof this.fields[enemy][y][x] !== 'number') {
       throw new Error(GameErrorMessage.WrongCoords);
     }
 
-    const target = this.fields[enemy][x][y];
+    const target = this.fields[enemy][y][x];
 
     if (target === 0) {
       return ShootResult.OffTarget;
     }
 
-    this.fields[enemy][x][y] = 0;
+    this.fields[enemy][y][x] = 0;
     const hittingResult: ShootResult = getHittingResult(this.fields[enemy], target);
 
     return hittingResult;
@@ -152,7 +159,7 @@ class Game {
     this.players = [];
     this.fields = [];
     this.activePlayer = 0;
-    this.fieldType = '10';
+    this.fieldType = initialGameOptionsState.fieldType;
     this.shipShape = ShipShape.Line;
   }
 
@@ -175,7 +182,8 @@ class Game {
       });
       this.checkFields();
       this.activePlayer = getRandomElFromColl([0, 1]);
-      return [this.getActivePlayer(), null , ShootResult.Started];
+      const record: Record = [this.getActivePlayer(), null , ShootResult.Started];
+      return record;
     } catch (e: any) {
       const message = e.message ?? 'Unknown error recieved after checking field';
       return [-1, null, message];

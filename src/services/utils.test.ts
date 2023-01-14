@@ -1,10 +1,10 @@
 import isEqual from 'lodash-ts/isEqual';
-import { calcArea, createUserFleet, generateField, generateShipsList, getLocalizedUsername, replaceShipsToInfo, uniqueId } from './utils';
-import { Field, FieldType, Player } from '../types';
 import i18n from 'i18next';
 import en from '../locales/en';
 import ru from '../locales/ru';
-import { PlayerType, ShipClass, shipMainClasses, ShipShape } from '../const';
+import { calcArea, createBattlefield, createUserFleet, generateField, generateShipsList, getLocalizedUsername, replaceShipsToInfo, uniqueId } from './utils';
+import { Field, FieldType, Player } from '../types';
+import { CellType, PlayerType, ShipClass, shipMainClasses, ShipShape } from '../const';
 
 describe('Function CalcArea', () => {
   const shipCoords = [{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }, { x: 2, y: 3 }];
@@ -162,4 +162,14 @@ describe('getLocalizedUserName', () => {
       expect(getLocalizedUsername(user, i18n)).toBe(userName);
     });
   });
+});
+
+it('CreateBattlefiel function should make correct data', () => {
+  const controlField = [
+    [{id: expect.any(Number), coords: { x: 0, y: 0}, type: CellType.Clear, shipId: null}, {id: expect.any(Number), coords: { x: 1, y: 0}, type: CellType.Clear, shipId: null}, {id: expect.any(Number), coords: { x: 2, y: 0}, type: CellType.Clear, shipId: null}],
+    [{id: expect.any(Number), coords: { x: 0, y: 1}, type: CellType.Clear, shipId: null}, {id: expect.any(Number), coords: { x: 1, y: 1}, type: CellType.Clear, shipId: null}, {id: expect.any(Number), coords: { x: 2, y: 1}, type: CellType.Clear, shipId: null}],
+    [{id: expect.any(Number), coords: { x: 0, y: 2}, type: CellType.Clear, shipId: null}, {id: expect.any(Number), coords: { x: 1, y: 2}, type: CellType.Clear, shipId: null}, {id: expect.any(Number), coords: { x: 2, y: 2}, type: CellType.Clear, shipId: null}],
+  ];
+
+  expect(createBattlefield(generateField('3'))).toMatchObject(controlField);
 });

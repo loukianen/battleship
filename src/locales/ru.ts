@@ -61,7 +61,7 @@ const ru = {
     h: 'з',
     i: 'и',
     j: 'к',
-    X: 'X',
+    x: 'X',
     point: '●',
   },
   shipsTable: {

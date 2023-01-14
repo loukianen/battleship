@@ -61,7 +61,7 @@ const en = {
     h: 'h',
     i: 'i',
     j: 'j',
-    X: 'X',
+    x: 'X',
     point: '●',
   },
   shipsTable: {

@@ -25,13 +25,13 @@ export default class JackSparrow implements Robot {
 
   processHit(coords: Coords) {
     const { x, y } = coords;
-    this.enemyField[x][y].type = CellType.Killed;
+    this.enemyField[y][x].type = CellType.Killed;
     this.woundedEnemyShip.push(coords);
   }
 
   makrCellAsShooted(coords: Coords) {
     const { x, y } = coords;
-    this.enemyField[x][y].type = CellType.Shooted;
+    this.enemyField[y][x].type = CellType.Shooted;
   }
 
   handleShoot(record: Record) {

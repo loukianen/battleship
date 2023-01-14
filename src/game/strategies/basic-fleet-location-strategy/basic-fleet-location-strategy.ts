@@ -71,7 +71,7 @@ class BasicFleetLocationStrategy {
 
     const shipCoordsForWritingOnTheField = getShipCoords();
     shipCoordsForWritingOnTheField.forEach(({ x, y }) => {
-      const cell = this.battlefield[x][y];
+      const cell = this.battlefield[y][x];
       cell.shipId = shipId;
       cell.type = CellType.Ship;
     });
@@ -79,7 +79,7 @@ class BasicFleetLocationStrategy {
     const shipArea = calcArea(shipCoordsForWritingOnTheField);
     const areaForWritingOnTheField = shipArea.filter((item) => isValidCoords(item, 0, this.battlefield.length - 1));
     areaForWritingOnTheField.forEach(({ x, y}) => {
-      const cell = this.battlefield[x][y];
+      const cell = this.battlefield[y][x];
       cell.type = CellType.Area;
     })
   }

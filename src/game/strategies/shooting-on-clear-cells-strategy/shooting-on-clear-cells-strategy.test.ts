@@ -8,7 +8,7 @@ describe('ShootingOnClearCellsStrategy', () => {
 
   const makeClearArea = (coords: Coords[]) => {
     coords.forEach(({x, y}) => {
-      shootedBattlefield[x][y].type = CellType.Clear;
+      shootedBattlefield[y][x].type = CellType.Clear;
     });
   };
 
@@ -19,7 +19,7 @@ describe('ShootingOnClearCellsStrategy', () => {
   });
 
   it('should give shoot from correct area', () => {
-    const clearArea = [{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 }];
+    const clearArea = [{ x: 1, y: 0 }, { x: 0, y: 2 }, { x: 2, y: 4 }, { x: 3, y: 2 }];
     makeClearArea(clearArea);
 
     const strategy = new ShootingOnClearCellsStrategy(shootedBattlefield, [], ShipShape.Any);
@@ -28,7 +28,7 @@ describe('ShootingOnClearCellsStrategy', () => {
   });
 
   it('should give shoot if area is stricted', () => {
-    const clearArea = [{ x: 1, y: 1 }];
+    const clearArea = [{ x: 1, y: 3 }];
     makeClearArea(clearArea);
 
     const strategy = new ShootingOnClearCellsStrategy(shootedBattlefield, [], ShipShape.Any);

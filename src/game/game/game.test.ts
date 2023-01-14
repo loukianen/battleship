@@ -4,15 +4,15 @@ import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
 import { generateField, generateShipsList, getEnemy } from '../../services/utils';
 import { Coords, Human, Field, FieldType, Robot, ShipsList } from '../../types';
-import { GameErrorMessage, ShipShape, ShootResult } from '../../const';
+import { fieldTypes, GameErrorMessage, ShipShape, ShootResult } from '../../const';
 import FakeRobot from './fake-robot';
 
 describe('Game', () => {
   it('should has right default setting', () => {
    expect(game.players).toEqual([]);
    expect(game.fields).toEqual([]);
-   expect(game.fieldType).toBe('10');
-   expect(game.shipShape).toBe('line');
+   expect(game.fieldType).toBe(fieldTypes[3]);
+   expect(game.shipShape).toBe(ShipShape.Line);
    expect(game.shipList).toEqual({});
    expect(game.activePlayer).toBe(0);
   });
@@ -20,13 +20,13 @@ describe('Game', () => {
   it('setDefaultOptions() should reset to default cettings', () => {
     game.players = [new JackSparrow(), new JackSparrow()];
     game.fields = [[[1]], [[1]]];
-    game.fieldType = '3';
+    game.fieldType = fieldTypes[0];
     game.shipShape = ShipShape.Any;
     game.activePlayer = 1;
 
     expect(game.players.length).toBe(2);
     expect(game.fields.length).toBe(2);
-    expect(game.fieldType).toBe('3');
+    expect(game.fieldType).toBe(fieldTypes[0]);
     expect(game.shipShape).toBe(ShipShape.Any);
     expect(game.activePlayer).toBe(1);
 
@@ -34,8 +34,8 @@ describe('Game', () => {
 
     expect(game.players).toEqual([]);
     expect(game.fields).toEqual([]);
-    expect(game.fieldType).toBe('10');
-    expect(game.shipShape).toBe('line');
+    expect(game.fieldType).toBe(fieldTypes[3]);
+    expect(game.shipShape).toBe(ShipShape.Line);
     expect(game.activePlayer).toBe(0);
   });
 
@@ -61,7 +61,7 @@ describe('Game', () => {
     });
 
     it('set right options', () => {
-      const gameOptions = { players: ['user', 'jack'], fieldType: '3' as FieldType, shipShapeType: ShipShape.Any };
+      const gameOptions = { players: ['user', 'jack'], fieldType: fieldTypes[0], shipShapeType: ShipShape.Any };
       game.startNewGame(gameOptions);
 
       expect(game.players[0]).toBeInstanceOf(SinglePlayer);
@@ -71,7 +71,7 @@ describe('Game', () => {
     });
 
     it('if "shipShapeType" not defined in options it should be "line" after run function', () => {
-      const gameOptions = { players: ['user', 'jack'], fieldType: '3' as FieldType };
+      const gameOptions = { players: ['user', 'jack'], fieldType: fieldTypes[0] };
       game.startNewGame(gameOptions);
 
       expect(game.shipShape).toBe('line');
@@ -89,7 +89,7 @@ describe('Game', () => {
     });
 
     it('if first player has not type "human" should be called callback', () => {
-      const fieldType : FieldType = '3';
+      const fieldType = fieldTypes[0];
       const  mockStartBattle = jest.fn();
       const gameOptions = { players: ['jack', 'jack'], fieldType,  mockStartBattle };
       const result = game.startNewGame(gameOptions) as { field: Field, fleet: ShipsList, mockStartBattle: () => void };
@@ -188,7 +188,7 @@ describe('Game', () => {
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
     ];
-    const fieldType : FieldType = '5';
+    const fieldType = fieldTypes[1];
 
     const fakeRobot = new FakeRobot();
     fakeRobot.handleShoot = jest.fn();
@@ -219,7 +219,7 @@ describe('Game', () => {
       expect(game.nextHumanTurn({ x: 1, y:1 })).toEqual([-1, null, errorMessage]);
     });
 
-    it('should return right reports and these reports should be porocessed by robot', () => {
+    it('should return right reports', () => {
       const gameOptions = { players: ['user', 'fakeRobot'], fieldType, mockCreatePlayer };
       game.startNewGame(gameOptions);
       game.startBattle(cloneDeep(field));
@@ -230,20 +230,17 @@ describe('Game', () => {
       expect(game.activePlayer).toBe(1);
 
       game.activePlayer = 0;
-      const secondShout = { x: 2, y: 3 };
+      const secondShout = { x: 3, y: 2 };
       expect(game.nextHumanTurn(secondShout)).toEqual([0, secondShout, ShootResult.Wounded]);
       expect(game.activePlayer).toBe(0);
 
-      const thirdShout = { x: 2, y: 4 };
+      const thirdShout = { x: 4, y: 2 };
       expect(game.nextHumanTurn(thirdShout)).toEqual([0, thirdShout, ShootResult.Killed]);
       expect(game.activePlayer).toBe(0);
 
-      const fourthShout = { x: 0, y: 2 };
+      const fourthShout = { x: 2, y: 0 };
       expect(game.nextHumanTurn(fourthShout)).toEqual([0, fourthShout, ShootResult.Won]);
       expect(game.activePlayer).toBe(0);
-
-      const robot = game.players[1] as Robot;
-      expect(robot.handleShoot).toBeCalledTimes(4);
     });
 
     it('should change value of cell on enemy field after hitting ship', () => {
@@ -254,17 +251,14 @@ describe('Game', () => {
       
       const getTarget = (shoot: Coords, currentPlayer: number) => {
         const { x, y } = shoot;
-        return game.fields[currentPlayer][x][y];
+        return game.fields[currentPlayer][y][x];
       };
-      const shoot = { x: 0, y: 2 };
+      const shoot = { x: 2, y: 0 };
       const enemy = getEnemy(game.activePlayer);
 
       expect(getTarget(shoot, enemy)).toBe(1);
       game.nextHumanTurn(shoot);
       expect(getTarget(shoot, enemy)).toBe(0);
-
-      const robot = game.players[1] as Robot;
-      expect(robot.handleShoot).toBeCalledTimes(1);
     });
   });
 
@@ -290,7 +284,7 @@ describe('Game', () => {
       [0, 0, 0, 0, 0],
     ];
     fakeRobot.generateBattlefield = () => field;
-    const fieldType : FieldType = '5';
+    const fieldType = fieldTypes[1];
     const  mockCreatePlayer = createFakePlayer;
     const gameOptions = { players: ['fakeRobot', 'fakeRobot'], fieldType, mockCreatePlayer };
 
@@ -312,7 +306,7 @@ describe('Game', () => {
     });
 
     it('every shoots should change enemy field and should be porocessed by robots', () => {
-      const shoots = [{ x: 1, y: 1 }, { x: 2, y: 3 }, { x: 2, y: 4 }, { x: 0, y: 2 }];
+      const shoots = [{ x: 1, y: 1 }, { x: 3, y: 2 }, { x: 4, y: 2 }, { x: 2, y: 0 }];
       let shootCounter = 0
       fakeRobot.shoot = () => {
         const curShoot = { ...shoots[shootCounter] };
@@ -330,7 +324,7 @@ describe('Game', () => {
       const enemy = getEnemy(game.activePlayer);
       const getTarget = (shoot: Coords, currentPlayer: number) => {
         const { x, y } = shoot;
-        return game.fields[currentPlayer][x][y];
+        return game.fields[currentPlayer][y][x];
       };
 
       expect(getTarget(shoots[1], enemy)).toBe(2);
@@ -346,10 +340,10 @@ describe('Game', () => {
       expect(getTarget(shoots[3], enemy)).toBe(0);
 
       const robot1 = game.players[0] as Robot;
-      expect(robot1.handleShoot).toBeCalledTimes(8);
+      expect(robot1.handleShoot).toBeCalledTimes(4);
 
       const robot2 = game.players[1] as Robot;
-      expect(robot2.handleShoot).toBeCalledTimes(8);
+      expect(robot2.handleShoot).toBeCalledTimes(4);
     });
   });
 

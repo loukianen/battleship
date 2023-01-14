@@ -13,7 +13,7 @@ class FinishOffShipStrategy {
   constructor(battlefield: BattleFieldCell[][], woundedShipCoords: Coords[], shipShape: ShipShape){
     this.battlefield = battlefield;
     this.woundedShip = woundedShipCoords;
-    this.isShipShapeLine = shipShape === 'line';
+    this.isShipShapeLine = shipShape === ShipShape.Line;
     this.shipOrientation = this.findOutShipOrientation();
   }
 
@@ -42,7 +42,7 @@ class FinishOffShipStrategy {
       const ys = this.woundedShip.map((item) => item.y);
       return getOverMinEndMax(ys).map((item) => ({ x, y: item }));
     }
-    if (this.shipOrientation === 'east') {
+    if (this.shipOrientation === ShipOrientation.East) {
       const y = this.woundedShip[0].y;
       const xs = this.woundedShip.map((item) => item.x);
       return getOverMinEndMax(xs).map((item) => ({ x: item, y }));
@@ -54,7 +54,7 @@ class FinishOffShipStrategy {
     const areaForShooting = this.shipOrientation ? this.getEdgePoints() : calcArea(this.woundedShip, 'without');
     const posibleShoots = areaForShooting
       .filter((coords) => isValidCoords(coords, 0, this.battlefield.length - 1))
-      .filter(({x, y}) => this.battlefield[x][y].type === CellType.Clear);
+      .filter(({x, y}) => this.battlefield[y][x].type === CellType.Clear);
     return posibleShoots.length > 0 ? getRandomElFromColl(posibleShoots) : null;
   }
 

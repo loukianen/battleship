@@ -1,14 +1,17 @@
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
+import connector from '../../services/connector-UI-game';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import getFieldData from '../../services/gen-field-data';
 import { fillDock } from '../../store/dock-process/dock-process';
 import { getFieldType, getShipType } from '../../store/game-options-process/selectors';
 import { getDock } from '../../store/dock-process/selectors';
 import { getGameState } from '../../store/game-state-process/selectors';
+import { getGameType } from '../../store/game-type-process/selectors';
+import { getPlayers } from '../../store/game-options-process/selectors';
 import { setFields } from '../../store/fields-process/fields-process';
 import { setGameState } from '../../store/game-state-process/game-state-process';
-import { FieldName, GameState, shipMainClasses } from '../../const';
+import { FieldName, GameState, GameType, shipMainClasses } from '../../const';
 import { UserFleet } from '../../types';
 import { Dispatch, SetStateAction } from 'react';
 import { WarningModalType } from '../warning-modal/warning-modal';
@@ -22,7 +25,9 @@ const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>
   const dispatch = useAppDispatch();
   const dock = useAppSelector(getDock);
   const gameState = useAppSelector(getGameState);
+  const gameType = useAppSelector(getGameType);
   const fieldType = useAppSelector(getFieldType);
+  const players = useAppSelector(getPlayers);
   const shipType = useAppSelector(getShipType);
 
   const getButtonLabel = () => {
@@ -35,10 +40,18 @@ const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>
         return t('ui.newGame');
     };
   };
+
+  const startBattle = () => {
+    dispatch(setGameState(GameState.Battle));
+    const playerIds = players.map(({id}) => id);
+    connector.startGame(playerIds, gameType, fieldType, dispatch);
+  };
   
   const handleClick = () => {
     if (gameState === GameState.SettingFleet) {
-      if (!isDockEmpty(dock)) {
+      if (gameType === GameType.Auto) {
+        startBattle();
+      } else if (!isDockEmpty(dock)) {
         onShowWarning({
           text: t('alert.putYourShips'),
           dispatch: () => null,
@@ -46,7 +59,7 @@ const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>
       } else {
       onShowWarning({
         text: t('alert.haveYouFinishedPlacing'),
-        dispatch: () => dispatch(setGameState(GameState.Battle)),
+        dispatch: () => startBattle(),
         show: true });
       }
     } else if(gameState === GameState.Battle) {

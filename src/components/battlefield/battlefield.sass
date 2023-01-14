@@ -36,7 +36,7 @@
     &_cell
       text-align: center
       font-weight: bold
-      font-style: italic
+      /*font-style: italic*/
       color: $ship-border
       background-color: $bg-field
 
@@ -97,6 +97,10 @@
       &__ship
         background-color: $main-color
         border: $border-thin solid $ship-border
+
+      &__killed-ship
+        color: $danger
+        border: $border-thick solid $danger
 
       &__ship-wrong
         background-color: $danger

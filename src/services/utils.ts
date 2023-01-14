@@ -10,8 +10,8 @@ import { CellType, shipMainClasses, ShipShape } from '../const';
 
 const isArrayNotIncludesObject = <Type>(arr: Type[], object: Type) : boolean => arr.every((item) => !isEqual(item, object));
 
-export const uniq = <Type>(arr: Type[]) : Type[] => {
-  const uniqItems : Type[] = [];
+export const uniq = <T>(arr: T[]) : T[] => {
+  const uniqItems : T[] = [];
   arr.forEach((item) => {
     if (isArrayNotIncludesObject(uniqItems, item)) {
       uniqItems.push(item);
@@ -111,7 +111,7 @@ const shipListMapping : { [index: string]: ShipsList} = {
   10: { oneDeck: 4, doubleDeck: 3, threeDeck: 2, fourDeck:1 },
 };
 
-export const createBattlefield = (field: Field) => field.map((row, x) => row.map((val, y) => {
+export const createBattlefield = (field: Field) => field.map((row, y) => row.map((val, x) => {
   const id = uniqueId();
   const type = CellType.Clear;
   const shipId = val > 0 ? val : null;
@@ -167,7 +167,7 @@ export const isValidShipCoords = (field: BattleFieldCell[][], shipCoords: Coords
     return false;
   }
   return coords.every(({ x, y }) => {
-    const cellType = field[x][y].type;
+    const cellType = field[y][x].type;
     return cellType === CellType.Clear;
   });
 };
