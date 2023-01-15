@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { configureMockStore, MockStore } from '@jedmao/redux-mock-store';
 import Nav from './nav';
 import { initialAvailablePlayersState } from '../../store/available-players-process/available-players-process';
+import { initialFieldsState } from '../../store/fields-process/fields-process';
 import { initialGameOptionsState } from '../../store/game-options-process/game-options-process';
 import { NameSpace } from '../../const';
 
@@ -21,6 +22,7 @@ describe('Nav', () => {
   const store = mockStore({
     [NameSpace.AvailablePlayers]: initialAvailablePlayersState,
     [NameSpace.GameOptions]: initialGameOptionsState,
+    [NameSpace.Fields]: initialFieldsState,
   });
   it('should render all menu components', () => {
     renderComponent(store);

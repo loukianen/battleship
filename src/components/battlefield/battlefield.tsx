@@ -4,6 +4,7 @@ import isEqual from 'lodash-ts/isEqual';
 import {DragEventHandler, SyntheticEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { useTranslation } from 'react-i18next';
+import connector from '../../services/connector-UI-game';
 import { changeFields } from '../../store/fields-process/fields-process';
 import { getLocalizedUsername } from '../../services/utils';
 import { getActivePlayer } from '../../store/active-player-process/selectors';
@@ -149,7 +150,7 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
   const handleClick = (coords: Coords) => (e: SyntheticEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Click ', coords);
+    connector.shoot(dispatch, coords);
   };
 
   const renderClickableCell = (id: number, coords: Coords, className: string, text: string | number | null) => (

@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GameState, NameSpace } from '../../const';
+import { GameState, NameSpace, ShootResult } from '../../const';
+import { addNewRecord } from '../log-process/log-process';
 import { setGameOptions } from '../game-options-process/game-options-process';
+import { Record } from '../../types';
 
 const gameStateProcess = createSlice({
   name: NameSpace.GameState,
@@ -13,6 +15,12 @@ const gameStateProcess = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(setGameOptions, () => GameState.NotStarted);
+    builder.addCase(addNewRecord, (state, action: PayloadAction<Record>) => {
+      if (action.payload[2] === ShootResult.Won) {
+        state = GameState.Finished;
+      }
+      return state;
+    });
   },
 });
 

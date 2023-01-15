@@ -132,7 +132,9 @@ class Game {
 
   checkFields(cb?: () => void) {
     const checkingFunction = cb ?? checkField;
-    this.fields.forEach((field) => checkingFunction(field));
+    this.fields.forEach((field, i) =>{
+      checkingFunction(field);
+    });
   }
 
   processShoot(coords: Coords) : ShootResult {
