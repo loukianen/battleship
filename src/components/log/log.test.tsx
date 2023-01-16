@@ -35,7 +35,7 @@ describe('Log', () => {
 
     renderLog(store);
 
-    expect(screen.getByText(english.optionsMenu.jack)).toBeInTheDocument();
+    expect(screen.getByText(english.optionsMenu.shortNameForjack)).toBeInTheDocument();
     expect(screen.getAllByText(english.optionsMenu.user).length).toBe(2);
     expect(screen.getByText(english.log[ShootResult.Wounded])).toBeInTheDocument();
     expect(screen.getAllByText(english.log[ShootResult.OffTarget]).length).toBe(2);

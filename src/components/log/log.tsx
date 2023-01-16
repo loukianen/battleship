@@ -25,8 +25,13 @@ const Log = () => {
   );
 
   const renderTBody = (data: [number, number, Coords | null, ShootResult][]) => data.map(([id, player, coords, result]) => {
+    const isPlayersTheSame = players[0].id === players[1].id;
+    const mark = player === 0 ? ' I' : ' II';
     const currentPlayer = players[player];
-    const playerName = getLocalizedUsername(currentPlayer, i18n);
+    let playerName = getLocalizedUsername(currentPlayer, i18n, 'short');
+    if (isPlayersTheSame) {
+      playerName = `${playerName}${mark}`;
+    }
     let coordsValue = null;
     if (coords !== null) {
       const { x, y } = coords;

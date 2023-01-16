@@ -1,4 +1,4 @@
-import { GameType } from "../const";
+import { GameType, ShootResult } from "../const";
 
 const ru = {
   ui: {
@@ -29,25 +29,25 @@ const ru = {
     setFleet: 'Расставьте корабли так, чтобы они не касались друг друга. Двойной клик разворачивает корабль. Потом нажмите "Начать сражение"',
     killEnemy: 'Удачи!',
     putYourShips: 'Вы должны расставить все свои корабли до начала битвы',
-    turn: {
-      [GameType.Auto]: ' cтреляет',
-      [GameType.WithAI]: 'Ваш ход',
+    [ShootResult.Started]: {
+      [GameType.Auto]: ' cтреляет.',
+      [GameType.WithAI]: 'Ваш ход.',
     },
-    wounded: {
+    [ShootResult.Wounded]: {
       [GameType.Auto]: ' ранил корабль!',
       [GameType.WithAI]: 'Вы ранили вражеский корабль!',
     },
-    killed: {
+    [ShootResult.Killed]: {
       [GameType.Auto]: ' потопил корабль!',
       [GameType.WithAI]: 'Вы потопили вражеский корабль!',
     },
-    won: {
-      [GameType.Auto]: ' выиграл',
+    [ShootResult.Won]: {
+      [GameType.Auto]: ' выиграл.',
       [GameType.WithAI]: 'Вы выиграли!',
     },
-    offTarget: {
-      [GameType.Auto]: ' промахнулся',
-      [GameType.WithAI]: 'Вы промахнулись',
+    [ShootResult.OffTarget]: {
+      [GameType.Auto]: ' промахнулся.',
+      [GameType.WithAI]: 'Вы промахнулись.',
     },
   },
   field: {
@@ -84,6 +84,7 @@ const ru = {
     any: 'Любой формы',
     player1: 'Адмирал первого флота',
     player2: 'Адмирал второго флота',
+    shortNameForjack: 'Джек',
   },
   log: {
     started: 'начал',

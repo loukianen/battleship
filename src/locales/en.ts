@@ -30,8 +30,8 @@ const en = {
     killEnemy: 'Good luck!',
     putYourShips: 'You must finish arrangement your ships before starting the battle',
     [ShootResult.Started]: {
-      [GameType.Auto]: "'s turn",
-      [GameType.WithAI]: 'Your turn',
+      [GameType.Auto]: "'s turn.",
+      [GameType.WithAI]: 'Your turn.',
     },
     [ShootResult.Wounded]: {
       [GameType.Auto]: " hit ship!",
@@ -42,7 +42,7 @@ const en = {
       [GameType.WithAI]: "You has sunk enemy's ship!",
     },
     [ShootResult.Won]: {
-      [GameType.Auto]: ' won',
+      [GameType.Auto]: ' won.',
       [GameType.WithAI]: 'You won!',
     },
     [ShootResult.OffTarget]: {
@@ -84,6 +84,7 @@ const en = {
     any: 'Any forms',
     player1: 'An admiral of first fleet',
     player2: 'An admiral of second fleet',
+    shortNameForjack: 'Jack',
   },
   log: {
     started: 'started',

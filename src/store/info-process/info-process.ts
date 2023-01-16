@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { addNewRecord } from '../log-process/log-process';
 import { setGameState } from '../game-state-process/game-state-process';
 import { GameState, NameSpace } from '../../const';
 import { InfoState, InfoStatePayload } from '../../types';
@@ -23,9 +24,14 @@ const infoProcess = createSlice({
         state = initialInfoState;
       }
       if (gameState === GameState.SettingFleet) {
-        state = {message: 'setFleet', player: null };
+        state = { message: 'setFleet', player: null };
       }
       return state;
+    });
+
+    builder.addCase(addNewRecord, (state, action) => {
+      const [player, , message] = action.payload;
+      return { message, player };
     });
   },
 });

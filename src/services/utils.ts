@@ -60,11 +60,13 @@ const pointAreaMapping = {
 };
 
 type LocalisationFunc = typeof i18n;
-export const getLocalizedUsername = (user: Player, lf: LocalisationFunc) => {
+export const getLocalizedUsername = (user: Player, lf: LocalisationFunc, type: 'full' | 'short' = 'full') => {
   const { id, name } = user;
+  const menuKey = id as OptionsMenuKey;
   let text: string = name;
-  if (lf.exists(`optionsMenu.${id}`)) {
-    const menuKey = id as OptionsMenuKey;
+  if (type === 'short' && lf.exists(`optionsMenu.shortNameFor${id}`)) {
+    text = lf.t(`optionsMenu.shortNameFor${id}`);
+  } else if (lf.exists(`optionsMenu.${id}`)) {
     text = lf.t(`optionsMenu.${menuKey}`);
   }
   return text;
