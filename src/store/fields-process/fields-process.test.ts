@@ -1,13 +1,16 @@
-import fieldsProcess, { changeFields, initialFieldsState, setFields } from './fields-process';
+import cloneDeep from 'lodash-ts/cloneDeep';
+import DoubleDeckShip from '../../ships/double-deck-ship/double-deck-ship';
+import fieldsProcess, { changeFields, initialFieldsState, markShipsAfterGame, setFields } from './fields-process';
 import { addNewRecord, setLog } from '../log-process/log-process';
 import { moveShip } from '../ship-in-move-process/ship-in-move-process';
 import { placeShipOnBattlefield } from '../fleet-process/fleet-process';
 import { setGameOptions } from '../game-options-process/game-options-process';
-import { CellType, FieldName, fieldTypes, PlayerType, ShipShape, ShootResult } from '../../const';
-import { Cell, Coords, Record } from '../../types';
-import DoubleDeckShip from '../../ships/double-deck-ship/double-deck-ship';
-import cloneDeep from 'lodash-ts/cloneDeep';
+import { generateField } from '../../services/utils';
+import { CellType, FieldName, fieldTypes, GameState, PlayerType, ShipShape, ShootResult } from '../../const';
+import { Cell, Coords, FieldType, Record } from '../../types';
 import { FieldTextKey } from '../../locales/types';
+import getFieldData from '../../services/gen-field-data';
+import { setGameState } from '../game-state-process/game-state-process';
 
 describe('Reducer: fieldsProcess', () => {
   it('without additional parameters should return initial state', () => {
@@ -64,6 +67,21 @@ describe('Reducer: fieldsProcess', () => {
       expect(newState[FieldName.Second][secondCoords.y][secondCoords.x].type).toBe(dataForChange[FieldName.Second][0].options.type);
       expect(newState[FieldName.Second][secondCoords.y][secondCoords.x].value).toBe(dataForChange[FieldName.Second][0].options.value);
     });
+  });
+
+  it('should correctly mark ships', () => {
+    const shipCoords = { x: 1, y: 2};
+    const shipId = 2;
+    const fieldSize = String(initialFieldsState[FieldName.First].length - 1) as FieldType;
+    const fieldAfterGame = generateField(fieldSize);
+    fieldAfterGame[shipCoords.y][shipCoords.x] = shipId;
+    const markShipAfterGamePayload = { fieldName: FieldName.First, field: fieldAfterGame };
+
+    const newState = fieldsProcess.reducer(initialFieldsState, markShipsAfterGame(markShipAfterGamePayload));
+    const cellWithShip = newState[FieldName.First][shipCoords.y + 1][shipCoords.x + 1];
+
+    expect(cellWithShip.shipId).toBe(shipId);
+    expect(cellWithShip.type).toBe(CellType.Ship);
   });
 
   it('should shange field size if game options had been changed', () => {
@@ -150,5 +168,23 @@ describe('Reducer: fieldsProcess', () => {
     expect(newState.field1[shipCoords[0].y][shipCoords[0].x].shipId).toBeNull();
     expect(newState.field1[shipCoords[1].y][shipCoords[1].x].type).toBe(CellType.I);
     expect(newState.field1[shipCoords[1].y][shipCoords[1].x].shipId).toBeNull();
+  });
+
+  it('should clear fields if game state changed to "not started"', () => {
+    const field = getFieldData(fieldTypes[1]);
+    const shipCoords = { x: 2, y: 0 };
+    const shipId = 2;
+
+    const field1 = cloneDeep(field);
+    field1[shipCoords.y][shipCoords.x].type = CellType.Ship;
+    field1[shipCoords.y][shipCoords.x].shipId = shipId;
+
+    const field2 = cloneDeep(field);
+    field2[shipCoords.y][shipCoords.x].type = CellType.Ship;
+    field2[shipCoords.y][shipCoords.x].shipId = shipId;
+
+    const fieldState = { [FieldName.First]: field1, [FieldName.Second]: field2 };
+
+    expect(fieldsProcess.reducer(fieldState, setGameState(GameState.NotStarted))).toEqual({ [FieldName.First]: field, [FieldName.Second]: field })
   });
 });

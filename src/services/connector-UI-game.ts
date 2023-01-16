@@ -1,7 +1,8 @@
 import { Dispatch, ActionFromReducer } from '@reduxjs/toolkit';
-import {DALAY_BEFORE_RENDER_ROBOT_ACTION, GameState, ShipShape, ShootResult } from "../const";
+import {DALAY_BEFORE_RENDER_ROBOT_ACTION, FieldName, GameState, ShipShape, ShootResult } from "../const";
 import game from "../game/game/game";
 import { addNewRecord } from '../store/log-process/log-process';
+import { markShipsAfterGame } from '../store/fields-process/fields-process';
 import { setGameState } from '../store/game-state-process/game-state-process';
 import { Coords, Field, FieldType, Record } from "../types";
 
@@ -25,18 +26,30 @@ const adoptCoordsToUI = (record: Record): Record => {
 
 const getPlayers = () => game.getAvailablePlayers();
 
+const renderWinnerField = (dispatch: Dispatch<ActionFromReducer<AddNewRecordAction>>, record: Record) => {
+  const winner = record[0];
+  const winnerFieldName = winner === 0 ? FieldName.First : FieldName.Second;
+  const fields = game.getFields()
+  const dataForRenderingOfwinnerField = { fieldName: winnerFieldName, field: fields[winner] };
+  dispatch(markShipsAfterGame(dataForRenderingOfwinnerField));
+};
+
 const shoot = (dispatch: Dispatch<ActionFromReducer<AddNewRecordAction>>, coords?: Coords) => {
   const handleRobotShoot = (robotShootingRecord: Record) => {
     dispatch(addNewRecord(adoptCoordsToUI(robotShootingRecord)));
-    if (robotShootingRecord[2] !== ShootResult.OffTarget && robotShootingRecord[2] !== ShootResult.Won) {
+    if (robotShootingRecord[2] === ShootResult.Won) {
+      renderWinnerField(dispatch, robotShootingRecord);
+    } else if (robotShootingRecord[2] !== ShootResult.OffTarget) {
       const nextRobotShootingRecord = game.nextRobotTurn() as Record;
       setTimeout(() => handleRobotShoot(nextRobotShootingRecord), DALAY_BEFORE_RENDER_ROBOT_ACTION);
     }
   };
 
   const doRobotShoot = () => {
-    const robotShootingRecord = game.nextRobotTurn() as Record;
-    handleRobotShoot(robotShootingRecord);
+    setTimeout(() => {
+      const robotShootingRecord = game.nextRobotTurn() as Record;
+      handleRobotShoot(robotShootingRecord);
+    }, DALAY_BEFORE_RENDER_ROBOT_ACTION);
   }
 
   if (coords) {
@@ -65,19 +78,21 @@ const startRobotsGame = (
   dispatch: Dispatch<ActionFromReducer<AddNewRecordAction>>,
   shipShapeType?: ShipShape,
 ) => {
-  const shoot = (record: Record) => {
+  const robotShoot = (record: Record) => {
     dispatch(setGameState(GameState.Battle));
     dispatch(addNewRecord(adoptCoordsToUI(record)));
     if (record[2] !== ShootResult.Won) {
       setTimeout(() => {
         const nextRecord = game.nextRobotTurn() as Record;
-        shoot(nextRecord);
+        robotShoot(nextRecord);
       }, DALAY_BEFORE_RENDER_ROBOT_ACTION);
-    }
+    } else {
+      renderWinnerField(dispatch, record);
+    } 
   };
 
   const newRecord = game.startNewGame({ players, fieldType, shipShapeType}) as Record;
-  shoot(newRecord);
+  robotShoot(newRecord);
 };
 
 const startUserGame = (

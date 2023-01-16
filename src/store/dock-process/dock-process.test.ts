@@ -57,7 +57,6 @@ describe('Reducer: dockProcess', () => {
     const returnedShip = initialDockState[ShipClass.Double][0];
     const expectedState = { ...initialDockState };
     expectedState[ShipClass.Double] = [...expectedState[ShipClass.Double], returnedShip];
-    console.log(expectedState[ShipClass.Double]);
 
     expect(dockProcess.reducer(initialDockState, returnShipIntoDock(returnedShip))).toEqual(expectedState);
   });

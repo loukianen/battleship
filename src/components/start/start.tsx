@@ -16,7 +16,7 @@ import { FieldName, GameState, GameType, shipMainClasses } from '../../const';
 import { Cell, UserFleet } from '../../types';
 import { Dispatch, SetStateAction } from 'react';
 import { WarningModalType } from '../warning-modal/warning-modal';
-import { createUserFleet, generateShipsList } from '../../services/utils';
+import { createUserFleet, generateShipsList, makeFleet } from '../../services/utils';
 
 const adoptBattlefieldForGame = (battlefield: Cell[][]) => battlefield.slice(1)
   .map((row) => row.slice(1)
@@ -71,7 +71,7 @@ const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>
         },
         show: true });
       }
-    } else if(gameState === GameState.Battle) {
+    } if (gameState === GameState.Battle) {
       const newFieldsState = {
         [FieldName.First]: getFieldData(fieldType),
         [FieldName.Second]: getFieldData(fieldType),
@@ -87,7 +87,10 @@ const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>
           dispatch(setGameState(GameState.SettingFleet));
         },
         show: true });
-      }
+    } if (gameState === GameState.Finished) {
+      dispatch(setGameState(GameState.NotStarted));
+      dispatch(fillDock(makeFleet(fieldType, shipType)));
+    }
   };
 
   const buttonLabel = getButtonLabel();

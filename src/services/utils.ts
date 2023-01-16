@@ -172,6 +172,11 @@ export const isValidShipCoords = (field: BattleFieldCell[][], shipCoords: Coords
   });
 };
 
+export const makeFleet = (fieldType: FieldType, shipType: ShipShape) => {
+  const shipList = generateShipsList(fieldType);
+  return createUserFleet(shipList, shipType);
+};
+
 export const letters: FieldTextKey[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
 type Key = keyof UserFleet;

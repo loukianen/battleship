@@ -4,9 +4,11 @@ import { addNewRecord, setLog } from '../log-process/log-process';
 import { moveShip } from '../ship-in-move-process/ship-in-move-process';
 import { placeShipOnBattlefield } from '../fleet-process/fleet-process';
 import { setGameOptions } from '../game-options-process/game-options-process';
+import { setGameState } from '../game-state-process/game-state-process';
 import { FieldsPayloadDataType, FieldType, Record } from '../../types';
 import { initialGameOptionsState } from '../game-options-process/game-options-process';
-import { CellType, FieldName, NameSpace, ShootResult } from '../../const';
+import { CellType, FieldName, GameState, NameSpace, ShootResult } from '../../const';
+import { Field } from '../../types';
 import { FieldTextKey } from '../../locales/types';
 
 const initialFieldSize = initialGameOptionsState.fieldType;
@@ -17,6 +19,7 @@ export const initialFieldsState = {
 };
 
 export type FieldsStateType = typeof initialFieldsState;
+export type MarkShipsAfterGamePayload = { fieldName: FieldName, field: Field };
 
 const getChangesForCell = (actionResult: ShootResult) => {
   const mapping = {
@@ -40,12 +43,6 @@ const processRecord = (state: FieldsStateType, record: Record) => {
   return state;
 }
 
-const wasFildTypeChanged = (fieldType: FieldType, state: FieldsStateType) => {
-  const oldFieldType = state.field1.length - 1;
-  const newFieldType = Number(fieldType);
-  return oldFieldType !== newFieldType;
-};
-
 const fieldsProcess = createSlice({
   name: NameSpace.Fields,
   initialState: initialFieldsState,
@@ -64,6 +61,15 @@ const fieldsProcess = createSlice({
         }
       });
       return state;
+    },
+    markShipsAfterGame: (state, action: PayloadAction<MarkShipsAfterGamePayload>) => {
+      const { fieldName, field } = action.payload;
+      field.forEach((row, y) => row.forEach((shipId, x) => {
+        if (shipId > 0) {
+          state[fieldName][y + 1][x + 1].type = CellType.Ship;
+          state[fieldName][y + 1][x + 1].shipId = shipId;
+        }
+      }));
     },
   },
   extraReducers: (builder) => {
@@ -96,8 +102,14 @@ const fieldsProcess = createSlice({
 
     builder.addCase(setGameOptions, (state, action) => {
       const { fieldType } = action.payload;
-      if (fieldType && wasFildTypeChanged(fieldType, state)) {
-        state = { field1: getFieldData(fieldType), field2: getFieldData(fieldType)};
+      return {[FieldName.First]: getFieldData(fieldType), [FieldName.Second]: getFieldData(fieldType)};
+    });
+
+    builder.addCase(setGameState, (state, action) => {
+      const gameState = action.payload;
+      if (gameState === GameState.NotStarted) {
+        const currentFieldType = String(state[FieldName.First].length - 1) as FieldType;
+        state = {[FieldName.First]: getFieldData(currentFieldType), [FieldName.Second]: getFieldData(currentFieldType)};
       }
       return state;
     });
@@ -112,6 +124,6 @@ const fieldsProcess = createSlice({
   },
 });
 
-export const { changeFields, setFields } = fieldsProcess.actions;
+export const { changeFields, markShipsAfterGame, setFields } = fieldsProcess.actions;
 
 export default fieldsProcess;

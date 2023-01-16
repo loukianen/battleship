@@ -61,18 +61,20 @@ const getPlayersData = () => {
 };
 
 class Game {
-  players: Array<Human | Robot>; // first player can be Human or Robot, second only Robot
-  fields: Field[];
   activePlayer: PlayerIndex;
+  fields: Field[];
   fieldType: FieldType;
+  isGameFinished: boolean;
+  players: Array<Human | Robot>; // first player can be Human or Robot, second only Robot
   shipShape: ShipShape;
   shipList: ShipsList;
 
   constructor() {
-    this.players = [];
-    this.fields = [];
     this.activePlayer = 0;
+    this.fields = [];
     this.fieldType = initialGameOptionsState.fieldType;
+    this.isGameFinished = false;
+    this.players = [];
     this.shipShape = ShipShape.Line;
     this.shipList = {};
   }
@@ -85,8 +87,15 @@ class Game {
     return getPlayersData();
   }
 
+  getFields() {
+    return this.isGameFinished ? this.fields : [];
+  }
+
   handleRecord(record : Record) {
     const currentPlayer = this.players[record[0]];
+    if (record[2] === ShootResult.Won) {
+      this.isGameFinished = true;
+    }
     if (currentPlayer.type === PlayerType.Robot) {
       currentPlayer.handleShoot(record);
     }
@@ -163,6 +172,7 @@ class Game {
     this.activePlayer = 0;
     this.fieldType = initialGameOptionsState.fieldType;
     this.shipShape = ShipShape.Line;
+    this.isGameFinished = false;
   }
 
   startBattle(field?: Field) {
@@ -200,6 +210,7 @@ class Game {
     mockStartBattle?: () => void,
   }) {
     const { players, fieldType, shipShapeType, mockCreatePlayer, mockStartBattle } = options;
+    this.isGameFinished = false;
     this.players = players.map((playerId) => {
       const makePlayer = mockCreatePlayer ?? createPlayer;
       return makePlayer(playerId);

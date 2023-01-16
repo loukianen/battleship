@@ -8,6 +8,8 @@ import { fieldTypes, GameErrorMessage, ShipShape, ShootResult } from '../../cons
 import FakeRobot from './fake-robot';
 
 describe('Game', () => {
+  beforeEach(() => game.setDefaultOptions());
+
   it('should has right default setting', () => {
    expect(game.players).toEqual([]);
    expect(game.fields).toEqual([]);
@@ -15,20 +17,23 @@ describe('Game', () => {
    expect(game.shipShape).toBe(ShipShape.Line);
    expect(game.shipList).toEqual({});
    expect(game.activePlayer).toBe(0);
+   expect(game.isGameFinished).toBeFalsy();
   });
-
+  
   it('setDefaultOptions() should reset to default cettings', () => {
     game.players = [new JackSparrow(), new JackSparrow()];
     game.fields = [[[1]], [[1]]];
     game.fieldType = fieldTypes[0];
     game.shipShape = ShipShape.Any;
     game.activePlayer = 1;
+    game.isGameFinished = true;
 
     expect(game.players.length).toBe(2);
     expect(game.fields.length).toBe(2);
     expect(game.fieldType).toBe(fieldTypes[0]);
     expect(game.shipShape).toBe(ShipShape.Any);
     expect(game.activePlayer).toBe(1);
+    expect(game.isGameFinished).toBeTruthy();
 
     game.setDefaultOptions();
 
@@ -37,6 +42,18 @@ describe('Game', () => {
     expect(game.fieldType).toBe(fieldTypes[3]);
     expect(game.shipShape).toBe(ShipShape.Line);
     expect(game.activePlayer).toBe(0);
+    expect(game.isGameFinished).toBeFalsy();
+  });
+
+  it('the return of fields should depend on "isGameFinished" flag', () => {
+    const field = generateField(fieldTypes[0]);
+    field[0][1] = 1;
+    const controlField = [field, field];
+    game.fields = controlField;
+    expect(game.getFields()).toEqual([]);
+
+    game.isGameFinished = true;
+    expect(game.getFields()).toEqual(controlField);
   });
 
   it('checkFields() should call checking function 2 times', () => {
@@ -62,12 +79,14 @@ describe('Game', () => {
 
     it('set right options', () => {
       const gameOptions = { players: ['user', 'jack'], fieldType: fieldTypes[0], shipShapeType: ShipShape.Any };
+      game.isGameFinished = true;
       game.startNewGame(gameOptions);
 
       expect(game.players[0]).toBeInstanceOf(SinglePlayer);
       expect(game.players[1]).toBeInstanceOf(JackSparrow);
       expect(game.fieldType).toBe('3');
       expect(game.shipShape).toBe(ShipShape.Any);
+      expect(game.isGameFinished).toBeFalsy();
     });
 
     it('if "shipShapeType" not defined in options it should be "line" after run function', () => {
@@ -219,7 +238,7 @@ describe('Game', () => {
       expect(game.nextHumanTurn({ x: 1, y:1 })).toEqual([-1, null, errorMessage]);
     });
 
-    it('should return right reports', () => {
+    it('should return right reports and change flag "isGameFinished" after won report', () => {
       const gameOptions = { players: ['user', 'fakeRobot'], fieldType, mockCreatePlayer };
       game.startNewGame(gameOptions);
       game.startBattle(cloneDeep(field));
@@ -239,8 +258,10 @@ describe('Game', () => {
       expect(game.activePlayer).toBe(0);
 
       const fourthShout = { x: 2, y: 0 };
+      expect(game.isGameFinished).toBeFalsy();
       expect(game.nextHumanTurn(fourthShout)).toEqual([0, fourthShout, ShootResult.Won]);
       expect(game.activePlayer).toBe(0);
+      expect(game.isGameFinished).toBeTruthy();
     });
 
     it('should change value of cell on enemy field after hitting ship', () => {
@@ -345,10 +366,26 @@ describe('Game', () => {
       const robot2 = game.players[1] as Robot;
       expect(robot2.handleShoot).toBeCalledTimes(4);
     });
+
+    it('should change flag "isGameFinished" after won report', () => {
+      const gameOptions = { players: ['user', 'fakeRobot'], fieldType: fieldTypes[0], mockCreatePlayer };
+      const x = 1;
+      const y = 2;
+      fakeRobot.shoot = () => ({x, y});
+      const field = generateField(fieldTypes[0]);
+      field[y][x] = 1;
+      game.startNewGame(gameOptions);
+      game.startBattle(field);
+      game.activePlayer = 1;
+
+      expect(game.isGameFinished).toBeFalsy();
+
+      game.nextRobotTurn();
+      expect(game.isGameFinished).toBeTruthy();
+    });
   });
 
   it('getAvailablePlayers() should return correct data', () => {
-    game.setDefaultOptions();
     const correctPlayerData = { id: expect.any(String), name: expect.any(String), type: expect.any(String) };
     const players = game.getAvailablePlayers();
 
@@ -357,7 +394,5 @@ describe('Game', () => {
       robots: expect.any(Array),
     });
     expect(players.robots).toContainEqual(correctPlayerData);
-
-    game.setDefaultOptions();
   });
 });
