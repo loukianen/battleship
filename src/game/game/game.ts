@@ -30,10 +30,10 @@ const getHittingResult = (field: Field, target: number) : ShootResult => {
 const players : { [index: string]: () => Human | Robot } = {
   user: () => new SinglePlayer(),
   jack: () => new JackSparrow(),
-  max: () => {
+  hector: () => {
     const player = new JackSparrow();
-    player.id = 'max';
-    player.name = 'Max';
+    player.id = 'hector';
+    player.name = 'Hector Barbossa';
     return player;
   },
 };

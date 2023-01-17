@@ -22,7 +22,7 @@ const logProcess = createSlice({
   extraReducers: (builder) => {
     builder.addCase(setGameState, (state, action) => {
       const gameState = action.payload;
-      if (gameState === GameState.SettingFleet) {
+      if (gameState === GameState.NotStarted) {
         state = [];
       }
       return state;

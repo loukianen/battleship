@@ -48,13 +48,13 @@ describe('Reducer: logProcess', () => {
     expect(logProcess.reducer(currentState, setGameOptions(gameOptions))).toEqual(initialState);
   });
 
-  it('should clear log if the game state was set to "setting fleet"', () => {
+  it('should clear log if the game state was set to "not started"', () => {
     const currentState = state1;
-    expect(logProcess.reducer(currentState, setGameState(GameState.SettingFleet))).toEqual(initialState);
+    expect(logProcess.reducer(currentState, setGameState(GameState.NotStarted))).toEqual(initialState);
   });
 
-  const gameStatesForTest = [GameState.NotStarted, GameState.Started, GameState.Finished];
-  it.each(gameStatesForTest)('should not clear log if the game state was set setted not to "setting fleet" %s', (gameState) => {
+  const gameStatesForTest = [GameState.SettingFleet, GameState.Battle, GameState.Finished];
+  it.each(gameStatesForTest)('should not clear log if the game state was set setted not to "not started" %s', (gameState) => {
     const currentState = state1;
     expect(logProcess.reducer(currentState, setGameState(gameState))).toEqual(state1);
   });

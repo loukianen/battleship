@@ -59,7 +59,6 @@ export enum GameState {
   Finished = 'finished',
   NotStarted = 'not started',
   SettingFleet = 'setting fleet',
-  Started = 'started',
 }
 
 export enum GameType {
@@ -70,6 +69,11 @@ export enum GameType {
 export enum LanguageType {
   En = 'en',
   Ru = 'ru',
+}
+
+export enum LocalisedPlayerName {
+  Full = 'full',
+  Short = 'short',
 }
 
 export enum NameSpace {

@@ -6,7 +6,7 @@ import isEqual from 'lodash-ts/isEqual';
 import getAvailableShips from '../ships/get-available-ships';
 import { BattleFieldCell, Coords, Field, FieldType, Player, PlayerIndex, ShipInterface, ShipsList, UserFleet } from "../types";
 import {FieldTextKey, OptionsMenuKey } from '../locales/types';
-import { CellType, shipMainClasses, ShipShape } from '../const';
+import { CellType, LocalisedPlayerName, shipMainClasses, ShipShape } from '../const';
 
 const isArrayNotIncludesObject = <Type>(arr: Type[], object: Type) : boolean => arr.every((item) => !isEqual(item, object));
 
@@ -60,7 +60,7 @@ const pointAreaMapping = {
 };
 
 type LocalisationFunc = typeof i18n;
-export const getLocalizedUsername = (user: Player, lf: LocalisationFunc, type: 'full' | 'short' = 'full') => {
+export const getLocalizedUsername = (user: Player, lf: LocalisationFunc, type: LocalisedPlayerName = LocalisedPlayerName.Full) => {
   const { id, name } = user;
   const menuKey = id as OptionsMenuKey;
   let text: string = name;
@@ -70,6 +70,21 @@ export const getLocalizedUsername = (user: Player, lf: LocalisationFunc, type: '
     text = lf.t(`optionsMenu.${menuKey}`);
   }
   return text;
+};
+
+export const getPlayerNameForRender = (
+  players: Player[],
+  playerIndex: PlayerIndex,
+  lf: LocalisationFunc,
+  type: LocalisedPlayerName = LocalisedPlayerName.Full,
+) => {
+  const isPlayersTheSame = players[0].id === players[1].id;
+  const mark = playerIndex === 0 ? ' I' : ' II';
+  let playerName = getLocalizedUsername(players[playerIndex], lf, type);
+  if (isPlayersTheSame) {
+    playerName = `${playerName}${mark}`;
+  }
+  return playerName;
 };
 
 type GetPointAreaMappingProperty = 'with' | 'without' | 'corners';

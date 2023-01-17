@@ -78,6 +78,7 @@ const ru = {
     user: 'Вы',
     ushakov: 'Ушаков',
     jack: 'Джек Воробей',
+    hector: 'Гектор Барбосса',
     nahimov: 'Нахимов',
     shipType: 'Тип кораблей',
     line: 'Только в линию',
@@ -85,6 +86,7 @@ const ru = {
     player1: 'Адмирал первого флота',
     player2: 'Адмирал второго флота',
     shortNameForjack: 'Джек',
+    shortNameForhector: 'Гектор',
   },
   log: {
     started: 'начал',

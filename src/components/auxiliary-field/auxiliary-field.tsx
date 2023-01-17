@@ -9,7 +9,7 @@ const Auxiliaryfield = () => {
   const gameState = useAppSelector(getGameState);
 
   return(
-    <div id="centerField" className="d-flex flex-column mb-3">
+    <div id="centerField" className="d-flex flex-column ms-2 me-2 mb-2">
       <Info />
       {gameState === GameState.Battle || gameState === GameState.Finished ? <Log /> : <Dock />}
     </div>

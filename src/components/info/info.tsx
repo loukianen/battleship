@@ -4,9 +4,11 @@ import { useAppSelector } from '../../hooks/hooks';
 import { getGameType } from '../../store/game-type-process/selectors';
 import { getInfo } from '../../store/info-process/selectors';
 import { getPlayers } from '../../store/game-options-process/selectors';
-import { getLocalizedUsername } from '../../services/utils';
+import { getEnemy, getPlayerNameForRender } from '../../services/utils';
 import { GameType, ShootResult } from '../../const';
 import { Player, PlayerIndex } from '../../types';
+
+
 
 const Info = () => {
   const { t, i18n } = useTranslation();
@@ -15,8 +17,8 @@ const Info = () => {
   const { message, player } = useAppSelector(getInfo);
 
   const getTextForAuto = (message: ShootResult, players: Player[], activePlayer: PlayerIndex) => {
-    const activePlayerName = getLocalizedUsername(players[activePlayer], i18n);
-    const anotherPlayerName = getLocalizedUsername(players[activePlayer === 0 ? 1 : 0], i18n);
+    const activePlayerName = getPlayerNameForRender(players, activePlayer, i18n);
+    const anotherPlayerName = getPlayerNameForRender(players, getEnemy(activePlayer), i18n);
 
     const mainPhrase = `${activePlayerName}${t(`info.${message}.${GameType.Auto}`)}`;
     let tailPhrase = '';
@@ -32,8 +34,8 @@ const Info = () => {
   };
 
   const getTextForUser = (message: ShootResult, players: Player[], activePlayer: PlayerIndex) => {
-    const activePlayerName = getLocalizedUsername(players[activePlayer], i18n);
-    const anotherPlayerName = getLocalizedUsername(players[activePlayer === 0 ? 1 : 0], i18n);
+    const activePlayerName = getPlayerNameForRender(players, activePlayer, i18n);
+    const anotherPlayerName = getPlayerNameForRender(players, getEnemy(activePlayer), i18n);
 
     let mainPhrase = '';
     let tailPhrase = '';

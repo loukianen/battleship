@@ -78,6 +78,7 @@ const en = {
     user: 'You',
     ushakov: 'Ushakov',
     jack: 'Jack Sparrow',
+    hector: 'Hector Barbossa',
     nahimov: 'Nahimov',
     shipType: 'Ship type',
     line: 'Only line',
@@ -85,6 +86,7 @@ const en = {
     player1: 'An admiral of first fleet',
     player2: 'An admiral of second fleet',
     shortNameForjack: 'Jack',
+    shortNameForhector: 'Hector',
   },
   log: {
     started: 'started',

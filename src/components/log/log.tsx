@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../hooks/hooks';
 import { getLog } from '../../store/log-process/selectors';
 import { getPlayers } from '../../store/game-options-process/selectors';
-import { getLocalizedUsername, letters } from '../../services/utils';
-import { ShootResult } from '../../const';
-import { Coords } from '../../types';
+import { getPlayerNameForRender, letters } from '../../services/utils';
+import { LocalisedPlayerName, ShootResult } from '../../const';
+import { Coords, PlayerIndex } from '../../types';
 import { FieldTextKey } from '../../locales/types';
 
 const Log = () => {
@@ -24,14 +24,8 @@ const Log = () => {
     </thead>
   );
 
-  const renderTBody = (data: [number, number, Coords | null, ShootResult][]) => data.map(([id, player, coords, result]) => {
-    const isPlayersTheSame = players[0].id === players[1].id;
-    const mark = player === 0 ? ' I' : ' II';
-    const currentPlayer = players[player];
-    let playerName = getLocalizedUsername(currentPlayer, i18n, 'short');
-    if (isPlayersTheSame) {
-      playerName = `${playerName}${mark}`;
-    }
+  const renderTBody = (data: [number, PlayerIndex, Coords | null, ShootResult][]) => data.map(([id, player, coords, result]) => {
+    const playerName = getPlayerNameForRender(players, player, i18n, LocalisedPlayerName.Short);
     let coordsValue = null;
     if (coords !== null) {
       const { x, y } = coords;
