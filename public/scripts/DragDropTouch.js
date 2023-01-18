@@ -392,4 +392,4 @@ var DragDropTouch;
     })();
     DragDropTouch_1.DragDropTouch = DragDropTouch;
 })(DragDropTouch || (DragDropTouch = {}));
-//# sourceMappingURL=DragDropTouchNoWijmo.js.map
+// # sourceMappingURL=DragDropTouchNoWijmo.js.map

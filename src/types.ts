@@ -65,6 +65,7 @@ export interface ShipInterface {
   shape: ShipShape;
   orientation: ShipOrientation;
   orientationMapping: OrientationMappingType;
+  isOverField: number; // crutch for Drug and Drop
   getCoords: () => Coords[];
   getId: () => number;
   getClass: () => ShipClass | null;

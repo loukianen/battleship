@@ -1,5 +1,5 @@
 import './dock.sass';
-import { useState, MouseEvent, DragEventHandler } from 'react';
+import { useState, MouseEvent, DragEventHandler, SyntheticEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { getDock } from '../../store/dock-process/selectors';
@@ -32,18 +32,21 @@ const Dock = () => {
   const gameState = useAppSelector(getGameState);
 
   const handleDoubleClick = (className: ShipClass) => (e: MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     const orientation = docksOrientation[className] === ShipOrientation.East ? ShipOrientation.North : ShipOrientation.East;
     setDockOrientation({...initDocOrientationState, [className]: orientation});
   };
 
-  const handleDragEnd = () => {
-    if (shipInMove) {
+  const handleDragEnd = (e: SyntheticEvent) => {
+    e.stopPropagation();
+    if (shipInMove && !shipInMove.isOverField) {
       dispatch(returnShipIntoDock(shipInMove));
     }
   };
 
   const handleDragStart = (className: ShipClass) : DragEventHandler<HTMLElement> => (e) => {
+    e.stopPropagation();
     const ship = dock[className][0];
     ship.setOrientation(docksOrientation[className]);
     if (ship) {

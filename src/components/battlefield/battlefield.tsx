@@ -73,15 +73,16 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
       : { coords, options: { type: CellType.Ship } };
   });
 
-  const handleDragEnd = (e:SyntheticEvent) => {
+  const handleDragEnd = (e: SyntheticEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (shipInMove) {
+    if (shipInMove && !shipInMove.isOverField) {
       dispatch(returnShipIntoDock(shipInMove));
     }
   };
 
   const handleDragStart = (shipId: number | null) : DragEventHandler<HTMLElement> => (e) => {
+    e.stopPropagation();
     let ship;
     if (shipId !== null) {
       ship = fleet[shipId];
@@ -96,6 +97,7 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
     e.stopPropagation();
     if (shipInMove) {
       shipInMove.setCoords(mainPoint);
+      shipInMove.isOverField += 1;
       const shipCoords = shipInMove.getCoords();
       const shipArea = calcArea(shipCoords);
       const shipCoordsData = makeDataForChange(shipCoords, CellType.Ship, CellType.SW);
@@ -108,6 +110,7 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
     e.preventDefault();
     e.stopPropagation();
     if (shipInMove) {
+      shipInMove.isOverField -= 1;
       const shipCoords = shipInMove.getCoords();
       const curCoords = [...shipCoords, ...calcArea(shipCoords)];
       const oldShipCoords = shipInMove.calcCoords(mainPoint);

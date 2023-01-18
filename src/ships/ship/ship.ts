@@ -18,6 +18,7 @@ export default class Ship {
   shape: ShipShape;
   orientation: ShipOrientation;
   orientationMapping: OrientationMappingType;
+  isOverField: number;
 
   constructor(id: number) {
     this.id = id;
@@ -32,6 +33,7 @@ export default class Ship {
       west: ({ x, y }: Coords) : Coords[] => [{ x, y }],
       south: ({ x, y }: Coords) : Coords[] => [{ x, y }],
     };
+    this.isOverField = 0;
   }
 
   getCoords() {
