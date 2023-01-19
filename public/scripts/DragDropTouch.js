@@ -380,7 +380,7 @@ var DragDropTouch;
         // constants
         DragDropTouch._THRESHOLD = 5; // pixels to move before drag starts
         DragDropTouch._OPACITY = 0.5; // drag image opacity
-        DragDropTouch._DBLCLICK = 500; // max ms between clicks in a double click
+        DragDropTouch._DBLCLICK = 300; // max ms between clicks in a double click
         DragDropTouch._CTXMENU = 900; // ms to hold before raising 'contextmenu' event
         // copy styles/attributes from drag source to drag image element
         DragDropTouch._rmvAtts = 'id,class,style,draggable'.split(',');

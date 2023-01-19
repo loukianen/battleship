@@ -14,12 +14,12 @@ const Log = () => {
   const players = useAppSelector(getPlayers);
 
   const renderTHeader = () => (
-    <thead>
+    <thead className='border-bottom'>
       <tr>
-        <td className="color-ship-border">{t('log.n')}</td>
-        <td className="color-ship-border">{t('log.player')}</td>
-        <td className="color-ship-border">{t('log.shoot')}</td>
-        <td className="color-ship-border">{t('log.result')}</td>
+        <th className="color-ship-border">{t('log.n')}</th>
+        <th className="color-ship-border">{t('log.player')}</th>
+        <th className="color-ship-border">{t('log.shoot')}</th>
+        <th className="color-ship-border">{t('log.result')}</th>
       </tr>
     </thead>
   );

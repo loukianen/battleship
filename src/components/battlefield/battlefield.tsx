@@ -1,7 +1,7 @@
 import './battlefield.sass';
 import flatten from 'lodash-ts/flatten';
 import isEqual from 'lodash-ts/isEqual';
-import {DragEventHandler, SyntheticEvent } from 'react';
+import {DragEventHandler, SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { useTranslation } from 'react-i18next';
 import connector from '../../services/connector-UI-game';
@@ -15,7 +15,7 @@ import { getShipInMove } from '../../store/ship-in-move-process/selectors';
 import { moveShip } from '../../store/ship-in-move-process/ship-in-move-process';
 import { placeShipOnBattlefield } from '../../store/fleet-process/fleet-process';
 import { returnShipIntoDock } from '../../store/dock-process/dock-process';
-import { calcArea, isValidCoords } from '../../services/utils';
+import { calcArea, isTouchEnabled, isValidCoords } from '../../services/utils';
 import { Cell, Coords, FieldChangeDataType, Player } from '../../types';
 import { BattlefieldType, CellType, FieldName, GameState, GameType } from '../../const';
 
@@ -49,12 +49,13 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
   const gameState = useAppSelector(getGameState);
   const gameType = useAppSelector(getGameType);
   const shipInMove = useAppSelector(getShipInMove);
+  const [isShouldTurnShip, setIsShouldTurnShip] = useState(false);
 
   const markText = mark ? ` ${mark}` : '';
   const ownerName = `${t('ui.admiral')}: ${getLocalizedUsername(owner, i18n)}${markText}`;
   const fieldSize = field.length - 1;
 
-  const makeDataForChange = (data: Coords[], styleRight: CellType, styleWrong: CellType)  => {
+  const makeDataForChange = useCallback((data: Coords[], styleRight: CellType, styleWrong: CellType)  => {
     const maxCoordValue = field.length - 1;
     return data.reduce((acc, coords) => {
       if (isValidCoords(coords, 1, maxCoordValue)) {
@@ -64,14 +65,14 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
       }
       return acc;
     }, [] as FieldChangeDataType);
-  };
+  }, [field]);
 
-  const makeDataForClean = (data: Coords[]) => data.map((coords) => {
+  const makeDataForClean = useCallback((data: Coords[]) => data.map((coords) => {
     const { x, y } = coords;
     return field[y][x].shipId === null
       ? { coords, options: { type: field[y][x].defaultType } }
       : { coords, options: { type: CellType.Ship } };
-  });
+  }), [field]);
 
   const handleDragEnd = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -97,7 +98,9 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
     e.stopPropagation();
     if (shipInMove) {
       shipInMove.setCoords(mainPoint);
-      shipInMove.isOverField += 1;
+      if (isTouchEnabled()) {
+        shipInMove.isOverField += 1;
+      }
       const shipCoords = shipInMove.getCoords();
       const shipArea = calcArea(shipCoords);
       const shipCoordsData = makeDataForChange(shipCoords, CellType.Ship, CellType.SW);
@@ -110,7 +113,9 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
     e.preventDefault();
     e.stopPropagation();
     if (shipInMove) {
-      shipInMove.isOverField -= 1;
+      if (isTouchEnabled()) {
+        shipInMove.isOverField -= 1;
+      }
       const shipCoords = shipInMove.getCoords();
       const curCoords = [...shipCoords, ...calcArea(shipCoords)];
       const oldShipCoords = shipInMove.calcCoords(mainPoint);
@@ -156,6 +161,36 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
     connector.shoot(dispatch, coords);
   };
 
+  const handleDoubleClick = (shipId: number | null) => (e: SyntheticEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (shipId) {
+      const ship = fleet[shipId];
+      dispatch(moveShip(ship));
+      setIsShouldTurnShip(true);
+    }
+  };
+
+  useEffect(() => {
+    if (isShouldTurnShip && shipInMove) {
+      shipInMove.changeOrientation();
+      const shipCoords = shipInMove.getCoords();
+      if (!isValidCoords(shipCoords, 1, field.length - 1)) {
+        dispatch(returnShipIntoDock(shipInMove));
+      } else {
+        const shipArea = calcArea(shipCoords);
+        const coordsForPlacingShip = [...shipCoords, ...shipArea.filter((item) => isValidCoords(item, 1, field.length - 1))];
+        const isPlaceClear = coordsForPlacingShip.every(({x, y}) => field[y][x].type !== CellType.Ship);
+        if (isPlaceClear) {
+          dispatch(placeShipOnBattlefield(shipInMove));
+        } else {
+          dispatch(returnShipIntoDock(shipInMove));
+        }
+      }
+      setIsShouldTurnShip(false);
+    }
+  }, [isShouldTurnShip, shipInMove, field, dispatch, makeDataForChange]);
+
   const renderClickableCell = (id: number, coords: Coords, className: string, text: string | number | null) => (
     <div
       key={id}
@@ -177,6 +212,7 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
       draggable={type === CellType.Ship}
       onDragStart={handleDragStart(shipId)}
       onDragEnd={handleDragEnd}
+      onDoubleClick={handleDoubleClick(shipId)}
       >{text}</div>
     );
   };

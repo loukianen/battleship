@@ -168,6 +168,11 @@ export const getClearCells = (battlefield: BattleFieldCell[][]) => {
   return clearCells;
 };
 
+export function isTouchEnabled() {
+  return ( 'ontouchstart' in window ) ||
+  ( navigator.maxTouchPoints > 0 );
+}
+
 export const isValidCoords = (coords: Coords | Coords[], minValue: number, maxValue: number) => { // coords [{}, {}] or {}
   if (isEmpty(coords)) {
     return false;
