@@ -7,6 +7,7 @@ import { getGameState } from '../../store/game-state-process/selectors';
 import { getShipInMove } from '../../store/ship-in-move-process/selectors';
 import { returnShipIntoDock } from '../../store/dock-process/dock-process';
 import { takeShipOutOfDock } from '../../store/ship-in-move-process/ship-in-move-process';
+import { getImageForDrag } from '../../services/utils';
 import { GameState, ShipClass, shipMainClasses, ShipOrientation } from '../../const';
 import { ShipInterface } from '../../types';
 
@@ -47,6 +48,7 @@ const Dock = () => {
 
   const handleDragStart = (className: ShipClass) : DragEventHandler<HTMLElement> => (e) => {
     e.stopPropagation();
+    e.dataTransfer.setDragImage(getImageForDrag(), 20, 10);
     const ship = dock[className][0];
     ship.setOrientation(docksOrientation[className]);
     if (ship) {

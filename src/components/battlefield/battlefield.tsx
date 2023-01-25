@@ -15,7 +15,7 @@ import { getShipInMove } from '../../store/ship-in-move-process/selectors';
 import { moveShip } from '../../store/ship-in-move-process/ship-in-move-process';
 import { placeShipOnBattlefield } from '../../store/fleet-process/fleet-process';
 import { returnShipIntoDock } from '../../store/dock-process/dock-process';
-import { calcArea, isTouchEnabled, isValidCoords } from '../../services/utils';
+import { calcArea, getImageForDrag, isTouchEnabled, isValidCoords } from '../../services/utils';
 import { Cell, Coords, FieldChangeDataType, Player } from '../../types';
 import { BattlefieldType, CellType, FieldName, GameState, GameType } from '../../const';
 
@@ -84,6 +84,7 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
 
   const handleDragStart = (shipId: number | null) : DragEventHandler<HTMLElement> => (e) => {
     e.stopPropagation();
+    e.dataTransfer.setDragImage(getImageForDrag(), 20, 10);
     let ship;
     if (shipId !== null) {
       ship = fleet[shipId];
@@ -205,13 +206,13 @@ const Battlefield = (props: {owner: Player, fieldType: BattlefieldType, mark?: s
       <div
       key={id}
       className={`${className} d-flex justify-content-center align-items-center`}
-      onDragLeave={handleDragLeave(coords)}
-      onDragEnter={handleDragEnter(coords)}
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
       draggable={type === CellType.Ship}
+      onDragEnter={handleDragEnter(coords)}
+      onDragLeave={handleDragLeave(coords)}
+      onDrop={handleDrop}
       onDragStart={handleDragStart(shipId)}
       onDragEnd={handleDragEnd}
+      onDragOver={handleDragOver}
       onDoubleClick={handleDoubleClick(shipId)}
       >{text}</div>
     );

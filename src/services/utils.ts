@@ -37,6 +37,12 @@ const getDifference = <Type>(arr1: Type[], arr2: Type[]) : Type[] => {
   return diff;
 };
 
+export const getImageForDrag = () => {
+  const img =document.createElement('img');
+  img.src = 'img/anchor15.png';
+  return img;
+};
+
 const pointAreaMapping = {
   with: (coords: Coords) : Coords[] => [...pointAreaMapping.without(coords), ...pointAreaMapping.corners(coords)],
   without: ({ x, y }: Coords) : Coords[] => {
