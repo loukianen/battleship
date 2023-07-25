@@ -25,11 +25,13 @@ export default class Ushakov extends JackSparrow {
         killedShipClass = ShipClass.Three;
       } else if (killedShipLength === 2) {
         killedShipClass = ShipClass.Double;
-      } else {
+      } else if (killedShipLength === 1){
         killedShipClass = ShipClass.One;
       }
 
-      this.enemyShipsList[killedShipClass] -= 1;
+      if (killedShipClass) {
+        this.enemyShipsList[killedShipClass] -= 1;
+      }
     }
   
     handleShoot(record: Record) {
@@ -42,7 +44,7 @@ export default class Ushakov extends JackSparrow {
     }
 
     generateBattlefield(field: Field, shipList: ShipsList, shipsShapeType?: ShipShape) {
-      this.enemyShipsList = shipList;
+      this.enemyShipsList = { ...shipList };
       return this.generateBattlefieldPrototype(field, shipList, shipsShapeType);
     }
   
