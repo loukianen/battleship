@@ -19,6 +19,8 @@ export type FieldsPayloadDataType = { [FieldName.First]?: FieldChangeDataType, [
 
 export type FieldType = '3' | '5' | '7' | '10';
 
+export type FunctionConstractShip = (id: number) => ShipInterface;
+
 export interface Human extends Player {
   type: PlayerType.Human,
 }
@@ -82,6 +84,10 @@ export type Shoot = {
   playerId: number,
   coords: Coords,
 };
+
+export interface ShootingStrategy {
+  getShoot: () => Coords | null;
+}
 
 export type State = ReturnType<typeof store.getState>;
 

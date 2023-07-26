@@ -1,7 +1,13 @@
 import JackSparrow from "../jack-sparrow/jack-sparrow";
-import { Field, Record, ShipsList } from "../../../types";
+import { Field, Record, ShipsList, ShootingStrategy } from "../../../types";
 import { ShipClass, ShipShape, ShootResult } from "../../../const";
 import ShootingOnClearCellsStrategy from "../../strategies/shooting-on-clear-cells-strategy/shooting-on-clear-cells-strategy";
+
+class SearchShipByClassStrategy implements ShootingStrategy {
+  getShoot() {
+    return { x: 1, y: 1 };
+  }
+} 
 
 export default class Ushakov extends JackSparrow {
     enemyShipsList: ShipsList;
@@ -47,10 +53,18 @@ export default class Ushakov extends JackSparrow {
       this.enemyShipsList = { ...shipList };
       return this.generateBattlefieldPrototype(field, shipList, shipsShapeType);
     }
-  
+
     getStrategy() {
-      const currentStrategy = new ShootingOnClearCellsStrategy(this.enemyField, this.woundedEnemyShip, this.shipShape);
+      let currentStrategy;
+      if (this.enemyShipsList.fourDeck > 0) {
+        currentStrategy = new SearchShipByClassStrategy();
+      } else if (this.enemyShipsList.threeDeck > 0) {
+        currentStrategy = new SearchShipByClassStrategy();
+      } else if (this.enemyShipsList.doubleDeck > 0) {
+        currentStrategy = new SearchShipByClassStrategy();
+      } else {
+        currentStrategy = new ShootingOnClearCellsStrategy(this.enemyField, this.woundedEnemyShip, this.shipShape);
+      }
       return currentStrategy;
     }
-  
   };

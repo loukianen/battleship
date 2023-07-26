@@ -3,9 +3,9 @@ import DoubleDeckShip from './double-deck-ship/double-deck-ship';
 import ThreeDeckLineShip from './three-deck-line-ship/three-deck-line-ship';
 import FourDeckLineShip from './four-deck-line-ship/four-deck-line-ship';
 import { ShipClass, ShipShape } from '../const';
-import { ShipInterface } from '../types';
+import { FunctionConstractShip } from '../types';
 
-type FunctionConstractShip = (id: number) => ShipInterface;
+
 
 const constractOneDeckShip : FunctionConstractShip = (id) => new OneDeckShip(id);
 const constractDoubleDeckShip : FunctionConstractShip = (id) => new DoubleDeckShip(id);

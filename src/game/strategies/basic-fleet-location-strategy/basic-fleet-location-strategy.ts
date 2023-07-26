@@ -2,7 +2,6 @@ import {calcArea, createBattlefield, createUserFleet, getClearCells,
   getRandomElFromColl, isValidCoords, isValidShipCoords } from '../../../services/utils';
 import { BattleFieldCell, Coords, Field, ShipInterface, ShipsList } from '../../../types';
 import { CellType, shipMainClasses, ShipShape } from '../../../const';
-import Ship from '../../../ships/ship/ship';
 
 const normalizeBattlefieldForGame = (battlefield: BattleFieldCell[][]) : Field => battlefield
   .map((row) => row.map((cell) => cell.shipId ?? 0));
@@ -36,26 +35,13 @@ class BasicFleetLocationStrategy {
     return normalizeBattlefieldForGame(this.battlefield);
   }
 
-  getClearCells() {
-    const clearCells : { ids: Array<number>, cells: { [i: string | number]: BattleFieldCell } } = { ids: [], cells: {} };
-    return this.battlefield.forEach((row) => {
-      row.forEach((cell) => {
-        if (cell.type === CellType.Clear) {
-          const cellId = cell.id;
-          clearCells.ids.push(cellId);
-          clearCells.cells[cellId] = cell;
-        }
-      });
-    });
-  }
-
   putFleetOnTheField() {
     this.fleet.forEach((ship) => {
       this.putShipOnTheField(ship);
     });
   }
 
-  putShipOnTheField(ship: Ship) {
+  putShipOnTheField(ship: ShipInterface) {
     const clearCells = getClearCells(this.battlefield);
     const shipId = ship.getId();
 
