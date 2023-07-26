@@ -22,7 +22,6 @@ class SearchShipByClassStrategy implements ShootingStrategy {
   getPriorityCellsCoords() {
     const allPosibleForShipCellIds = new Map();
     const allPosibleForShipCells: { ids: number[], cells: { [id: string]: BattleFieldCell } } = { ids: [], cells: {} };
-    // const clearCells = getClearCells(this.battlefield);
     this.ships = getAvailableShips(this.shipClass, this.shipShape).map((shipConstructor, i) => shipConstructor(i));
 
     this.battlefield.forEach((row) => {

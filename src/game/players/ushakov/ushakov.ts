@@ -2,12 +2,7 @@ import JackSparrow from "../jack-sparrow/jack-sparrow";
 import { Field, Record, ShipsList, ShootingStrategy } from "../../../types";
 import { ShipClass, ShipShape, ShootResult } from "../../../const";
 import ShootingOnClearCellsStrategy from "../../strategies/shooting-on-clear-cells-strategy/shooting-on-clear-cells-strategy";
-
-class SearchShipByClassStrategy implements ShootingStrategy {
-  getShoot() {
-    return { x: 1, y: 1 };
-  }
-} 
+import SearchShipByClassStrategy from "../../strategies/search-ship-by-class-strategy/search-ship-by-class-strategy";
 
 export default class Ushakov extends JackSparrow {
     enemyShipsList: ShipsList;
@@ -57,11 +52,11 @@ export default class Ushakov extends JackSparrow {
     getStrategy() {
       let currentStrategy;
       if (this.enemyShipsList.fourDeck > 0) {
-        currentStrategy = new SearchShipByClassStrategy();
+        currentStrategy = new SearchShipByClassStrategy(this.enemyField, this.woundedEnemyShip, this.shipShape, ShipClass.Four);
       } else if (this.enemyShipsList.threeDeck > 0) {
-        currentStrategy = new SearchShipByClassStrategy();
+        currentStrategy = new SearchShipByClassStrategy(this.enemyField, this.woundedEnemyShip, this.shipShape, ShipClass.Three);
       } else if (this.enemyShipsList.doubleDeck > 0) {
-        currentStrategy = new SearchShipByClassStrategy();
+        currentStrategy = new SearchShipByClassStrategy(this.enemyField, this.woundedEnemyShip, this.shipShape, ShipClass.Double);
       } else {
         currentStrategy = new ShootingOnClearCellsStrategy(this.enemyField, this.woundedEnemyShip, this.shipShape);
       }

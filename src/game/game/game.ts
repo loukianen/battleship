@@ -1,6 +1,7 @@
 import cloneDeep from 'lodash-ts/cloneDeep';
 import SinglePlayer from '../players/single-player/single-player';
 import JackSparrow from '../players/jack-sparrow/jack-sparrow';
+import Ushakov from '../players/ushakov/ushakov';
 import { initialAvailablePlayersState } from '../../store/available-players-process/available-players-process';
 import { initialGameOptionsState } from '../../store/game-options-process/game-options-process';
 import { generateField, generateShipsList, getRandomElFromColl, getEnemy } from '../../services/utils';
@@ -36,6 +37,7 @@ const players : { [index: string]: () => Human | Robot } = {
     player.name = 'Hector Barbossa';
     return player;
   },
+  ushakov: () => new Ushakov(),
 };
 
 const createPlayer = (id: string) => {
