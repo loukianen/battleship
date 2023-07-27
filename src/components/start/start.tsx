@@ -78,13 +78,13 @@ const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>
       };
       const shipList = generateShipsList(fieldType);
       const newDockState: UserFleet = createUserFleet(shipList, shipType);
-
+      
       onShowWarning({
         text: [t('alert.restart'), t('alert.areYouSureToContinue')],
         dispatch: () => {
-          dispatch(setGameState(GameState.NotStarted));
           dispatch(setFields(newFieldsState));
           dispatch(fillDock(newDockState));
+          dispatch(setGameState(GameState.SettingFleet));
         },
         show: true });
     } if (gameState === GameState.Finished) {
