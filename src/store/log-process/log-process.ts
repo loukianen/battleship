@@ -23,7 +23,7 @@ const logProcess = createSlice({
     builder.addCase(setGameState, (state, action) => {
       const gameState = action.payload;
       if (gameState === GameState.NotStarted) {
-        state = [];
+        return [];
       }
       return state;
     });

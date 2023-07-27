@@ -82,9 +82,9 @@ const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>
       onShowWarning({
         text: [t('alert.restart'), t('alert.areYouSureToContinue')],
         dispatch: () => {
+          dispatch(setGameState(GameState.NotStarted));
           dispatch(setFields(newFieldsState));
           dispatch(fillDock(newDockState));
-          dispatch(setGameState(GameState.SettingFleet));
         },
         show: true });
     } if (gameState === GameState.Finished) {
