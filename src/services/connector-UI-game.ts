@@ -7,6 +7,8 @@ import { setGameState } from '../store/game-state-process/game-state-process';
 import { Coords, Field, FieldType, Record } from "../types";
 
 type AddNewRecordAction = typeof addNewRecord;
+let handleRobotShootTimeout: NodeJS.Timeout;
+let nextRobotTurnTimeout: NodeJS.Timeout;
 
 const adoptCoordsToGame = (coords: Coords) => {
   const x = coords.x - 1;
@@ -41,12 +43,12 @@ const shoot = (dispatch: Dispatch<ActionFromReducer<AddNewRecordAction>>, coords
       renderWinnerField(dispatch, robotShootingRecord);
     } else if (robotShootingRecord[2] !== ShootResult.OffTarget) {
       const nextRobotShootingRecord = game.nextRobotTurn() as Record;
-      setTimeout(() => handleRobotShoot(nextRobotShootingRecord), DALAY_BEFORE_RENDER_ROBOT_ACTION);
+      handleRobotShootTimeout = setTimeout(() => handleRobotShoot(nextRobotShootingRecord), DALAY_BEFORE_RENDER_ROBOT_ACTION);
     }
   };
 
   const doRobotShoot = () => {
-    setTimeout(() => {
+    handleRobotShootTimeout = setTimeout(() => {
       const robotShootingRecord = game.nextRobotTurn() as Record;
       handleRobotShoot(robotShootingRecord);
     }, DALAY_BEFORE_RENDER_ROBOT_ACTION);
@@ -82,7 +84,7 @@ const startRobotsGame = (
     dispatch(setGameState(GameState.Battle));
     dispatch(addNewRecord(adoptCoordsToUI(record)));
     if (record[2] !== ShootResult.Won) {
-      setTimeout(() => {
+      nextRobotTurnTimeout = setTimeout(() => {
         const nextRecord = game.nextRobotTurn() as Record;
         robotShoot(nextRecord);
       }, DALAY_BEFORE_RENDER_ROBOT_ACTION);
@@ -91,6 +93,8 @@ const startRobotsGame = (
     } 
   };
 
+  clearTimeout(handleRobotShootTimeout);
+  clearTimeout(nextRobotTurnTimeout);
   const newRecord = game.startNewGame({ players, fieldType, shipShapeType}) as Record;
   robotShoot(newRecord);
 };

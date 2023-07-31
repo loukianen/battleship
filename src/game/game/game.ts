@@ -211,8 +211,8 @@ class Game {
     mockCreatePlayer?: (id: string) => Human | Robot,
     mockStartBattle?: () => void,
   }) {
+    this.setDefaultOptions();
     const { players, fieldType, shipShapeType, mockCreatePlayer, mockStartBattle } = options;
-    this.isGameFinished = false;
     this.players = players.map((playerId) => {
       const makePlayer = mockCreatePlayer ?? createPlayer;
       return makePlayer(playerId);
