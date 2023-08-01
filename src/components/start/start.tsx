@@ -84,7 +84,12 @@ const Start = (props: { onShowWarning: Dispatch<SetStateAction<WarningModalType>
         dispatch: () => {
           dispatch(setFields(newFieldsState));
           dispatch(fillDock(newDockState));
-          dispatch(setGameState(GameState.SettingFleet));
+          dispatch(setGameState(GameState.NotStarted));
+          if (gameType === GameType.Auto) {
+            connector.startRobotsGame(playerIds, fieldType, dispatch);
+          } else {
+            connector.startUserGame(playerIds, fieldType, dispatch);
+          }
         },
         show: true });
     } if (gameState === GameState.Finished) {
